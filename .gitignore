@@ -13,3 +13,10 @@ server/*.db-shm
 *.log
 .env
 .env.local
+
+work!.pdf
+AGENTS.md
+PLAN.md
+CHANGELOG.md
+
+design/
