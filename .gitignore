@@ -14,6 +14,9 @@ server/*.db-shm
 .env
 .env.local
 
+# vercel
+.vercel/
+
 work!.pdf
 AGENTS.md
 PLAN.md
