@@ -89,7 +89,7 @@ export default function Login() {
         <LetterTitle
           lines={[
             { text: 'Cassava' },
-            { text: 'Village', indent: true },
+            { text: 'Village', indent: 2 },
           ]}
           sound={playBubble}
           className="text-[90px] text-cream [text-shadow:0_4px_18px_rgba(59,42,26,0.55)] sm:text-[108px] lg:text-[144px]"

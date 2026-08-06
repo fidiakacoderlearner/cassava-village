@@ -9,19 +9,27 @@ export default function LetterTitle({ lines = [], className = '', sound, interac
   const h1Class = `select-none font-display font-bold uppercase leading-[1.25] ${className}`;
   const fontStyle = { fontFamily: "'Beaver Punch', 'Lilita One', 'Poppins', ui-sans-serif, system-ui, sans-serif" };
 
+  const prevLine = (li) =>
+    li > 0 ? (typeof lines[li - 1] === 'object' ? lines[li - 1].text : lines[li - 1]) : '';
+
   if (connected) {
     return (
       <h1 className={h1Class} style={fontStyle}>
         {lines.map((line, li) => {
           const isObj = typeof line === 'object';
           const text = isObj ? line.text : line;
-          const indent = isObj && line.indent;
+          const indent = isObj ? line.indent || 0 : 0;
           return (
             <span
               key={li}
-              className={`block whitespace-nowrap ${indent ? 'ml-[2.5em]' : ''}`}
+              className="block whitespace-nowrap"
               style={{ letterSpacing: '-0.04em' }}
             >
+              {indent > 0 && (
+                <span aria-hidden style={{ visibility: 'hidden' }}>
+                  {prevLine(li).slice(0, indent)}
+                </span>
+              )}
               {text}
             </span>
           );
@@ -35,9 +43,14 @@ export default function LetterTitle({ lines = [], className = '', sound, interac
       {lines.map((line, li) => {
         const isObj = typeof line === 'object';
         const text = isObj ? line.text : line;
-        const indent = isObj && line.indent;
+        const indent = isObj ? line.indent || 0 : 0;
         return (
-          <span key={li} className={`block whitespace-nowrap ${indent ? 'ml-[2.5em]' : ''}`}>
+          <span key={li} className="block whitespace-nowrap">
+            {indent > 0 && (
+              <span aria-hidden style={{ visibility: 'hidden' }}>
+                {prevLine(li).slice(0, indent)}
+              </span>
+            )}
             {text.split('').map((ch, ci) => {
               const gi = i;
               i += 1;
