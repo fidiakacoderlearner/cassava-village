@@ -479,6 +479,7 @@ export default function Exploration() {
         body: { answers: values },
       });
       localStorage.removeItem(essayKey);
+      localStorage.removeItem(storageKey);
       setTempEssays({});
       refresh();
       navigate('/');

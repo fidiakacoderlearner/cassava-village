@@ -48,15 +48,15 @@ export default function Home() {
   const hasSavedStep = Number.isFinite(savedStep) && savedStep > 0;
 
   function openExploration() {
+    if (hasSavedStep) {
+      setShowResume(true);
+      return;
+    }
     if (progress.explorationDone) {
       startOver();
       return;
     }
-    if (hasSavedStep) {
-      setShowResume(true);
-    } else {
-      navigate('/exploration');
-    }
+    navigate('/exploration');
   }
 
   async function startOver() {
