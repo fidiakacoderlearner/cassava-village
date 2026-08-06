@@ -1,0 +1,337 @@
+﻿{
+  "app": {
+    "name": "Desa Singkong",
+    "logoLine1": "Desa",
+    "logoLine2": "Singkong"
+  },
+  "nav": {
+    "about": "Tentang",
+    "exploration": "Eksplorasi",
+    "evaluation": "Evaluasi",
+    "teacher": "Guru",
+    "logout": "Keluar"
+  },
+  "login": {
+    "welcome": "Selamat datang kembali!",
+    "subtitle": "Masuk untuk melanjutkan petualangan belajarmu di Desa Singkong.",
+    "join": "Mulai belajar",
+    "email": "Email",
+    "password": "Kata sandi",
+    "name": "Nama lengkap",
+    "signIn": "Masuk",
+    "signUp": "Daftar",
+    "switchToSignup": "Belum punya akun? Daftar",
+    "switchToLogin": "Sudah punya akun? Masuk",
+    "demoHint": "Demo guru: teacher@cassava.com / teacher123 \n Demo siswa: student@cassava.com / student123",
+    "heroTitle": "Jelajahi komposisi fungsi lewat Desa Singkong",
+    "heroText": "Ikuti Pak Restu di bengkel keripik singkongnya, di mana mesin pengupas dan mesin pencuci mengajarimu tentang komposisi fungsi — selangkah demi selangkah.",
+    "emailPlaceholder": "kamu@sekolah.id",
+    "namePlaceholder": "Githa Sayang",
+    "classCode": "Kode kelas",
+    "classCodePlaceholder": "Masukkan kode kelas",
+    "role": "Daftar sebagai",
+    "roleStudent": "Murid",
+    "roleTeacher": "Guru",
+    "teacherInfo": "Guru tidak perlu kode kelas",
+    "showPassword": "Tampilkan kata sandi",
+    "hidePassword": "Sembunyikan kata sandi"
+  },
+  "home": {
+    "greeting": "Hai, {name}",
+    "intro": "Selamat datang di Desa Singkong! Hari ini kita akan menjelajahi komposisi fungsi lewat usaha keripik singkong milik Pak Restu.",
+    "cards": {
+      "about": "Tentang",
+      "aboutDesc": "Cari tahu apa yang kita pelajari hari ini",
+      "exploration": "Eksplorasi",
+      "explorationDesc": "Ikuti Pak Restu lewat kedua mesinnya",
+      "evaluation": "Evaluasi",
+      "evaluationDesc": "Uji pemahamanmu di bagian akhir"
+    },
+    "start": "Mulai",
+    "comingSoon": "Segera hadir",
+    "locked": "Selesaikan tahap sebelumnya dulu"
+  },
+  "about": {
+    "title": "Apa yang kita pelajari hari ini?",
+    "learningOutcomes": "Capaian Pembelajaran",
+    "learningObjectives": "Tujuan Pembelajaran",
+    "learningIndicators": "Indikator Pembelajaran",
+    "outcomesText": "Di akhir Fase F, peserta didik dapat mengidentifikasi fungsi invers, komposisi fungsi, dan transformasi fungsi untuk memodelkan situasi dunia nyata menggunakan fungsi yang sesuai (linear, kuadrat, eksponensial).",
+    "objectives": [
+      "Menentukan konsep fungsi komposisi"
+    ],
+    "indicators": [
+      "Peserta didik dapat mendefinisikan komposisi fungsi menggunakan notasi (f ∘ g)(x) atau (g ∘ f)(x), dan menjelaskannya menggunakan contoh dunia nyata dengan dua proses berurutan.",
+      "Peserta didik dapat menentukan (g ∘ f)(x) dan (f ∘ g)(x) dari dua fungsi (linear, kuadrat, atau eksponensial), termasuk mencari fungsi yang tidak diketahui ketika hasil komposisi diketahui.",
+      "Peserta didik dapat membandingkan (f ∘ g)(x) dan (g ∘ f)(x) secara numerik dan menyimpulkan bahwa komposisi fungsi umumnya tidak komutatif.",
+      "Peserta didik dapat menerjemahkan situasi dunia nyata menjadi dua fungsi, membentuk fungsi komposisi, dan menggunakannya untuk menyelesaikan masalah kontekstual."
+    ],
+    "outcomesDesc": "Yang bisa kamu lakukan setelah pembelajaran ini",
+    "objectivesDesc": "Tujuan yang akan kamu capai di pembelajaran ini",
+    "indicatorsDesc": "Bukti bahwa kamu sudah belajar dalam pembelajaran ini",
+    "read": "Baca",
+    "back": "Kembali",
+    "backToHome": "Kembali ke Beranda",
+    "ready": "Sudah siap menjelajah?",
+    "next": "Lanjut ke Eksplorasi"
+  },
+  "exploration": {
+    "title": "Eksplorasi",
+    "step": "Langkah {current} dari {total}",
+    "writeAnswer": "Tulis jawabanmu di sini...",
+    "saveAnswer": "Simpan jawaban",
+    "edit": "Edit",
+    "mustSave": "Simpan jawabanmu terlebih dahulu untuk melanjutkan.",
+    "saved": "Tersimpan",
+    "saveAnswers": "Simpan jawaban ({done}/{total})",
+    "savedQuestion": "Soal Tersimpan {n}/{total}",
+    "continue": "Lanjut",
+    "tryAgain": "Coba lagi",
+    "correct": "Benar!",
+    "cassava": "Singkong",
+    "wrong": "Salah!",
+    "skipTyping": "Lewati ketikan →",
+    "resume": "Lanjutkan",
+    "resumeTitle": "Lanjutkan perjalananmu?",
+    "resumeMessage": "Kamu berhenti di langkah {current} dari {total}. Lanjutkan dari langkah itu atau ulangi dari awal?",
+    "restart": "Ulangi",
+    "hint": "Petunjuk",
+    "attemptsLeft": "Sisa kesempatan: {n}",
+    "explanationTitle": "Pembahasan",
+    "answer": "Jawaban",
+    "explanation": "Penjelasan",
+    "back": "Kembali",
+    "reviewTitle": "Verifikasi Jawaban",
+    "reviewSubtitle": "Periksa dan lengkapi jawaban essaimu sebelum disimpan sebagai jawaban final.",
+    "reviewQuestion": "Soal {n}",
+    "saveFinal": "Kirim Jawaban Final",
+    "goEvaluation": "Lanjut ke Evaluasi",
+    "reviewRequired": "Lengkapi semua jawaban essai untuk menyimpan.",
+    "calcBanner": "Pak Restu dan Pak Rafif menghasilkan total kotor Rp400.000 untuk hari ini (dari 20 kg × Rp20.000/kg). Berdasarkan dua fungsi komposisi yang telah kamu buat untuk pendapatan bersih mereka, hitunglah pendapatan bersih akhir mereka untuk x = 400.000",
+    "previousAnswerPill": "Jawaban Essay {n}"
+  },
+  "evaluation": {
+    "title": "Evaluasi",
+    "intro": "Kamu sudah sampai di akhir! Jawablah pertanyaan-pertanyaan ini untuk menunjukkan apa yang telah kamu pelajari tentang komposisi fungsi.",
+    "question": "Soal {current} dari {total}",
+    "submit": "Kirim jawaban",
+    "next": "Soal berikutnya",
+    "finish": "Lihat hasilku",
+    "retry": "Coba lagi",
+    "backHome": "Kembali ke Beranda",
+    "reviewTitle": "Jawaban kamu",
+    "yourAnswer": "Jawabanmu",
+    "correctAnswer": "Jawaban benar",
+    "yourScore": "Nilai kamu",
+    "outOf": "{score} dari {total}",
+    "feedbackCorrect": "Kerja bagus!",
+    "feedbackWrong": "Jawaban yang benar adalah \"{answer}\".",
+    "doneTitle": "Eksplorasi selesai!",
+    "allSaved": "Semua jawabanmu sudah tersimpan.",
+    "summaryPerfect": "Sempurna! Kamu menguasai komposisi fungsi — semua jawaban benar. Luar biasa!",
+    "summaryGood": "Bagus sekali! Kamu sudah paham komposisi fungsi. Pelajari kembali soal yang salah dan kamu akan sempurna.",
+    "summaryFair": "Cukup baik, tapi masih bisa lebih baik. Kembali ke cerita bengkel Pak Restu dan latih komposisi fungsi lagi.",
+    "summaryLow": "Ayo coba lagi! Kembali ke Eksplorasi, ikuti alur mesin pengupas dan pencuci dengan saksama, lalu ulangi evaluasi."
+  },
+  "teacher": {
+    "title": "Dashboard Guru",
+    "subtitle": "Pantau perkembangan siswa di Desa Singkong.",
+    "student": "Siswa",
+    "email": "Email",
+    "answers": "Jawaban tersimpan",
+    "correct": "Benar",
+    "score": "Nilai",
+    "joined": "Bergabung",
+    "empty": "Belum ada siswa. Bagikan tautan pendaftaran ke kelasmu!",
+    "logout": "Keluar",
+    "onlyTitle": "Khusus guru",
+    "onlyDesc": "Halaman ini hanya bisa diakses oleh guru.",
+    "students": "siswa",
+    "code": "Kode kelas",
+    "copy": "Salin",
+    "copied": "Tersalin",
+    "createClass": "Buat kelas",
+    "createClassTitle": "Buat kelas baru",
+    "classNamePlaceholder": "Nama kelas, mis. XI-A",
+    "cancel": "Batal",
+    "create": "Buat",
+    "dashboard": "Dashboard",
+    "noClassesTitle": "Belum ada kelas",
+    "noClasses": "Buat kelas untuk mendapatkan kode gabung, lalu bagikan ke siswa-mu.",
+    "totalStudents": "Total murid",
+    "avgScore": "Rata-rata nilai",
+    "notStarted": "Belum mulai",
+    "completed": "Selesai",
+    "status": "Status",
+    "statusNew": "Baru",
+    "statusOngoing": "Berjalan",
+    "statusExplored": "Selesai eksplorasi",
+    "statusDone": "Selesai",
+    "explorationCount": "Jml Eksplorasi",
+    "evaluationCount": "Jml Evaluasi",
+    "viewAnswers": "Lihat jawaban",
+    "close": "Tutup",
+    "searchPlaceholder": "Cari nama atau email...",
+    "noStudentsMatch": "Tidak ada siswa yang cocok",
+    "showing": "Menampilkan {from}–{to} dari {total}",
+    "prev": "Sebelumnya",
+    "next": "Berikutnya",
+    "perPage": "per halaman",
+    "collapse": "Sempitkan sidebar",
+    "expand": "Perluas sidebar",
+    "essayAnswers": "Jawaban Essay",
+    "attempt": "Eksplorasi {n}",
+    "essayN": "Essay {n}",
+    "noAnswer": "Belum dijawab",
+    "noAttempts": "Belum ada pengiriman eksplorasi.",
+    "submittedAt": "Dikirim {date}"
+  },
+  "audio": {
+    "on": "Nyalakan musik",
+    "off": "Matikan musik"
+  },
+  "money": {
+    "process": "Proses",
+    "flow": ["Pendapatan Kotor", "Diskon", "Biaya Retribusi"]
+  },
+  "story": {
+    "intro": {
+      "text": "Halo! Selamat datang di sudut kecil Desa Singkong milikku. Aku punya singkong segar langsung dari ladangku, dan aku ingin menunjukkan bagaimana aku mengubahnya menjadi keripik singkong yang renyah. Ayo, biarkan aku mengajakmu berkeliling melihat dua mesinku."
+    },
+    "peeling-machine": {
+      "text": "Yang ini adalah Mesin Pengupasku. Setiap singkong masuk, kulitnya langsung terkelupas. Sebanyak apa pun singkong yang aku masukkan, sekitar 15% beratnya selalu hilang menjadi kulit, memang begitulah banyaknya kulit yang dimiliki umbi singkong secara alami.",
+      "label": "Mesin Pengupas"
+    },
+    "peeling-function": {
+      "text": "Proses ini kuberi nama f, jadi:",
+      "formulaNote": "dengan x adalah berat singkong dalam kg."
+    },
+    "washing-machine": {
+      "text": "Dan yang ini adalah Mesin Pencuciku. Setelah dikupas, singkong masih menempel getah dan kotoran, jadi aku membilasnya sampai bersih. Setiap kali, sekitar 10% beratnya hilang karena air dan pati yang terbilas, tapi ada juga sedikit yang selalu tersangkut di sikat mesin, sekitar setengah kilogram, berapa pun jumlah singkong yang masuk.",
+      "label": "Mesin Pencuci"
+    },
+    "washing-function": {
+      "text": "Proses ini kuberi nama g, jadi:",
+      "formulaNote": "dengan x adalah berat singkong dalam kg."
+    },
+    "machine-flow": {
+      "text": "Begini, aku tidak pernah menggunakan satu mesin saja. Aku selalu mengupas dulu, baru mencucinya. Katakanlah hari ini aku punya 10 kg singkong. Kita lihat saja hasilnya!"
+    },
+    "quiz-peel": {
+      "text": "Misalnya aku memasukkan 8,5 kg singkong. Setelah dikupas, berapa kilogram yang aku dapat?",
+      "explain": "f(8,5) = 0,85 × 8,5 = 7,225 kg"
+    },
+    "quiz-wash": {
+      "text": "Bagus, 7,225 kg tepat sekali! Sekarang aku punya 7,225 kg singkong yang sudah dikupas, ayo kita cuci. Berapa kilogram yang tersisa setelah dicuci?",
+      "explain": "g(7,225) = 0,9 × 7,225 − 0,5 = 6,5025 − 0,5 = 6,0025 kg"
+    },
+    "composition-explanation": {
+      "text": "Lihat? Singkongku melewati f lebih dulu, lalu hasilnya melewati g. Ketika dua mesin digunakan berurutan seperti ini, kita menyebutnya komposisi fungsi."
+    },
+    "open-gof-machines": {
+      "text": "Lihat bagaimana aku menghitungnya dalam dua langkah terpisah? Ayo kita buat lebih cepat. Jika aku gabungkan kedua mesin menjadi satu rumus, (g ∘ f)(x), bagaimana bentuknya?",
+      "hint": "(g ∘ f)(x) = g(f(x)) = 0,9 · (0,85x) − 0,5 = 0,765x − 0,5"
+    },
+    "money-gross": {
+      "text": "Hari ini aku menjual 20 kg keripik singkong. Harganya pas Rp20.000 per kg, jadi sebelum hal lainnya, pendapatan kotorku adalah Rp400.000."
+    },
+    "money-intro": {
+      "text": "Tapi tentu saja, aku memberi diskon kepada pelangganku, dan ada juga biaya retribusi pasar yang harus kubayar. Aku selalu menerapkan diskon lebih dulu."
+    },
+    "quiz-discount": {
+      "text": "Jika x adalah pendapatan kotorku dan aku ingin memberi pelangganku diskon 25%. Anggap diskon sebagai proses f, bagaimana fungsi f(x)-nya?",
+      "explain": "Diskon 25% berarti pelanggan membayar 75%, jadi f(x) = 0,75x."
+    },
+    "quiz-retribution": {
+      "text": "Bagus, f(x) = 0,75x tepat sekali! Sekarang aku perlu membayar retribusiku. Besarnya sekitar Rp80.000, jadi fungsinya adalah...",
+      "explain": "Biaya dikurangkan dari pendapatan: g(x) = x − 80.000."
+    },
+    "open-gof-money": {
+      "text": "Kerja bagus! Sekarang kamu tahu. Bisakah kamu membuat fungsi komposisi berdasarkan itu? Aku menerapkan diskon dulu, lalu biaya retribusi.",
+      "hint": "(g ∘ f)(x) = g(f(x)) = 0,75x − 80.000"
+    },
+    "rafif-intro": {
+      "text": "Kamu sudah melakukannya dengan baik. Sekarang, perkenalkan temanku, Rafif. Dia juga menjual keripik singkong seperti aku. Meskipun kami menggunakan mesin yang sama, ada beberapa hal yang berbeda..."
+    },
+    "rafif-story": {
+      "text": "Halo, aku Pak Rafif! Hari yang sama, 20 kg yang sama, harga Rp20.000 per kg yang sama, jadi pendapatan kotornya juga sama Rp400.000 dengan Pak Restu. Diskon sama, retribusinya juga sama. Tapi aku melakukannya terbalik. Retribusi dulu, baru diskon."
+    },
+    "open-fog-money": {
+      "text": "Dengan mempertimbangkan konteks tersebut, buatlah fungsi komposisinya.",
+      "hint": "(f ∘ g)(x) = f(g(x)) = 0,75 · (x − 80.000) = 0,75x − 60.000"
+    },
+    "open-restu-calc": {
+      "text": "Berapa pendapatan bersih akhir saya jika pendapatan kotor saya hari ini adalah Rp400.000?",
+      "hint": "(g ∘ f)(400.000) = 0,75(400.000) − 80.000 = 300.000 − 80.000 = 220.000 (Rp220.000)"
+    },
+    "open-rafif-calc": {
+      "text": "Bagaimana dengan saya, dengan pendapatan kotor hari ini Rp400.000, berapa pendapatan bersih akhir saya?",
+      "hint": "(f ∘ g)(400.000) = 0,75(400.000 − 80.000) = 0,75(320.000) = 240.000 (Rp240.000)"
+    },
+    "open-difference-explanation": {
+      "text": "Sekarang setelah kamu mengetahui pendapatan bersih akhir mereka, apakah ada perbedaan di antara keduanya? Bisakah kamu menjelaskan alasannya?",
+      "hint": "Ada perbedaan Rp20.000! Pendapatan Pak Restu Rp220.000 sedangkan Pak Rafif Rp240.000 karena urutan pemotongan retribusi dan diskon berbeda."
+    },
+    "open-conclusion": {
+      "text": "Berdasarkan konsep fungsi komposisi, kesimpulan apa yang dapat kamu tarik mengenai pendapatan bersih Pak Restu dan Pak Rafif?",
+      "hint": "(g ∘ f)(x) ≠ (f ∘ g)(x), sehingga komposisi fungsi umumnya tidak bersifat komutatif (urutan pengerjaan mempengaruhi hasil akhir)."
+    }
+  },
+  "quiz": {
+    "eval-1": {
+      "text": "Diketahui f(x) = 2x + 1 dan g(x) = x − 3, berapakah (f ∘ g)(x)?",
+      "explain": "f(g(x)) = 2(x − 3) + 1 = 2x − 6 + 1 = 2x − 5.",
+      "options": ["2x − 5", "2x − 3", "2x + 1", "2x − 2"]
+    },
+    "eval-2": {
+      "text": "Menggunakan f(x) = 2x + 1 dan g(x) = x − 3 yang sama, berapakah (g ∘ f)(x)?",
+      "explain": "g(f(x)) = (2x + 1) − 3 = 2x − 2.",
+      "options": ["2x − 2", "2x + 1", "2x − 3", "2x − 4"]
+    },
+    "eval-3": {
+      "text": "Jika f(x) = 3x dan g(x) = x², berapakah (g ∘ f)(1)?",
+      "explain": "(g ∘ f)(1) = g(3) = 3² = 9.",
+      "options": ["3", "6", "9", "12"]
+    },
+    "eval-4": {
+      "text": "Di bengkel Pak Restu, mengupas adalah f(x) = 0,85x dan mencuci adalah g(x) = 0,9x − 0,5. Bagaimana rumus gabungan (g ∘ f)(x)?",
+      "explain": "g(f(x)) = 0,9 · (0,85x) − 0,5 = 0,765x − 0,5.",
+      "options": ["0,765x − 0,5", "0,85x − 0,5", "0,9x − 0,5", "0,765x"]
+    },
+    "eval-5": {
+      "text": "Diskon Pak Restu adalah f(x) = 0,75x dan biaya retribusi adalah g(x) = x − 80.000. Jika ia menerapkan diskon lebih dulu, berapakah (g ∘ f)(400.000)?",
+      "explain": "g(f(400.000)) = 0,75 × 400.000 − 80.000 = 300.000 − 80.000 = 220.000.",
+      "options": ["Rp220.000", "Rp240.000", "Rp300.000", "Rp320.000"]
+    },
+    "eval-6": {
+      "text": "Berdasarkan cerita Pak Restu dan Pak Rafif, apakah komposisi fungsi bersifat komutatif?",
+      "explain": "Secara umum (g ∘ f)(x) ≠ (f ∘ g)(x), jadi komposisi fungsi tidak komutatif.",
+      "options": [
+        "Ya, (f ∘ g)(x) selalu sama dengan (g ∘ f)(x)",
+        "Tidak, umumnya TIDAK komutatif",
+        "Hanya untuk fungsi linear",
+        "Hanya jika salah satu fungsinya adalah fungsi identitas"
+      ]
+    },
+    "eval-7": {
+      "text": "Pak Rafif menerapkan retribusi lebih dulu, lalu diskon: f(x) = 0,75x dan g(x) = x − 80.000. Berapakah (f ∘ g)(400.000)?",
+      "explain": "(f ∘ g)(400.000) = f(400.000 − 80.000) = 0,75 × 320.000 = 240.000.",
+      "options": ["Rp240.000", "Rp220.000", "Rp260.000", "Rp300.000"]
+    }
+  },
+  "errors": {
+    "required": "Mohon isi semua kolom",
+    "generic": "Terjadi kesalahan, coba lagi",
+    "network": "Kami tidak dapat terhubung ke server. Periksa koneksi internet kamu dan coba lagi.",
+    "invalidClassCode": "Kode kelas salah. Tanyakan kodenya ke gurumu.",
+    "emailExists": "Email ini sudah terdaftar",
+    "wrongCredentials": "Email atau kata sandi salah",
+    "passwordShort": "Kata sandi minimal 6 karakter"
+  },
+  "exit": {
+    "title": "Keluar dari halaman ini?",
+    "message": "Progresmu tersimpan otomatis. Kamu bisa melanjutkan dari tempat kamu berhenti atau memulai dari awal lagi nanti.",
+    "stay": "Tetap di sini",
+    "leave": "Keluar"
+  }
+}

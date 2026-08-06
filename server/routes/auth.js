@@ -1,0 +1,58 @@
+import { Router } from 'express';
+import bcrypt from 'bcryptjs';
+import { db } from '../db.js';
+import { signToken, requireAuth, publicUser, asyncHandler } from '../middleware/auth.js';
+
+const router = Router();
+
+router.post('/signup', asyncHandler(async (req, res) => {
+  const { name, email, password, classCode, role } = req.body || {};
+  const targetRole = role === 'teacher' ? 'teacher' : 'student';
+  if (!name || !email || !password) {
+    return res.status(400).json({ error: 'Name, email and password are required' });
+  }
+  if (targetRole === 'student' && !classCode) {
+    return res.status(400).json({ error: 'Invalid class code' });
+  }
+  if (typeof email !== 'string' || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+    return res.status(400).json({ error: 'Invalid email format' });
+  }
+  if (password.length < 6) {
+    return res.status(400).json({ error: 'Password must be at least 6 characters' });
+  }
+  let classId = null;
+  if (targetRole === 'student') {
+    const cls = await db.prepare('SELECT id FROM classes WHERE code = ?').get(String(classCode).trim().toUpperCase());
+    if (!cls) {
+      return res.status(400).json({ error: 'Invalid class code' });
+    }
+    classId = cls.id;
+  }
+  const exists = await db.prepare('SELECT id FROM users WHERE email = ?').get(email);
+  if (exists) return res.status(409).json({ error: 'Email is already registered' });
+
+  const hash = bcrypt.hashSync(password, 10);
+  const info = await db.prepare(
+    'INSERT INTO users (name, email, password_hash, role, class_id) VALUES (?, ?, ?, ?, ?) RETURNING id'
+  ).run(name.trim(), email.trim().toLowerCase(), hash, targetRole, classId);
+
+  const user = await db.prepare('SELECT id, name, email, role, class_id FROM users WHERE id = ?').get(info.lastInsertRowid);
+  res.status(201).json({ token: signToken(user), user: publicUser(user) });
+}));
+
+router.post('/login', asyncHandler(async (req, res) => {
+  const { email, password } = req.body || {};
+  if (!email || !password) return res.status(400).json({ error: 'Email and password are required' });
+
+  const user = await db.prepare('SELECT * FROM users WHERE email = ?').get(String(email).trim().toLowerCase());
+  if (!user || !bcrypt.compareSync(String(password), user.password_hash)) {
+    return res.status(401).json({ error: 'Incorrect email or password' });
+  }
+  res.json({ token: signToken(user), user: publicUser(user) });
+}));
+
+router.get('/me', requireAuth, (req, res) => {
+  res.json({ user: publicUser(req.user) });
+});
+
+export default router;

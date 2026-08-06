@@ -1,0 +1,336 @@
+﻿{
+  "app": {
+    "name": "Cassava Village",
+    "logoLine1": "Cassava",
+    "logoLine2": "Village"
+  },
+  "nav": {
+    "about": "About",
+    "exploration": "Exploration",
+    "evaluation": "Evaluation",
+    "teacher": "Teacher",
+    "logout": "Log out"
+  },
+  "login": {
+    "welcome": "Welcome back!",
+    "subtitle": "Sign in to continue your learning journey in Cassava Village.",
+    "join": "Start learning",
+    "email": "Email",
+    "password": "Password",
+    "name": "Full name",
+    "signIn": "Log in",
+    "signUp": "Sign up",
+    "switchToSignup": "Don't have an account? Sign up",
+    "switchToLogin": "Already have an account? Log in",
+    "demoHint": "Teacher demo: teacher@cassava.com / teacher123 \n Student demo: student@cassava.com / student123",
+    "heroTitle": "Explore function composition through Cassava Village",
+    "heroText": "Join Pak Restu in his cassava chip workshop, where peeling and washing machines teach you all about function composition — step by step.",
+    "emailPlaceholder": "you@school.edu",
+    "namePlaceholder": "Githa Sayang",
+    "classCode": "Class code",
+    "classCodePlaceholder": "Enter class code",
+    "role": "Register as",
+    "roleStudent": "Student",
+    "roleTeacher": "Teacher",
+    "teacherInfo": "Teachers don't need a class code",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password"
+  },
+  "home": {
+    "greeting": "Hi, {name}",
+    "intro": "Welcome to Cassava Village! Today we are going to explore function composition through Pak Restu's cassava chip business.",
+    "cards": {
+      "about": "About",
+      "aboutDesc": "Find out what we are learning today",
+      "exploration": "Exploration",
+      "explorationDesc": "Follow Pak Restu through his two machines",
+      "evaluation": "Evaluation",
+      "evaluationDesc": "Test your understanding at the end"
+    },
+    "start": "Start",
+    "comingSoon": "Coming soon",
+    "locked": "Finish the previous stage first"
+  },
+  "about": {
+    "title": "What we are learning today?",
+    "learningOutcomes": "Learning Outcomes",
+    "learningObjectives": "Learning Objectives",
+    "learningIndicators": "Learning Indicators",
+    "outcomesText": "By the end of Phase F, students will be able to identify inverse functions, function composition, and function transformations to model real-world situations using appropriate functions (linear, quadratic, exponential).",
+    "objectives": [
+      "Determine the concept of composition functions"
+    ],
+    "indicators": [
+      "Students can define function composition using the notation (f ∘ g)(x) or (g ∘ f)(x), and explain it using a real-world example with two sequential processes.",
+      "Students can determine (g ∘ f)(x) and (f ∘ g)(x) given two functions (linear, quadratic, or exponential), including finding an unknown function when the composite result is known.",
+      "Students can compare (f ∘ g)(x) and (g ∘ f)(x) numerically and conclude that function composition is generally not commutative.",
+      "Students can translate a real-world situation into two functions, form the composite function, and use it to solve a contextual problem."
+    ],
+    "outcomesDesc": "What you will be able to do after this lesson",
+    "objectivesDesc": "The goal you will achieve in this lesson",
+    "indicatorsDesc": "The evidence that shows you have learned",
+    "read": "Read",
+    "back": "Back",
+    "backToHome": "Back to Home",
+    "ready": "Ready to explore?",
+    "next": "Continue to Exploration"
+  },
+  "exploration": {
+    "title": "Exploration",
+    "step": "Step {current} of {total}",
+    "writeAnswer": "Write your answer here...",
+    "saveAnswer": "Save answer",
+    "edit": "Edit",
+    "mustSave": "Save your answer first to continue.",
+    "saved": "Saved",
+    "saveAnswers": "Save answers ({done}/{total})",
+    "savedQuestion": "Saved Question {n}/{total}",
+    "continue": "Continue",
+    "tryAgain": "Try again",
+    "correct": "Correct!",
+    "cassava": "Cassava",
+    "wrong": "Wrong!",
+    "skipTyping": "Skip typing →",
+    "resume": "Continue",
+    "resumeTitle": "Resume your journey?",
+    "resumeMessage": "You stopped at step {current} of {total}. Do you want to continue from there or start over?",
+    "restart": "Restart",
+    "hint": "Hint",
+    "attemptsLeft": "Attempts left: {n}",
+    "explanationTitle": "Explanation",
+    "answer": "Answer",
+    "explanation": "Explanation",
+    "back": "Back",
+    "reviewTitle": "Review Your Answers",
+    "reviewSubtitle": "Check and complete your essay answers before saving them as your final answers.",
+    "reviewQuestion": "Question {n}",
+    "saveFinal": "Submit Final Answer",
+    "goEvaluation": "Go to Evaluation",
+    "reviewRequired": "Complete all essay answers to save.",
+    "calcBanner": "Pak Restu and Pak Rafif earn a gross total of Rp400,000 for the day (from 20 kg × Rp20,000/kg). Based on the two composite functions you have constructed for their net income, calculate their final net income for x = 400,000",
+    "previousAnswerPill": "Essay {n} Answer"
+  },
+  "evaluation": {    "title": "Evaluation",
+    "intro": "You've made it to the end! Answer these questions to show what you have learned about function composition.",
+    "question": "Question {current} of {total}",
+    "submit": "Submit answer",
+    "next": "Next question",
+    "finish": "See my result",
+    "retry": "Try again",
+    "backHome": "Back to Home",
+    "reviewTitle": "Your answers",
+    "yourAnswer": "Your answer",
+    "correctAnswer": "Correct answer",
+    "yourScore": "Your score",
+    "outOf": "{score} out of {total}",
+    "feedbackCorrect": "Great job!",
+    "feedbackWrong": "The correct answer is \"{answer}\".",
+    "doneTitle": "Exploration complete!",
+    "allSaved": "All your answers have been saved.",
+    "summaryPerfect": "Perfect score! You mastered function composition — every answer is correct. Outstanding!",
+    "summaryGood": "Great work! You understand function composition well. Review the questions you missed and you'll be flawless.",
+    "summaryFair": "Not bad, but you can do better. Revisit the story of Pak Restu's workshop and practice composition again.",
+    "summaryLow": "Let's try again! Go back to the Exploration, follow the peeling and washing machines carefully, then retry the evaluation."
+  },
+  "teacher": {
+    "title": "Teacher Dashboard",
+    "subtitle": "Track your students' progress in Cassava Village.",
+    "student": "Student",
+    "email": "Email",
+    "answers": "Answers saved",
+    "correct": "Correct",
+    "score": "Score",
+    "joined": "Joined",
+    "empty": "No students yet. Share the sign-up link with your class!",
+    "logout": "Log out",
+    "onlyTitle": "Teacher only",
+    "onlyDesc": "Only teachers can access this page.",
+    "students": "students",
+    "code": "Class code",
+    "copy": "Copy",
+    "copied": "Copied",
+    "createClass": "Create class",
+    "createClassTitle": "Create a new class",
+    "classNamePlaceholder": "Class name, e.g. XI-A",
+    "cancel": "Cancel",
+    "create": "Create",
+    "dashboard": "Dashboard",
+    "noClassesTitle": "No classes yet",
+    "noClasses": "Create a class to get a join code, then share it with your students.",
+    "totalStudents": "Total students",
+    "avgScore": "Average score",
+    "notStarted": "Not started",
+    "completed": "Completed",
+    "status": "Status",
+    "statusNew": "New",
+    "statusOngoing": "In progress",
+    "statusExplored": "Exploration done",
+    "statusDone": "Finished",
+    "explorationCount": "Explorations",
+    "evaluationCount": "Evaluations",
+    "viewAnswers": "View answers",
+    "close": "Close",
+    "searchPlaceholder": "Search name or email...",
+    "noStudentsMatch": "No matching students",
+    "showing": "Showing {from}–{to} of {total}",
+    "prev": "Prev",
+    "next": "Next",
+    "perPage": "per page",
+    "collapse": "Collapse sidebar",
+    "expand": "Expand sidebar",
+    "essayAnswers": "Essay Answers",
+    "attempt": "Exploration {n}",
+    "essayN": "Essay {n}",
+    "noAnswer": "Not answered",
+    "noAttempts": "No exploration submissions yet.",
+    "submittedAt": "Submitted {date}"
+  },
+  "audio": {
+    "on": "Turn music on",
+    "off": "Turn music off"
+  },
+  "money": {
+    "process": "Process",
+    "flow": ["Gross Earnings", "Discount", "Retribution fees"]
+  },
+  "story": {
+    "intro": {
+      "text": "Hey there! Welcome to my little corner of Cassava Valley. I've got fresh cassava straight from my field, and I want to show you how I turn it into crispy cassava chips. Come on, let me walk you through my two machines."
+    },
+    "peeling-machine": {
+      "text": "This one right here is my Peeling Machine. Every time cassava goes in, the skin gets peeled off. No matter how much cassava I load in, about 15% of the weight is always lost to peel waste, which is just how much skin a cassava root naturally has.",
+      "label": "Peeling Machine"
+    },
+    "peeling-function": {
+      "text": "I call this process f, so:",
+      "formulaNote": "where x is the weight of the cassava in kg."
+    },
+    "washing-machine": {
+      "text": "And this one over here is my Washing Machine. After peeling, the cassava still has some sticky sap and dirt clinging to it, so I rinse it clean. Each time, it loses about 10% of its weight to water and rinsed-off starch, but there's also a little bit that always gets stuck in the machine's brush, about half a kilogram, no matter how much goes in.",
+      "label": "Washing Machine"
+    },
+    "washing-function": {
+      "text": "I call this process g, so:",
+      "formulaNote": "where x is the weight of the cassava in kg."
+    },
+    "machine-flow": {
+      "text": "Now here's the thing, I never use just one machine by itself. I always peel first, then wash. Let's say I've got 10 kg of cassava today. We'll find out!"
+    },
+    "quiz-peel": {
+      "text": "Let's say I load in 8,5 kg of cassava. After peeling, how many kilograms do I get?",
+      "explain": "f(8,5) = 0,85 × 8,5 = 7,225 kg"
+    },
+    "quiz-wash": {
+      "text": "Nice, 7,225 kg is exactly right! Now that I've got 7,225 kg of peeled cassava, let's wash it. How many kilograms do I end up with after washing?",
+      "explain": "g(7,225) = 0,9 × 7,225 − 0,5 = 6,5025 − 0,5 = 6,0025 kg"
+    },
+    "composition-explanation": {
+      "text": "See that? My cassava went through f first, then the result went through g. When two machines are used one after another like this, we call it function composition."
+    },
+    "open-gof-machines": {
+      "text": "See how I calculated that in two separate steps? Let's make it faster. If I combine both machines into one formula, (g ∘ f)(x), what does it look like?",
+      "hint": "(g ∘ f)(x) = g(f(x)) = 0,9 · (0,85x) − 0,5 = 0,765x − 0,5"
+    },
+    "money-gross": {
+      "text": "Today I sold 20 kg of cassava chips. My exact price is Rp20.000 per kg, so before anything else, my gross earnings are Rp400.000."
+    },
+    "money-intro": {
+      "text": "But of course, I give my customers a discount, and there's also a market retribution fee I have to pay. I always apply the discount first."
+    },
+    "quiz-discount": {
+      "text": "If x is my gross earnings and I want to give my customer a 25% discount per kilos. Let's say discount as process f, what's the function of f(x)?",
+      "explain": "A 25% discount means the customer pays 75%, so f(x) = 0,75x."
+    },
+    "quiz-retribution": {
+      "text": "Nice, f(x) = 0,75x is exactly right! Now I need to pay my retribution fees. It's about Rp80.000, so the function is...",
+      "explain": "The fee is subtracted from the earnings: g(x) = x − 80.000."
+    },
+    "open-gof-money": {
+      "text": "Good job! Now you know. Could you create a composite function based on that? I apply the discount first, then the retribution fee.",
+      "hint": "(g ∘ f)(x) = g(f(x)) = 0,75x − 80.000"
+    },
+    "rafif-intro": {
+      "text": "You're doing well. So, let me introduce you to my friend, Rafif. He's also selling cassava chips just like me. Even though we use the same machines, there are some different things..."
+    },
+    "rafif-story": {
+      "text": "Hey, I'm Pak Rafif! Same day, same 20 kg, same Rp20.000 price per kg, so same Rp400.000 gross earnings as Pak Restu. Same discount, same retribution fee too. But I do it backwards. Retribution first, then discount."
+    },
+    "open-fog-money": {
+      "text": "With that context in mind, please generate a composite function based on it.",
+      "hint": "(f ∘ g)(x) = f(g(x)) = 0,75 · (x − 80.000) = 0,75x − 60.000"
+    },
+    "open-restu-calc": {
+      "text": "How much is my final net income if my gross earnings today are Rp400,000?",
+      "hint": "(g ∘ f)(400.000) = 0,75(400.000) − 80.000 = 300.000 − 80.000 = 220.000 (Rp220,000)"
+    },
+    "open-rafif-calc": {
+      "text": "How about me, with today's gross earnings at Rp400,000, what would my final net income be?",
+      "hint": "(f ∘ g)(400.000) = 0,75(400.000 − 80.000) = 0,75(320.000) = 240.000 (Rp240,000)"
+    },
+    "open-difference-explanation": {
+      "text": "Now that you know their final net incomes, is there a difference between the two? Can you explain why?",
+      "hint": "There is a Rp20,000 difference! Pak Restu earns Rp220,000 while Pak Rafif earns Rp240,000 because the order of retribution fee and discount is reversed."
+    },
+    "open-conclusion": {
+      "text": "Based on the concept of composite functions, what conclusions can you draw regarding the net income of Pak Restu and Pak Rafif?",
+      "hint": "(g ∘ f)(x) ≠ (f ∘ g)(x), so function composition is generally NOT commutative (the order of operations affects the final result)."
+    }
+  },
+  "quiz": {
+    "eval-1": {
+      "text": "Given f(x) = 2x + 1 and g(x) = x − 3, what is (f ∘ g)(x)?",
+      "explain": "f(g(x)) = 2(x − 3) + 1 = 2x − 6 + 1 = 2x − 5.",
+      "options": ["2x − 5", "2x − 3", "2x + 1", "2x − 2"]
+    },
+    "eval-2": {
+      "text": "Using the same f(x) = 2x + 1 and g(x) = x − 3, what is (g ∘ f)(x)?",
+      "explain": "g(f(x)) = (2x + 1) − 3 = 2x − 2.",
+      "options": ["2x − 2", "2x + 1", "2x − 3", "2x − 4"]
+    },
+    "eval-3": {
+      "text": "If f(x) = 3x and g(x) = x², what is (g ∘ f)(1)?",
+      "explain": "(g ∘ f)(1) = g(3) = 3² = 9.",
+      "options": ["3", "6", "9", "12"]
+    },
+    "eval-4": {
+      "text": "In Pak Restu's workshop, peeling is f(x) = 0,85x and washing is g(x) = 0,9x − 0,5. What is the combined formula (g ∘ f)(x)?",
+      "explain": "g(f(x)) = 0,9 · (0,85x) − 0,5 = 0,765x − 0,5.",
+      "options": ["0,765x − 0,5", "0,85x − 0,5", "0,9x − 0,5", "0,765x"]
+    },
+    "eval-5": {
+      "text": "Pak Restu's discount is f(x) = 0,75x and the retribution fee is g(x) = x − 80.000. If he applies discount first, what is (g ∘ f)(400.000)?",
+      "explain": "g(f(400.000)) = 0,75 × 400.000 − 80.000 = 300.000 − 80.000 = 220.000.",
+      "options": ["Rp220.000", "Rp240.000", "Rp300.000", "Rp320.000"]
+    },
+    "eval-6": {
+      "text": "Based on Pak Restu and Pak Rafif's story, is function composition commutative?",
+      "explain": "In general (g ∘ f)(x) ≠ (f ∘ g)(x), so function composition is not commutative.",
+      "options": [
+        "Yes, (f ∘ g)(x) is always equal to (g ∘ f)(x)",
+        "No, it is generally NOT commutative",
+        "Only for linear functions",
+        "Only when one function is the identity"
+      ]
+    },
+    "eval-7": {
+      "text": "Pak Rafif applies the retribution fee first, then the discount: f(x) = 0,75x and g(x) = x − 80.000. What is (f ∘ g)(400.000)?",
+      "explain": "(f ∘ g)(400.000) = f(400.000 − 80.000) = 0,75 × 320.000 = 240.000.",
+      "options": ["Rp240.000", "Rp220.000", "Rp260.000", "Rp300.000"]
+    }
+  },
+  "errors": {
+    "required": "Please fill in all fields",
+    "generic": "Something went wrong, please try again",
+    "network": "We can't reach the server. Please check your internet connection and try again.",
+    "invalidClassCode": "Invalid class code. Ask your teacher for the code.",
+    "emailExists": "This email is already registered",
+    "wrongCredentials": "Incorrect email or password",
+    "passwordShort": "Password must be at least 6 characters"
+  },
+  "exit": {
+    "title": "Leave this page?",
+    "message": "Your progress is saved automatically. You can continue where you left off or start over from the beginning later.",
+    "stay": "Stay",
+    "leave": "Leave"
+  }
+}
