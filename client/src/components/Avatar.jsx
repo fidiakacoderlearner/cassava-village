@@ -6,12 +6,8 @@ const assetMap = Object.fromEntries(
   })
 );
 
-export default function Avatar({ name = 'pak-restu', emoji = '🧑‍🌾', bg = '#f3c599', size = 'md', className = '' }) {
-  const sizes = {
-    sm: 'h-10 w-10 text-lg',
-    md: 'h-14 w-14 text-2xl',
-    lg: 'h-24 w-24 text-4xl',
-  };
+export default function Avatar({ name = 'pak-restu', emoji = '🧑‍🌾', bg = '#f3c599', className = '' }) {
+  const cls = 'h-10 w-10 text-lg';
 
   const image = assetMap[`${name}.png`] || assetMap[`${name}.jpg`] || assetMap[`${name}.svg`];
 
@@ -20,14 +16,14 @@ export default function Avatar({ name = 'pak-restu', emoji = '🧑‍🌾', bg =
       <img
         src={image}
         alt={name}
-        className={`${sizes[size]} shrink-0 rounded-full object-cover shadow ${className}`}
+        className={`${cls} shrink-0 rounded-full object-cover shadow ${className}`}
       />
     );
   }
 
   return (
     <div
-      className={`${sizes[size]} flex shrink-0 items-center justify-center rounded-full shadow-inner ${className}`}
+      className={`${cls} flex shrink-0 items-center justify-center rounded-full shadow-inner ${className}`}
       style={{ backgroundColor: bg }}
       role="img"
       aria-label={name}

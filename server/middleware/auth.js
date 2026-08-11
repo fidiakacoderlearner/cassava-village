@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 import { db } from '../db.js';
 
-export const JWT_SECRET = process.env.JWT_SECRET || 'cassava-village-dev-secret';
+const JWT_SECRET = process.env.JWT_SECRET || 'cassava-village-dev-secret';
 
 export function signToken(user) {
   return jwt.sign(

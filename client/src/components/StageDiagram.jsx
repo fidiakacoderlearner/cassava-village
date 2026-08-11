@@ -3,7 +3,7 @@ import { useI18n } from '../context/I18nContext.jsx';
 import AssetImage from './AssetImage.jsx';
 import { playReveal } from '../context/AudioContext.jsx';
 
-export function CurvedArrow({ label }) {
+function CurvedArrow({ label }) {
   return (
     <div className="flex flex-col items-center gap-0.5 transition-transform duration-200 hover:scale-105">
       {label && (

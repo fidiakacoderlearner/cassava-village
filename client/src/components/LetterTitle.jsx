@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 const BOUNCE = 'cubic-bezier(0.34, 1.56, 0.64, 1)';
 
-export default function LetterTitle({ lines = [], className = '', sound, interactive = true, connected = false }) {
+export default function LetterTitle({ lines = [], className = '', sound, interactive = true }) {
   const [hoveredIdx, setHoveredIdx] = useState(null);
   let i = 0;
 
@@ -11,32 +11,6 @@ export default function LetterTitle({ lines = [], className = '', sound, interac
 
   const prevLine = (li) =>
     li > 0 ? (typeof lines[li - 1] === 'object' ? lines[li - 1].text : lines[li - 1]) : '';
-
-  if (connected) {
-    return (
-      <h1 className={h1Class} style={fontStyle}>
-        {lines.map((line, li) => {
-          const isObj = typeof line === 'object';
-          const text = isObj ? line.text : line;
-          const indent = isObj ? line.indent || 0 : 0;
-          return (
-            <span
-              key={li}
-              className="block whitespace-nowrap"
-              style={{ letterSpacing: '-0.04em' }}
-            >
-              {indent > 0 && (
-                <span aria-hidden style={{ visibility: 'hidden' }}>
-                  {prevLine(li).slice(0, indent)}
-                </span>
-              )}
-              {text}
-            </span>
-          );
-        })}
-      </h1>
-    );
-  }
 
   return (
     <h1 className={h1Class} style={fontStyle}>

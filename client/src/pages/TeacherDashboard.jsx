@@ -16,18 +16,13 @@ import {
   LogOutIcon,
   TeacherIcon,
 } from '../components/icons.jsx';
+import { EVALUATION } from '../data/evaluation.js';
+import { OPEN_STEPS } from '../data/story.js';
+import { DRAG_CARDS, DRAG_BEST, formatRupiah } from '../data/drag.js';
 
-const TOTAL_EVAL = 7;
-
-const ESSAY_STEP_IDS = [
-  'open-gof-machines',
-  'open-gof-money',
-  'open-fog-money',
-  'open-restu-calc',
-  'open-rafif-calc',
-  'open-difference-explanation',
-  'open-conclusion',
-];
+const TOTAL_EVAL = EVALUATION.length;
+const EVAL_STEP_IDS = EVALUATION.map((q) => q.id);
+const dragLabel = (id) => DRAG_CARDS.find((c) => c.id === id)?.label;
 
 function StatCard({ label, value, accent }) {
   return (
@@ -39,7 +34,7 @@ function StatCard({ label, value, accent }) {
 }
 
 function statusOf(s, t) {
-  if (s.explorationDone && s.evalDone >= TOTAL_EVAL) return { label: t('teacher.statusDone'), cls: 'bg-green-100 text-green-700' };
+  if (s.explorationDone && (s.evalCount ?? 0) >= 1) return { label: t('teacher.statusDone'), cls: 'bg-green-100 text-green-700' };
   if (s.explorationDone) return { label: t('teacher.statusExplored'), cls: 'bg-sand text-brown-800' };
   return { label: t('teacher.statusNew'), cls: 'bg-brown-100 text-brown-500' };
 }
@@ -59,6 +54,7 @@ function EssayAnswersPanel({ student, t }) {
   const current = attempts[active];
   const essayByStep = {};
   for (const e of current.essays) essayByStep[e.stepId] = e.answer;
+  const drag = current.drag;
 
   return (
     <div>
@@ -79,8 +75,33 @@ function EssayAnswersPanel({ student, t }) {
         </span>
       </div>
 
-      <div className="mt-4 grid grid-cols-1 gap-2.5 md:grid-cols-2">
-        {ESSAY_STEP_IDS.map((stepId, n) => (
+      <div className="mt-4 rounded-2xl bg-white p-4 ring-1 ring-brown-200/70">
+        <p className="text-[10px] font-bold uppercase tracking-wide text-brown-400">{t('teacher.dragAnswer')}</p>
+        {drag && dragLabel(drag.slot1) && dragLabel(drag.slot2) ? (
+          <div className="mt-2 flex flex-wrap items-center gap-2">
+            <span className="rounded-lg bg-[#eab277] px-2.5 py-1 font-mono text-xs font-bold text-brown-900">
+              {t('exploration.dragStep1')}: {dragLabel(drag.slot1)}
+            </span>
+            <span className="font-bold text-brown-600">→</span>
+            <span className="rounded-lg bg-[#eab277] px-2.5 py-1 font-mono text-xs font-bold text-brown-900">
+              {t('exploration.dragStep2')}: {dragLabel(drag.slot2)}
+            </span>
+            <span className="ml-auto font-display text-sm font-bold text-brown-900">
+              {formatRupiah(drag.result)}
+            </span>
+            {Number(drag.result) === DRAG_BEST && (
+              <span className="rounded-full bg-green-500 px-2 py-0.5 text-[10px] font-bold text-white">
+                🏆 {t('exploration.experimentBest')}
+              </span>
+            )}
+          </div>
+        ) : (
+          <p className="mt-1 text-sm italic text-brown-300">{t('teacher.noAnswer')}</p>
+        )}
+      </div>
+
+      <div className="mt-3 grid grid-cols-1 gap-2.5 md:grid-cols-2">
+        {OPEN_STEPS.map((stepId, n) => (
           <div key={stepId} className="rounded-2xl border border-brown-100 bg-white/70 p-3.5">
             <p className="text-[10px] font-bold uppercase tracking-wide text-brown-400">
               {t('teacher.essayN', { n: n + 1 })}
@@ -90,6 +111,100 @@ function EssayAnswersPanel({ student, t }) {
             </p>
           </div>
         ))}
+      </div>
+    </div>
+  );
+}
+
+function EvaluationAnswersPanel({ student, t }) {
+  const attempts = student?.attempts || [];
+  const [active, setActive] = useState(() => Math.max(0, attempts.length - 1));
+
+  if (attempts.length === 0) {
+    return (
+      <div className="py-6 text-center text-sm font-semibold text-brown-500">
+        {t('teacher.evalNoAttempts')}
+      </div>
+    );
+  }
+
+  const current = attempts[active];
+  const correctCount = current.correctCount ?? 0;
+
+  return (
+    <div>
+      <div className="flex flex-wrap items-center gap-2">
+        {attempts.map((a, i) => (
+          <button
+            key={a.attemptNo}
+            onClick={() => setActive(i)}
+            className={`rounded-full px-4 py-1.5 text-xs font-bold transition-colors ${
+              i === active ? 'bg-brown-800 text-cream' : 'bg-brown-100 text-brown-700 hover:bg-brown-200'
+            }`}
+          >
+            {t('teacher.evalAttempt', { n: a.attemptNo })}
+          </button>
+        ))}
+        <span className="ml-auto text-xs font-medium text-brown-400">
+          {t('teacher.submittedAt', { date: current.submittedAt })}
+        </span>
+      </div>
+
+      <div className="mt-4 mb-4 rounded-2xl bg-green-100/80 p-4 ring-1 ring-green-300">
+        <p className="text-sm font-semibold text-green-800">
+          {t('teacher.evalScore', { correct: correctCount, total: TOTAL_EVAL })}
+        </p>
+        <div className="mt-2 h-2 overflow-hidden rounded-full bg-green-200">
+          <div
+            className="h-full rounded-full bg-green-500 transition-all duration-700"
+            style={{ width: `${(correctCount / TOTAL_EVAL) * 100}%` }}
+          />
+        </div>
+      </div>
+
+      <div className="space-y-2">
+        {EVAL_STEP_IDS.map((stepId, i) => {
+          const evalData = current.answers[stepId];
+          const isCorrect = evalData?.isCorrect === true;
+          const userAnswer = evalData?.answer;
+          const correctIdx = EVALUATION.find((q) => q.id === stepId)?.correct ?? 0;
+          const correctAnswer = t(`quiz.${stepId}.options`)[correctIdx];
+          return (
+            <div
+              key={stepId}
+              className={`rounded-2xl p-4 ring-1 ${
+                isCorrect ? 'bg-green-50 ring-green-200' : 'bg-red-50 ring-red-200'
+              }`}
+            >
+              <p className="text-[10px] font-bold uppercase tracking-wide text-brown-400">
+                {t('teacher.evalN', { n: i + 1 })}
+              </p>
+              <p className="mt-1 font-semibold text-brown-800">
+                {t(`quiz.${stepId}.text`)}
+              </p>
+              <div className="mt-2 text-sm">
+                {userAnswer ? (
+                  isCorrect ? (
+                    <p className="font-semibold text-green-700">
+                      ✓ {t('evaluation.yourAnswer')}: {userAnswer}
+                    </p>
+                  ) : (
+                    <>
+                      <p className="font-semibold text-red-700">
+                        ✗ {t('evaluation.yourAnswer')}: {userAnswer}
+                      </p>
+                      <p className="mt-1 font-semibold text-green-700">
+                        {t('evaluation.correctAnswer')}: {correctAnswer}
+                      </p>
+                    </>
+                  )
+                ) : (
+                  <p className="italic text-brown-400">{t('teacher.noAnswer')}</p>
+                )}
+              </div>
+            </div>
+          );
+        })}
       </div>
     </div>
   );
@@ -154,7 +269,9 @@ export default function TeacherDashboard() {
   const [classId, setClassId] = useState(null);
   const [students, setStudents] = useState([]);
   const [essayData, setEssayData] = useState({});
+  const [evaluationData, setEvaluationData] = useState({});
   const [viewing, setViewing] = useState(null);
+  const [activeTab, setActiveTab] = useState('essay');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [showCreate, setShowCreate] = useState(false);
@@ -194,15 +311,19 @@ export default function TeacherDashboard() {
     let alive = true;
     (async () => {
       try {
-        const [sData, eData] = await Promise.all([
+        const [sData, eData, evalData] = await Promise.all([
           api(`/api/teacher/classes/${classId}/students`, { token }),
           api(`/api/teacher/classes/${classId}/essay-answers`, { token }),
+          api(`/api/teacher/classes/${classId}/evaluation-answers`, { token }),
         ]);
         if (alive) {
           setStudents(sData.students);
-          const map = {};
-          for (const s of eData.students) map[s.id] = s;
-          setEssayData(map);
+          const essayMap = {};
+          for (const s of eData.students) essayMap[s.id] = s;
+          setEssayData(essayMap);
+          const evalMap = {};
+          for (const s of evalData.students) evalMap[s.id] = s;
+          setEvaluationData(evalMap);
           setSearch('');
           setPage(1);
           setViewing(null);
@@ -288,8 +409,8 @@ export default function TeacherDashboard() {
   const selected = classes.find((c) => c.id === classId) || null;
   const totalStudents = students.length;
   const countNew = students.filter((s) => !s.explorationDone).length;
-  const countExplored = students.filter((s) => s.explorationDone && s.evalDone < TOTAL_EVAL).length;
-  const countDone = students.filter((s) => s.explorationDone && s.evalDone >= TOTAL_EVAL).length;
+  const countExplored = students.filter((s) => s.explorationDone && (s.evalCount ?? 0) < 1).length;
+  const countDone = students.filter((s) => s.explorationDone && (s.evalCount ?? 0) >= 1).length;
 
   const q = search.trim().toLowerCase();
   const filtered = q
@@ -336,7 +457,7 @@ export default function TeacherDashboard() {
 
         <div className="mt-auto flex flex-col gap-2 border-t border-white/10 px-3 py-4">
           <div className={`mb-1 flex items-center gap-2 rounded-xl px-4 py-2.5 ${collapsed ? 'lg:justify-center lg:px-0' : ''}`}>
-            <Avatar name={user?.name} emoji={user?.name?.charAt(0)?.toUpperCase() || 'S'} bg="#8a5a30" size="sm" />
+            <Avatar name={user?.name} emoji={user?.name?.charAt(0)?.toUpperCase() || 'S'} bg="#8a5a30" />
             {!collapsed && (
               <span className="min-w-0 flex-1 truncate text-sm font-semibold text-cream">{user?.name}</span>
             )}
@@ -484,7 +605,7 @@ export default function TeacherDashboard() {
                               <td className="px-5 py-3 font-semibold text-brown-800">{s.name}</td>
                               <td className="px-5 py-3 text-brown-600">{s.email}</td>
                               <td className="px-5 py-3 text-center font-bold text-brown-700">{s.explorationCount}</td>
-                              <td className="px-5 py-3 text-center font-bold text-brown-700">{s.evalDone}</td>
+                              <td className="px-5 py-3 text-center font-bold text-brown-700">{s.evalCount ?? 0}</td>
                               <td className="px-5 py-3 text-center">
                                 <span className={`inline-block rounded-full px-3 py-1 text-xs font-bold ${st.cls}`}>
                                   {st.label}
@@ -492,7 +613,7 @@ export default function TeacherDashboard() {
                               </td>
                               <td className="px-5 py-3 text-center">
                                 <button
-                                  onClick={() => setViewing(s)}
+                                  onClick={() => { setActiveTab('essay'); setViewing(s); }}
                                   className="rounded-full bg-peach/70 px-4 py-1.5 text-xs font-bold text-brown-800 transition-colors hover:bg-peach"
                                 >
                                   {t('teacher.viewAnswers')}
@@ -543,25 +664,48 @@ export default function TeacherDashboard() {
       {viewing && (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center bg-brown-900/40 px-4"
-          onClick={() => setViewing(null)}
+          onClick={() => { setViewing(null); setActiveTab('essay'); }}
         >
           <div className="w-full max-w-2xl rounded-3xl bg-white p-6 shadow-2xl" onClick={(e) => e.stopPropagation()}>
             <div className="flex items-start justify-between gap-3">
               <div>
                 <h2 className="font-display text-lg font-bold text-brown-800">{viewing.name}</h2>
-                <p className="mt-0.5 text-xs font-bold uppercase tracking-widest text-brown-500">
-                  {t('teacher.essayAnswers')}
-                </p>
               </div>
               <button
-                onClick={() => setViewing(null)}
+                onClick={() => { setViewing(null); setActiveTab('essay'); }}
                 className="rounded-full bg-brown-100 px-4 py-2 text-sm font-semibold text-brown-700 transition-colors hover:bg-brown-200"
               >
                 {t('teacher.close')}
               </button>
             </div>
+
+            <div className="mt-4 border-b border-brown-200">
+              <nav className="flex gap-4" aria-label="Tabs">
+                <button
+                  onClick={() => setActiveTab('essay')}
+                  className={`flex items-center gap-1.5 px-3 py-2.5 text-sm font-bold border-b-2 transition-colors ${
+                    activeTab === 'essay' ? 'text-brown-800 border-brown-800' : 'text-brown-400 border-transparent hover:text-brown-600'
+                  }`}
+                >
+                  {t('teacher.explorationAnswers')}
+                </button>
+                <button
+                  onClick={() => setActiveTab('eval')}
+                  className={`flex items-center gap-1.5 px-3 py-2.5 text-sm font-bold border-b-2 transition-colors ${
+                    activeTab === 'eval' ? 'text-brown-800 border-brown-800' : 'text-brown-400 border-transparent hover:text-brown-600'
+                  }`}
+                >
+                  {t('teacher.evalTab')}
+                </button>
+              </nav>
+            </div>
+
             <div className="mt-4 max-h-[70vh] overflow-y-auto pr-1">
-              <EssayAnswersPanel student={essayData[viewing.id]} t={t} />
+              {activeTab === 'essay' ? (
+                <EssayAnswersPanel student={essayData[viewing.id]} t={t} />
+              ) : (
+                <EvaluationAnswersPanel student={evaluationData[viewing.id]} t={t} />
+              )}
             </div>
           </div>
         </div>

@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import bcrypt from 'bcryptjs';
 import { db } from '../db.js';
-import { signToken, requireAuth, publicUser, asyncHandler } from '../middleware/auth.js';
+import { signToken, publicUser, asyncHandler } from '../middleware/auth.js';
 
 const router = Router();
 
@@ -50,9 +50,5 @@ router.post('/login', asyncHandler(async (req, res) => {
   }
   res.json({ token: signToken(user), user: publicUser(user) });
 }));
-
-router.get('/me', requireAuth, (req, res) => {
-  res.json({ user: publicUser(req.user) });
-});
 
 export default router;

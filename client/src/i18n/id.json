@@ -1,19 +1,11 @@
-﻿{
-  "app": {
-    "name": "Desa Singkong",
-    "logoLine1": "Desa",
-    "logoLine2": "Singkong"
-  },
+{
   "nav": {
     "about": "Tentang",
-    "exploration": "Eksplorasi",
-    "evaluation": "Evaluasi",
     "teacher": "Guru",
     "logout": "Keluar"
   },
   "login": {
     "welcome": "Selamat datang kembali!",
-    "subtitle": "Masuk untuk melanjutkan petualangan belajarmu di Desa Singkong.",
     "join": "Mulai belajar",
     "email": "Email",
     "password": "Kata sandi",
@@ -23,8 +15,6 @@
     "switchToSignup": "Belum punya akun? Daftar",
     "switchToLogin": "Sudah punya akun? Masuk",
     "demoHint": "Demo guru: teacher@cassava.com / teacher123 \n Demo siswa: student@cassava.com / student123",
-    "heroTitle": "Jelajahi komposisi fungsi lewat Desa Singkong",
-    "heroText": "Ikuti Pak Restu di bengkel keripik singkongnya, di mana mesin pengupas dan mesin pencuci mengajarimu tentang komposisi fungsi — selangkah demi selangkah.",
     "emailPlaceholder": "kamu@sekolah.id",
     "namePlaceholder": "Githa Sayang",
     "classCode": "Kode kelas",
@@ -48,7 +38,6 @@
       "evaluationDesc": "Uji pemahamanmu di bagian akhir"
     },
     "start": "Mulai",
-    "comingSoon": "Segera hadir",
     "locked": "Selesaikan tahap sebelumnya dulu"
   },
   "about": {
@@ -71,9 +60,7 @@
     "indicatorsDesc": "Bukti bahwa kamu sudah belajar dalam pembelajaran ini",
     "read": "Baca",
     "back": "Kembali",
-    "backToHome": "Kembali ke Beranda",
-    "ready": "Sudah siap menjelajah?",
-    "next": "Lanjut ke Eksplorasi"
+    "backToHome": "Kembali ke Beranda"
   },
   "exploration": {
     "title": "Eksplorasi",
@@ -81,21 +68,17 @@
     "writeAnswer": "Tulis jawabanmu di sini...",
     "saveAnswer": "Simpan jawaban",
     "edit": "Edit",
-    "mustSave": "Simpan jawabanmu terlebih dahulu untuk melanjutkan.",
     "saved": "Tersimpan",
-    "saveAnswers": "Simpan jawaban ({done}/{total})",
     "savedQuestion": "Soal Tersimpan {n}/{total}",
     "continue": "Lanjut",
-    "tryAgain": "Coba lagi",
     "correct": "Benar!",
     "cassava": "Singkong",
     "wrong": "Salah!",
-    "skipTyping": "Lewati ketikan →",
+    "skipTyping": "Lewati ketikan",
     "resume": "Lanjutkan",
     "resumeTitle": "Lanjutkan perjalananmu?",
     "resumeMessage": "Kamu berhenti di langkah {current} dari {total}. Lanjutkan dari langkah itu atau ulangi dari awal?",
     "restart": "Ulangi",
-    "hint": "Petunjuk",
     "attemptsLeft": "Sisa kesempatan: {n}",
     "explanationTitle": "Pembahasan",
     "answer": "Jawaban",
@@ -105,29 +88,50 @@
     "reviewSubtitle": "Periksa dan lengkapi jawaban essaimu sebelum disimpan sebagai jawaban final.",
     "reviewQuestion": "Soal {n}",
     "saveFinal": "Kirim Jawaban Final",
-    "goEvaluation": "Lanjut ke Evaluasi",
     "reviewRequired": "Lengkapi semua jawaban essai untuk menyimpan.",
     "calcBanner": "Pak Restu dan Pak Rafif menghasilkan total kotor Rp400.000 untuk hari ini (dari 20 kg × Rp20.000/kg). Berdasarkan dua fungsi komposisi yang telah kamu buat untuk pendapatan bersih mereka, hitunglah pendapatan bersih akhir mereka untuk x = 400.000",
-    "previousAnswerPill": "Jawaban Essay {n}"
+    "previousAnswerPill": "Jawaban Essay {n}",
+    "dragRetribution": "Retribusi",
+    "dragDiscount": "Diskon",
+    "dragStep1": "Langkah 1",
+    "dragStep2": "Langkah 2",
+    "dragResult": "Hasil untuk x = Rp1.000.000",
+    "dragSave": "Simpan jawaban",
+    "dragSaved": "Tersimpan",
+    "dragConfirmTitle": "Yakin dengan jawabanmu?",
+    "dragConfirmDesc": "Setelah disimpan, jawabanmu tidak bisa diubah lagi. Kamu akan melanjutkan ke pembahasan hasil eksperimen.",
+    "dragConfirmYes": "Ya, Simpan",
+    "dragInvalidCombo": "Kombinasi salah: isi satu kartu retribusi (f) dan satu kartu diskon (g).",
+    "dragRule": "Pilih satu kartu retribusi dan satu kartu diskon, lalu letakkan di dua slot.",
+    "dragInstruction": "Seret kartu retribusi dan diskon ke slot di bawah. Satu retribusi + satu diskon. Urutan mempengaruhi hasil!",
+    "dragYourAnswer": "Ini jawabanmu",
+    "dragNoAnswer": "Belum ada jawaban tersimpan.",
+    "dragFeedbackLow": "Jawabanmu masih jauh dari target. Pendapatan bersih tertinggi diperoleh dari kombinasi (f₂ ∘ g₁)(x) = Rp912.000. Perhatikan bagaimana urutan komposisi sangat memengaruhi hasil akhirnya!",
+    "dragFeedbackMid": "Jawabanmu sudah mendekati target! Kombinasi yang kamu pilih cukup baik, tetapi masih ada kombinasi yang lebih tinggi, yaitu (f₂ ∘ g₁)(x) = Rp912.000. Coba bandingkan urutan yang kamu pilih dengan urutan terbaik itu.",
+    "dragFeedbackBest": "Hebat! Jawabanmu tepat — kombinasi (f₂ ∘ g₁)(x) = Rp912.000 adalah pendapatan tertinggi di antara semua kombinasi. Urutan komposisi terbukti memberikan hasil finansial terbaik.",
+    "experimentCombo": "Kombinasi",
+    "experimentResult": "Pendapatan bersih",
+    "experimentBest": "Tertinggi",
+    "nextReview": "Lanjut ke Verifikasi"
   },
   "evaluation": {
     "title": "Evaluasi",
-    "intro": "Kamu sudah sampai di akhir! Jawablah pertanyaan-pertanyaan ini untuk menunjukkan apa yang telah kamu pelajari tentang komposisi fungsi.",
     "question": "Soal {current} dari {total}",
-    "submit": "Kirim jawaban",
-    "next": "Soal berikutnya",
-    "finish": "Lihat hasilku",
+    "submit": "Kirim Jawaban",
+    "back": "Kembali",
+    "next": "Selanjutnya",
+    "allAnswered": "Lengkapi semua jawaban sebelum mengirim.",
     "retry": "Coba lagi",
     "backHome": "Kembali ke Beranda",
+    "restart": "Ulangi",
+    "restartTitle": "Ulangi evaluasi?",
+    "restartMessage": "Jawabanmu saat ini akan dihapus dan soal akan diacak ulang.",
+    "restartConfirm": "Ulangi",
     "reviewTitle": "Jawaban kamu",
     "yourAnswer": "Jawabanmu",
     "correctAnswer": "Jawaban benar",
     "yourScore": "Nilai kamu",
     "outOf": "{score} dari {total}",
-    "feedbackCorrect": "Kerja bagus!",
-    "feedbackWrong": "Jawaban yang benar adalah \"{answer}\".",
-    "doneTitle": "Eksplorasi selesai!",
-    "allSaved": "Semua jawabanmu sudah tersimpan.",
     "summaryPerfect": "Sempurna! Kamu menguasai komposisi fungsi — semua jawaban benar. Luar biasa!",
     "summaryGood": "Bagus sekali! Kamu sudah paham komposisi fungsi. Pelajari kembali soal yang salah dan kamu akan sempurna.",
     "summaryFair": "Cukup baik, tapi masih bisa lebih baik. Kembali ke cerita bengkel Pak Restu dan latih komposisi fungsi lagi.",
@@ -138,12 +142,7 @@
     "subtitle": "Pantau perkembangan siswa di Desa Singkong.",
     "student": "Siswa",
     "email": "Email",
-    "answers": "Jawaban tersimpan",
-    "correct": "Benar",
-    "score": "Nilai",
-    "joined": "Bergabung",
     "empty": "Belum ada siswa. Bagikan tautan pendaftaran ke kelasmu!",
-    "logout": "Keluar",
     "onlyTitle": "Khusus guru",
     "onlyDesc": "Halaman ini hanya bisa diakses oleh guru.",
     "students": "siswa",
@@ -159,12 +158,8 @@
     "noClassesTitle": "Belum ada kelas",
     "noClasses": "Buat kelas untuk mendapatkan kode gabung, lalu bagikan ke siswa-mu.",
     "totalStudents": "Total murid",
-    "avgScore": "Rata-rata nilai",
-    "notStarted": "Belum mulai",
-    "completed": "Selesai",
     "status": "Status",
     "statusNew": "Baru",
-    "statusOngoing": "Berjalan",
     "statusExplored": "Selesai eksplorasi",
     "statusDone": "Selesai",
     "explorationCount": "Jml Eksplorasi",
@@ -179,9 +174,15 @@
     "perPage": "per halaman",
     "collapse": "Sempitkan sidebar",
     "expand": "Perluas sidebar",
-    "essayAnswers": "Jawaban Essay",
+    "explorationAnswers": "Eksplorasi",
+    "dragAnswer": "Jawaban Drag & Drop",
+    "evalTab": "Evaluasi",
+    "evalScore": "Skor: {correct}/{total}",
     "attempt": "Eksplorasi {n}",
     "essayN": "Essay {n}",
+    "evalN": "Eval {n}",
+    "evalAttempt": "Evaluasi {n}",
+    "evalNoAttempts": "Belum ada pengiriman evaluasi.",
     "noAnswer": "Belum dijawab",
     "noAttempts": "Belum ada pengiriman eksplorasi.",
     "submittedAt": "Dikirim {date}"
@@ -191,7 +192,6 @@
     "off": "Matikan musik"
   },
   "money": {
-    "process": "Proses",
     "flow": ["Pendapatan Kotor", "Diskon", "Biaya Retribusi"]
   },
   "story": {
@@ -229,8 +229,7 @@
       "text": "Lihat? Singkongku melewati f lebih dulu, lalu hasilnya melewati g. Ketika dua mesin digunakan berurutan seperti ini, kita menyebutnya komposisi fungsi."
     },
     "open-gof-machines": {
-      "text": "Lihat bagaimana aku menghitungnya dalam dua langkah terpisah? Ayo kita buat lebih cepat. Jika aku gabungkan kedua mesin menjadi satu rumus, (g ∘ f)(x), bagaimana bentuknya?",
-      "hint": "(g ∘ f)(x) = g(f(x)) = 0,9 · (0,85x) − 0,5 = 0,765x − 0,5"
+      "text": "Lihat bagaimana aku menghitungnya dalam dua langkah terpisah? Ayo kita buat lebih cepat. Jika aku gabungkan kedua mesin menjadi satu rumus, (g ∘ f)(x), bagaimana bentuknya?"
     },
     "money-gross": {
       "text": "Hari ini aku menjual 20 kg keripik singkong. Harganya pas Rp20.000 per kg, jadi sebelum hal lainnya, pendapatan kotorku adalah Rp400.000."
@@ -247,8 +246,7 @@
       "explain": "Biaya dikurangkan dari pendapatan: g(x) = x − 80.000."
     },
     "open-gof-money": {
-      "text": "Kerja bagus! Sekarang kamu tahu. Bisakah kamu membuat fungsi komposisi berdasarkan itu? Aku menerapkan diskon dulu, lalu biaya retribusi.",
-      "hint": "(g ∘ f)(x) = g(f(x)) = 0,75x − 80.000"
+      "text": "Kerja bagus! Sekarang kamu tahu. Bisakah kamu membuat fungsi komposisi berdasarkan itu? Aku menerapkan diskon dulu, lalu biaya retribusi."
     },
     "rafif-intro": {
       "text": "Kamu sudah melakukannya dengan baik. Sekarang, perkenalkan temanku, Rafif. Dia juga menjual keripik singkong seperti aku. Meskipun kami menggunakan mesin yang sama, ada beberapa hal yang berbeda..."
@@ -257,66 +255,58 @@
       "text": "Halo, aku Pak Rafif! Hari yang sama, 20 kg yang sama, harga Rp20.000 per kg yang sama, jadi pendapatan kotornya juga sama Rp400.000 dengan Pak Restu. Diskon sama, retribusinya juga sama. Tapi aku melakukannya terbalik. Retribusi dulu, baru diskon."
     },
     "open-fog-money": {
-      "text": "Dengan mempertimbangkan konteks tersebut, buatlah fungsi komposisinya.",
-      "hint": "(f ∘ g)(x) = f(g(x)) = 0,75 · (x − 80.000) = 0,75x − 60.000"
+      "text": "Dengan mempertimbangkan konteks tersebut, buatlah fungsi komposisinya."
     },
     "open-restu-calc": {
-      "text": "Berapa pendapatan bersih akhir saya jika pendapatan kotor saya hari ini adalah Rp400.000?",
-      "hint": "(g ∘ f)(400.000) = 0,75(400.000) − 80.000 = 300.000 − 80.000 = 220.000 (Rp220.000)"
+      "text": "Berapa pendapatan bersih akhir saya jika pendapatan kotor saya hari ini adalah Rp400.000?"
     },
     "open-rafif-calc": {
-      "text": "Bagaimana dengan saya, dengan pendapatan kotor hari ini Rp400.000, berapa pendapatan bersih akhir saya?",
-      "hint": "(f ∘ g)(400.000) = 0,75(400.000 − 80.000) = 0,75(320.000) = 240.000 (Rp240.000)"
+      "text": "Bagaimana dengan saya, dengan pendapatan kotor hari ini Rp400.000, berapa pendapatan bersih akhir saya?"
     },
     "open-difference-explanation": {
-      "text": "Sekarang setelah kamu mengetahui pendapatan bersih akhir mereka, apakah ada perbedaan di antara keduanya? Bisakah kamu menjelaskan alasannya?",
-      "hint": "Ada perbedaan Rp20.000! Pendapatan Pak Restu Rp220.000 sedangkan Pak Rafif Rp240.000 karena urutan pemotongan retribusi dan diskon berbeda."
+      "text": "Sekarang setelah kamu mengetahui pendapatan bersih akhir mereka, apakah ada perbedaan di antara keduanya? Bisakah kamu menjelaskan alasannya?"
     },
     "open-conclusion": {
-      "text": "Berdasarkan konsep fungsi komposisi, kesimpulan apa yang dapat kamu tarik mengenai pendapatan bersih Pak Restu dan Pak Rafif?",
-      "hint": "(g ∘ f)(x) ≠ (f ∘ g)(x), sehingga komposisi fungsi umumnya tidak bersifat komutatif (urutan pengerjaan mempengaruhi hasil akhir)."
+      "text": "Berdasarkan konsep fungsi komposisi, kesimpulan apa yang dapat kamu tarik mengenai pendapatan bersih Pak Restu dan Pak Rafif?"
+    },
+    "quiz-drag-experiment": {
+      "text": "Nah, sekarang mari kita coba sedikit eksperimen. Kamu punya dua opsi retribusi dan dua opsi diskon. Pasangkan satu kartu retribusi dan satu kartu diskon ke slot di bawah—dan ingat, urutan menentukan hasil! Coba temukan kombinasi yang memberikan pendapatan bersih tertinggi untuk pendapatan kotor x = Rp1.000.000."
+    },
+    "dialogue-experiment-result": {
+      "text": "Untuk x = Rp1.000.000, g₁(1.000.000) = 960.000, lalu f₂(960.000) = 0,95 × 960.000 = 912.000. Ini adalah pendapatan kotor tertinggi di antara semua kombinasi — bukti bahwa memilih urutan yang tepat bukan hanya trik matematika, tetapi memiliki dampak finansial yang nyata."
     }
   },
   "quiz": {
     "eval-1": {
-      "text": "Diketahui f(x) = 2x + 1 dan g(x) = x − 3, berapakah (f ∘ g)(x)?",
-      "explain": "f(g(x)) = 2(x − 3) + 1 = 2x − 6 + 1 = 2x − 5.",
-      "options": ["2x − 5", "2x − 3", "2x + 1", "2x − 2"]
+      "text": "Mesin Pengupas adalah f(x) = 0,85x dan Mesin Pencuci adalah g(x) = 0,9x − 0,5. Pak Restu selalu mengupas dulu, baru mencuci. Untuk 10 kg singkong, berapakah (g ∘ f)(10)?",
+      "explain": "(g ∘ f)(10) = g(f(10)) = g(8,5) = 0,9 × 8,5 − 0,5 = 7,65 − 0,5 = 7,15 kg.",
+      "options": ["6,15 kg", "6,65 kg", "7,15 kg", "7,65 kg", "8,5 kg"]
     },
     "eval-2": {
-      "text": "Menggunakan f(x) = 2x + 1 dan g(x) = x − 3 yang sama, berapakah (g ∘ f)(x)?",
-      "explain": "g(f(x)) = (2x + 1) − 3 = 2x − 2.",
-      "options": ["2x − 2", "2x + 1", "2x − 3", "2x − 4"]
+      "text": "Menggunakan mesin yang sama dengan Soal 1, Pak Rafif mencuci dulu, baru mengupas. Berapakah (f ∘ g)(10)?",
+      "explain": "(f ∘ g)(10) = f(g(10)) = f(0,9 × 10 − 0,5) = f(8,5) = 0,85 × 8,5 = 6,9125 kg.",
+      "options": ["6,5025 kg", "6,9125 kg", "7,15 kg", "7,225 kg", "8,075 kg"]
     },
     "eval-3": {
-      "text": "Jika f(x) = 3x dan g(x) = x², berapakah (g ∘ f)(1)?",
-      "explain": "(g ∘ f)(1) = g(3) = 3² = 9.",
-      "options": ["3", "6", "9", "12"]
+      "text": "Pendapatan kotor Pak Restu adalah x = Rp1.000.000. Dengan f(x) = x − 60.000 (retribusi) dan g(x) = 0,9x (diskon), menerapkan retribusi dulu baru diskon, berapakah pendapatan akhirnya?",
+      "explain": "(g ∘ f)(1.000.000) = g(1.000.000 − 60.000) = g(940.000) = 0,9 × 940.000 = Rp846.000.",
+      "options": ["Rp846.000", "Rp850.000", "Rp900.000", "Rp906.000", "Rp940.000"]
     },
     "eval-4": {
-      "text": "Di bengkel Pak Restu, mengupas adalah f(x) = 0,85x dan mencuci adalah g(x) = 0,9x − 0,5. Bagaimana rumus gabungan (g ∘ f)(x)?",
-      "explain": "g(f(x)) = 0,9 · (0,85x) − 0,5 = 0,765x − 0,5.",
-      "options": ["0,765x − 0,5", "0,85x − 0,5", "0,9x − 0,5", "0,765x"]
+      "text": "Mesin Penggoreng adalah f(x) = 0,8x dan Mesin Bumbu adalah g(x) = x² + 2x. Pak Restu memberi bumbu dulu, baru menggoreng. Untuk x = 4 kg singkong, berapakah f(g(4))?",
+      "explain": "g(4) = 4² + 2(4) = 16 + 8 = 24. Lalu f(24) = 0,8 × 24 = 19,2 kg.",
+      "options": ["16,8 kg", "18 kg", "19,2 kg", "20,8 kg", "24 kg"]
     },
     "eval-5": {
-      "text": "Diskon Pak Restu adalah f(x) = 0,75x dan biaya retribusi adalah g(x) = x − 80.000. Jika ia menerapkan diskon lebih dulu, berapakah (g ∘ f)(400.000)?",
-      "explain": "g(f(400.000)) = 0,75 × 400.000 − 80.000 = 300.000 − 80.000 = 220.000.",
-      "options": ["Rp220.000", "Rp240.000", "Rp300.000", "Rp320.000"]
-    },
-    "eval-6": {
-      "text": "Berdasarkan cerita Pak Restu dan Pak Rafif, apakah komposisi fungsi bersifat komutatif?",
-      "explain": "Secara umum (g ∘ f)(x) ≠ (f ∘ g)(x), jadi komposisi fungsi tidak komutatif.",
+      "text": "Membandingkan retribusi-dulu-diskon versus diskon-dulu-retribusi (menggunakan f(x) = x − 60.000 dan g(x) = 0,9x dari Soal 3, mulai dari x = Rp1.000.000), urutan mana yang memberikan jumlah akhir lebih tinggi bagi Pak Restu, dan berapakah selisihnya?",
+      "explain": "Retribusi dulu: (g ∘ f)(1.000.000) = 0,9 × 940.000 = Rp846.000. Diskon dulu: (f ∘ g)(1.000.000) = (0,9 × 1.000.000) − 60.000 = Rp840.000. Retribusi dulu lebih tinggi Rp6.000.",
       "options": [
-        "Ya, (f ∘ g)(x) selalu sama dengan (g ∘ f)(x)",
-        "Tidak, umumnya TIDAK komutatif",
-        "Hanya untuk fungsi linear",
-        "Hanya jika salah satu fungsinya adalah fungsi identitas"
+        "Retribusi dulu, lebih tinggi Rp6.000",
+        "Diskon dulu, lebih tinggi Rp6.000",
+        "Retribusi dulu, lebih tinggi Rp60.000",
+        "Diskon dulu, lebih tinggi Rp60.000",
+        "Kedua urutan menghasilkan jumlah yang sama"
       ]
-    },
-    "eval-7": {
-      "text": "Pak Rafif menerapkan retribusi lebih dulu, lalu diskon: f(x) = 0,75x dan g(x) = x − 80.000. Berapakah (f ∘ g)(400.000)?",
-      "explain": "(f ∘ g)(400.000) = f(400.000 − 80.000) = 0,75 × 320.000 = 240.000.",
-      "options": ["Rp240.000", "Rp220.000", "Rp260.000", "Rp300.000"]
     }
   },
   "errors": {

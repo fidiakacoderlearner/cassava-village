@@ -1,5 +1,5 @@
-import { createContext, useCallback, useContext, useMemo, useState } from 'react';
-import { api } from './api';
+import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import { api, setOnUnauthorized } from './api';
 
 const AuthContext = createContext(null);
 
@@ -51,6 +51,13 @@ export function AuthProvider({ children }) {
     localStorage.removeItem('cv_user');
     setState({ token: null, user: null });
   }, []);
+
+  useEffect(() => {
+    setOnUnauthorized(() => {
+      logout();
+    });
+    return () => setOnUnauthorized(null);
+  }, [logout]);
 
   const value = useMemo(
     () => ({ token, user, isAuthed: Boolean(token), login, signup, logout }),

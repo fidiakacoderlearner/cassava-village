@@ -30,8 +30,7 @@ const CARDS = [
     key: 'evaluation',
     asset: 'card-evaluation',
     bg: 'from-brown-200 to-brown-300',
-    flag: 'explorationDone',
-    locked: true,
+    flag: null,
   },
 ];
 
@@ -68,6 +67,7 @@ export default function Home() {
     }
     localStorage.removeItem(storageKey);
     localStorage.removeItem(`cv_essays_${user?.id}`);
+    localStorage.removeItem(`cv_drag_answer_${user?.id}`);
     navigate('/exploration');
   }
 
@@ -96,7 +96,7 @@ export default function Home() {
 
         <section className="mt-6 grid gap-4 md:grid-cols-3">
           {CARDS.map((card) => {
-            const locked = card.locked || (!loading && card.flag && !progress[card.flag]);
+            const locked = !loading && card.flag && !progress[card.flag];
             const content = (
               <>
                 <div className="relative">
@@ -121,11 +121,7 @@ export default function Home() {
                     {t(`home.cards.${card.key}`)}
                   </h2>
                   <p className="mt-1 text-sm text-brown-600">
-                    {locked
-                      ? card.locked
-                        ? t('home.comingSoon')
-                        : t('home.locked')
-                      : t(`home.cards.${card.key}Desc`)}
+                    {locked ? t('home.locked') : t(`home.cards.${card.key}Desc`)}
                   </p>
                 </div>
                 <span

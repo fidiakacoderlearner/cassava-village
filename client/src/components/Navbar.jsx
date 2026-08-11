@@ -3,8 +3,7 @@ import { useAuth } from '../context/AuthContext.jsx';
 import { useI18n } from '../context/I18nContext.jsx';
 import { useAudio } from '../context/AudioContext.jsx';
 import Avatar from './Avatar.jsx';
-import AssetImage from './AssetImage.jsx';
-import { LeafIcon, SpeakerOnIcon, SpeakerOffIcon } from './icons.jsx';
+import { SpeakerOnIcon, SpeakerOffIcon } from './icons.jsx';
 
 export function BrandText({ className = '' }) {
   return (
@@ -17,21 +16,6 @@ export function BrandText({ className = '' }) {
   );
 }
 
-export function BrandMark({ className = '' }) {
-  return (
-    <AssetImage
-      name="logo"
-      alt="Cassava Village"
-      className={`${className} rounded-xl object-cover shadow`}
-      fallback={
-        <div className={`${className} flex items-center justify-center rounded-xl bg-brown-800 text-cream shadow`}>
-          <LeafIcon className="h-1/2 w-1/2" />
-        </div>
-      }
-    />
-  );
-}
-
 function Logo() {
   return (
     <div className="flex items-center">
@@ -40,16 +24,7 @@ function Logo() {
   );
 }
 
-export function AppLogo({ className = '' }) {
-  return (
-    <div className={`flex items-center justify-center gap-3 ${className}`}>
-      <BrandMark className="h-14 w-14" />
-      <BrandText className="text-3xl font-bold leading-tight text-brown-900" />
-    </div>
-  );
-}
-
-export default function Navbar({ children }) {
+export default function Navbar() {
   const { user, logout } = useAuth();
   const { t, lang, setLanguage } = useI18n();
   const { musicOn, toggleMusic, stopMusic, musicAvailable } = useAudio();
@@ -104,7 +79,7 @@ export default function Navbar({ children }) {
           </button>
 
           <div className="flex items-center gap-2 rounded-full bg-white/10 py-1 pl-1 pr-3">
-            <Avatar name={user?.name} emoji={user?.name?.charAt(0)?.toUpperCase() || 'G'} bg="#dfc9a8" size="sm" />
+            <Avatar name={user?.name} emoji={user?.name?.charAt(0)?.toUpperCase() || 'G'} bg="#dfc9a8" />
             <span className="hidden max-w-32 truncate text-sm font-semibold text-cream sm:block">
               {user?.name}
             </span>
@@ -129,8 +104,6 @@ export default function Navbar({ children }) {
           </button>
         </div>
       </div>
-
-      {children}
     </header>
   );
 }

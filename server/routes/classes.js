@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { db, generateClassCode } from '../db.js';
 import { requireAuth, requireTeacher, asyncHandler } from '../middleware/auth.js';
-import { EVAL_STEP_IDS, TOTAL_OPEN_STEPS } from '../constants.js';
+import { TOTAL_OPEN_STEPS } from '../constants.js';
 
 const router = Router();
 
@@ -14,10 +14,6 @@ async function uniqueCode() {
     if (!exists) return code;
   }
   throw new Error('Could not generate a unique class code');
-}
-
-function placeholders(list) {
-  return list.map(() => '?').join(', ');
 }
 
 router.get('/classes', asyncHandler(async (req, res) => {
@@ -48,19 +44,18 @@ router.get('/classes/:id/students', asyncHandler(async (req, res) => {
   const cls = await db.prepare('SELECT id FROM classes WHERE id = ? AND teacher_id = ?').get(req.params.id, req.user.id);
   if (!cls) return res.status(404).json({ error: 'Class not found' });
 
-  const evalPh = placeholders(EVAL_STEP_IDS);
   const rows = await db.prepare(`
     SELECT u.id, u.name, u.email, u.about_done, u.exploration_done, u.created_at,
            COUNT(a.id)::int                                                        AS total_answers,
            COALESCE(SUM(CASE WHEN a.is_correct = 1 THEN 1 ELSE 0 END), 0)::int     AS correct_answers,
            (SELECT COUNT(*)::int FROM exploration_attempts ea WHERE ea.user_id = u.id) AS open_done,
-           COALESCE(SUM(CASE WHEN a.step_id IN (${evalPh}) THEN 1 ELSE 0 END), 0)::int AS eval_done
+           (SELECT COUNT(*)::int FROM evaluation_attempts ea2 WHERE ea2.user_id = u.id) AS eval_count
     FROM users u
     LEFT JOIN answers a ON a.user_id = u.id
     WHERE u.role = 'student' AND u.class_id = ?
     GROUP BY u.id
     ORDER BY u.name
-  `).all(...EVAL_STEP_IDS, Number(req.params.id));
+  `).all(Number(req.params.id));
 
   const students = rows.map((s) => ({
     id: s.id,
@@ -73,7 +68,7 @@ router.get('/classes/:id/students', asyncHandler(async (req, res) => {
     correctAnswers: s.correct_answers,
     openDone: s.exploration_done ? TOTAL_OPEN_STEPS : s.open_done,
     explorationCount: s.open_done ?? 0,
-    evalDone: s.eval_done ?? 0,
+    evalCount: s.eval_count ?? 0,
     scorePercent: s.total_answers > 0 ? Math.round((s.correct_answers / s.total_answers) * 100) : 0,
   }));
 
@@ -91,6 +86,7 @@ router.get('/classes/:id/essay-answers', asyncHandler(async (req, res) => {
            u.exploration_done,
            ea.attempt_no,
            to_char(ea.submitted_at, 'YYYY-MM-DD HH24:MI:SS') AS submitted_at,
+           ea.drag_answer,
            aa.step_id,
            aa.answer
     FROM users u
@@ -114,7 +110,14 @@ router.get('/classes/:id/essay-answers', asyncHandler(async (req, res) => {
     if (r.attempt_no == null) continue;
     let attempt = byUser[r.user_id].attempts.find((a) => a.attemptNo === r.attempt_no);
     if (!attempt) {
-      attempt = { attemptNo: r.attempt_no, submittedAt: r.submitted_at, essays: [] };
+      attempt = { attemptNo: r.attempt_no, submittedAt: r.submitted_at, essays: [], drag: null };
+      if (r.drag_answer) {
+        try {
+          attempt.drag = JSON.parse(r.drag_answer);
+        } catch {
+          /* ignore malformed drag */
+        }
+      }
       byUser[r.user_id].attempts.push(attempt);
     }
     if (r.step_id) {
@@ -125,12 +128,49 @@ router.get('/classes/:id/essay-answers', asyncHandler(async (req, res) => {
   res.json({ students: Object.values(byUser) });
 }));
 
-router.delete('/classes/:id', asyncHandler(async (req, res) => {
+router.get('/classes/:id/evaluation-answers', asyncHandler(async (req, res) => {
   const cls = await db.prepare('SELECT id FROM classes WHERE id = ? AND teacher_id = ?').get(req.params.id, req.user.id);
   if (!cls) return res.status(404).json({ error: 'Class not found' });
-  await db.prepare('UPDATE users SET class_id = NULL WHERE class_id = ?').run(req.params.id);
-  await db.prepare('DELETE FROM classes WHERE id = ?').run(req.params.id);
-  res.json({ ok: true });
+
+  const rows = await db.prepare(`
+    SELECT u.id AS user_id,
+           u.name,
+           u.email,
+           ea.attempt_no,
+           to_char(ea.submitted_at, 'YYYY-MM-DD HH24:MI:SS') AS submitted_at,
+           aa.step_id,
+           aa.answer,
+           aa.is_correct
+    FROM users u
+    LEFT JOIN evaluation_attempts ea ON ea.user_id = u.id
+    LEFT JOIN evaluation_attempt_answers aa ON aa.attempt_id = ea.id
+    WHERE u.role = 'student' AND u.class_id = ?
+    ORDER BY u.name, ea.attempt_no
+  `).all(Number(req.params.id));
+
+  const byUser = {};
+  for (const r of rows) {
+    if (!byUser[r.user_id]) {
+      byUser[r.user_id] = {
+        id: r.user_id,
+        name: r.name,
+        email: r.email,
+        attempts: [],
+      };
+    }
+    if (r.attempt_no == null) continue;
+    let attempt = byUser[r.user_id].attempts.find((a) => a.attemptNo === r.attempt_no);
+    if (!attempt) {
+      attempt = { attemptNo: r.attempt_no, submittedAt: r.submitted_at, answers: {}, correctCount: 0 };
+      byUser[r.user_id].attempts.push(attempt);
+    }
+    if (r.step_id) {
+      attempt.answers[r.step_id] = { answer: r.answer, isCorrect: Boolean(r.is_correct) };
+      if (r.is_correct) attempt.correctCount += 1;
+    }
+  }
+
+  res.json({ students: Object.values(byUser) });
 }));
 
 export default router;

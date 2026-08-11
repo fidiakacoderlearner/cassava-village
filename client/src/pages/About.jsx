@@ -32,14 +32,6 @@ const SECTIONS = [
   },
 ];
 
-function storeKey(id) {
-  return `cv_about_${id}`;
-}
-
-function isOpen(id) {
-  return localStorage.getItem(storeKey(id)) === '1';
-}
-
 export default function About() {
   const { token, user } = useAuth();
   const { t } = useI18n();

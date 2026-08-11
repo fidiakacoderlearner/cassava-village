@@ -40,7 +40,7 @@ export default function ExplainModal({ open, question, answer, explain, onContin
             onClick={onContinue}
             className="rounded-full bg-brown-800 px-7 py-2.5 font-display font-bold text-cream shadow-md transition-transform hover:scale-105 active:scale-95"
           >
-            {t('exploration.continue')} →
+            {t('exploration.continue')}
           </button>
         </div>
       </div>

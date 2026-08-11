@@ -5,6 +5,7 @@ import Login from './pages/Login.jsx';
 import Home from './pages/Home.jsx';
 import About from './pages/About.jsx';
 import Exploration from './pages/Exploration.jsx';
+import Evaluation from './pages/Evaluation.jsx';
 import TeacherDashboard from './pages/TeacherDashboard.jsx';
 
 function Spinner() {
@@ -16,7 +17,7 @@ function Spinner() {
 }
 
 function RequireAuth({ children }) {
-  const { isAuthed, user } = useAuth();
+  const { isAuthed } = useAuth();
   const location = useLocation();
   if (!isAuthed) {
     const loggingOut = sessionStorage.getItem('cv_logging_out') === '1';
@@ -31,6 +32,18 @@ function RequireAuth({ children }) {
 function StudentOnly({ children }) {
   const { user } = useAuth();
   if (user?.role === 'teacher') return <Navigate to="/teacher" replace />;
+  return children;
+}
+
+function StudentHome() {
+  const { user } = useAuth();
+  if (user?.role === 'teacher') return <Navigate to="/teacher" replace />;
+  return <Home />;
+}
+
+function TeacherOnly({ children }) {
+  const { user } = useAuth();
+  if (user?.role !== 'teacher') return <Navigate to="/" replace />;
   return children;
 }
 
@@ -49,7 +62,7 @@ export default function App() {
         path="/"
         element={
           <RequireAuth>
-            <Home />
+            <StudentHome />
           </RequireAuth>
         }
       />
@@ -75,12 +88,23 @@ export default function App() {
           </RequireAuth>
         }
       />
-      <Route path="/evaluation" element={<Navigate to="/" replace />} />
+      <Route
+        path="/evaluation"
+        element={
+          <RequireAuth>
+            <StudentOnly>
+              <Evaluation />
+            </StudentOnly>
+          </RequireAuth>
+        }
+      />
       <Route
         path="/teacher"
         element={
           <RequireAuth>
-            <TeacherDashboard />
+            <TeacherOnly>
+              <TeacherDashboard />
+            </TeacherOnly>
           </RequireAuth>
         }
       />

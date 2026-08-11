@@ -31,6 +31,8 @@ export const EXPLORE_STEP_IDS = [
   'open-rafif-calc',
   'open-difference-explanation',
   'open-conclusion',
+  'quiz-drag-experiment',
+  'dialogue-experiment-result',
 ];
 
 export const EVAL_STEP_IDS = [
@@ -39,8 +41,6 @@ export const EVAL_STEP_IDS = [
   'eval-3',
   'eval-4',
   'eval-5',
-  'eval-6',
-  'eval-7',
 ];
 
 export const TOTAL_OPEN_STEPS = OPEN_STEP_IDS.length;

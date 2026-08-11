@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { useI18n } from '../context/I18nContext.jsx';
 import AssetImage from './AssetImage.jsx';
 
-export default function QuizFeedbackModal({ open, status, explain, onTimeout, duration = 2000 }) {
+export default function QuizFeedbackModal({ open, status, onTimeout, duration = 2000 }) {
   const { t } = useI18n();
 
   useEffect(() => {
@@ -33,12 +33,6 @@ export default function QuizFeedbackModal({ open, status, explain, onTimeout, du
         <h3 className={`font-display text-xl font-extrabold ${isCorrect ? 'text-green-800' : 'text-red-700'}`}>
           {isCorrect ? t('exploration.correct') : t('exploration.wrong')}
         </h3>
-
-        {isCorrect && explain && (
-          <p className="mt-2 rounded-2xl bg-white/80 p-3 text-sm font-medium text-brown-800 ring-1 ring-brown-200/60">
-            {explain}
-          </p>
-        )}
       </div>
     </div>,
     document.body

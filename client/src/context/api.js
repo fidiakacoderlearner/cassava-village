@@ -1,3 +1,9 @@
+let onUnauthorized = null;
+
+export function setOnUnauthorized(fn) {
+  onUnauthorized = fn;
+}
+
 export async function api(path, { method = 'GET', body, token } = {}) {
   const headers = { 'Content-Type': 'application/json' };
   if (token) headers.Authorization = `Bearer ${token}`;
@@ -13,6 +19,7 @@ export async function api(path, { method = 'GET', body, token } = {}) {
   }
   const data = await res.json().catch(() => ({}));
   if (!res.ok) {
+    if (res.status === 401 && token) onUnauthorized?.();
     throw new Error(data.error || 'Request failed');
   }
   return data;

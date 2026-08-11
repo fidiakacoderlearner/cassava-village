@@ -5,8 +5,9 @@ import { api } from './api.js';
 const ProgressContext = createContext(null);
 
 export function ProgressProvider({ children }) {
-  const { token, user } = useAuth();
+  const { token } = useAuth();
   const [progress, setProgress] = useState(null);
+  const [hasLoaded, setHasLoaded] = useState(false);
 
   const refresh = useCallback(async () => {
     if (!token) return;
@@ -15,6 +16,8 @@ export function ProgressProvider({ children }) {
       setProgress(data);
     } catch {
       /* ignore */
+    } finally {
+      setHasLoaded(true);
     }
   }, [token]);
 
@@ -25,11 +28,10 @@ export function ProgressProvider({ children }) {
   const value = useMemo(
     () => ({
       ...(progress || {}),
-      loading: !progress,
+      loading: !hasLoaded,
       refresh,
-      isTeacher: user?.role === 'teacher',
     }),
-    [progress, user, refresh]
+    [progress, hasLoaded, refresh]
   );
 
   return <ProgressContext.Provider value={value}>{children}</ProgressContext.Provider>;

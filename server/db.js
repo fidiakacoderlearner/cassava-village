@@ -11,7 +11,7 @@ if (!process.env.DATABASE_URL) {
 
 const isLocal = /localhost|127\.0\.0\.1/.test(process.env.DATABASE_URL);
 
-export const pool = new Pool({
+const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   max: 5,
   idleTimeoutMillis: 30000,
@@ -89,11 +89,31 @@ const SCHEMA = `
     UNIQUE (user_id, attempt_no)
   );
 
+  ALTER TABLE exploration_attempts ADD COLUMN IF NOT EXISTS drag_answer TEXT;
+
   CREATE TABLE IF NOT EXISTS attempt_answers (
     id         SERIAL PRIMARY KEY,
     attempt_id INTEGER NOT NULL REFERENCES exploration_attempts(id) ON DELETE CASCADE,
     step_id    TEXT NOT NULL,
     answer     TEXT NOT NULL,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    UNIQUE (attempt_id, step_id)
+  );
+
+  CREATE TABLE IF NOT EXISTS evaluation_attempts (
+    id           SERIAL PRIMARY KEY,
+    user_id      INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    attempt_no   INTEGER NOT NULL,
+    submitted_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    UNIQUE (user_id, attempt_no)
+  );
+
+  CREATE TABLE IF NOT EXISTS evaluation_attempt_answers (
+    id         SERIAL PRIMARY KEY,
+    attempt_id INTEGER NOT NULL REFERENCES evaluation_attempts(id) ON DELETE CASCADE,
+    step_id    TEXT NOT NULL,
+    answer     TEXT NOT NULL,
+    is_correct INTEGER,
     created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
     UNIQUE (attempt_id, step_id)
   );
@@ -156,17 +176,32 @@ async function seed() {
     ).run(userId, stepId, answer, isCorrect == null ? null : (isCorrect ? 1 : 0));
   }
 
-  async function seedAttempt(userId, attemptNo, answersByStep) {
+  async function seedAttempt(userId, attemptNo, answersByStep, drag = null) {
     const existing = await db.prepare(
       'SELECT COUNT(*) AS n FROM exploration_attempts WHERE user_id = ? AND attempt_no = ?'
     ).get(userId, attemptNo);
     if (existing.n > 0) return;
     const info = await db.prepare(
-      'INSERT INTO exploration_attempts (user_id, attempt_no) VALUES (?, ?) RETURNING id'
-    ).run(userId, attemptNo);
+      'INSERT INTO exploration_attempts (user_id, attempt_no, drag_answer) VALUES (?, ?, ?) RETURNING id'
+    ).run(userId, attemptNo, drag ? JSON.stringify(drag) : null);
     const ins = db.prepare('INSERT INTO attempt_answers (attempt_id, step_id, answer) VALUES (?, ?, ?)');
     for (const stepId of OPEN_STEP_IDS) {
       if (answersByStep[stepId]) await ins.run(info.lastInsertRowid, stepId, answersByStep[stepId]);
+    }
+  }
+
+  async function seedEvalAttempt(userId, attemptNo, answersByStep) {
+    const existing = await db.prepare(
+      'SELECT COUNT(*) AS n FROM evaluation_attempts WHERE user_id = ? AND attempt_no = ?'
+    ).get(userId, attemptNo);
+    if (existing.n > 0) return;
+    const info = await db.prepare(
+      'INSERT INTO evaluation_attempts (user_id, attempt_no) VALUES (?, ?) RETURNING id'
+    ).run(userId, attemptNo);
+    const ins = db.prepare('INSERT INTO evaluation_attempt_answers (attempt_id, step_id, answer, is_correct) VALUES (?, ?, ?, ?)');
+    for (const stepId of EVAL_STEP_IDS) {
+      const e = answersByStep[stepId];
+      if (e) await ins.run(info.lastInsertRowid, stepId, e.answer, e.isCorrect ? 1 : 0);
     }
   }
 
@@ -204,9 +239,29 @@ async function seed() {
     'open-conclusion': '(g ∘ f) ≠ (f ∘ g), urutan komposisi menentukan hasil akhir.',
   };
 
-  await seedAttempt(githa, 1, GITHA_ESSAYS);
-  await seedAttempt(budi, 1, BUDI_ESSAYS_1);
-  await seedAttempt(budi, 2, BUDI_ESSAYS_2);
+  await seedAttempt(githa, 1, GITHA_ESSAYS, { slot1: 'g1', slot2: 'f2', result: 912000 });
+  await seedAttempt(budi, 1, BUDI_ESSAYS_1, { slot1: 'f2', slot2: 'g2', result: 855000 });
+  await seedAttempt(budi, 2, BUDI_ESSAYS_2, { slot1: 'g1', slot2: 'f2', result: 912000 });
+
+  const GITHA_EVAL = {
+    'eval-1': { answer: '7,15 kg', isCorrect: true },
+    'eval-2': { answer: '6,9125 kg', isCorrect: true },
+    'eval-3': { answer: 'Rp846.000', isCorrect: true },
+    'eval-4': { answer: '19,2 kg', isCorrect: true },
+    'eval-5': { answer: 'Retribusi dulu, lebih tinggi Rp6.000', isCorrect: true },
+  };
+  const BUDI_EVAL_1 = {
+    'eval-1': { answer: '7,15 kg', isCorrect: true },
+    'eval-2': { answer: '7,15 kg', isCorrect: false },
+    'eval-3': { answer: 'Rp846.000', isCorrect: true },
+    'eval-4': { answer: '24 kg', isCorrect: false },
+    'eval-5': { answer: 'Retribusi dulu, lebih tinggi Rp6.000', isCorrect: true },
+  };
+
+  await seedEvalAttempt(githa, 1, GITHA_EVAL);
+  await seedEvalAttempt(budi, 1, BUDI_EVAL_1);
+  await seedEvalAttempt(budi, 2, GITHA_EVAL);
+
   for (const id of EVAL_STEP_IDS) {
     await seedAnswer(githa, id, 'ok', 1);
     await seedAnswer(budi, id, 'ok', 1);
@@ -218,7 +273,7 @@ async function seed() {
   await seedAnswer(budi, 'quiz-peel', '7,055 kg', 0);
 }
 
-export async function initDb() {
+async function initDb() {
   await db.exec(SCHEMA);
   await seed();
 }

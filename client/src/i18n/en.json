@@ -1,19 +1,11 @@
-﻿{
-  "app": {
-    "name": "Cassava Village",
-    "logoLine1": "Cassava",
-    "logoLine2": "Village"
-  },
+{
   "nav": {
     "about": "About",
-    "exploration": "Exploration",
-    "evaluation": "Evaluation",
     "teacher": "Teacher",
     "logout": "Log out"
   },
   "login": {
     "welcome": "Welcome back!",
-    "subtitle": "Sign in to continue your learning journey in Cassava Village.",
     "join": "Start learning",
     "email": "Email",
     "password": "Password",
@@ -23,8 +15,6 @@
     "switchToSignup": "Don't have an account? Sign up",
     "switchToLogin": "Already have an account? Log in",
     "demoHint": "Teacher demo: teacher@cassava.com / teacher123 \n Student demo: student@cassava.com / student123",
-    "heroTitle": "Explore function composition through Cassava Village",
-    "heroText": "Join Pak Restu in his cassava chip workshop, where peeling and washing machines teach you all about function composition — step by step.",
     "emailPlaceholder": "you@school.edu",
     "namePlaceholder": "Githa Sayang",
     "classCode": "Class code",
@@ -48,7 +38,6 @@
       "evaluationDesc": "Test your understanding at the end"
     },
     "start": "Start",
-    "comingSoon": "Coming soon",
     "locked": "Finish the previous stage first"
   },
   "about": {
@@ -71,9 +60,7 @@
     "indicatorsDesc": "The evidence that shows you have learned",
     "read": "Read",
     "back": "Back",
-    "backToHome": "Back to Home",
-    "ready": "Ready to explore?",
-    "next": "Continue to Exploration"
+    "backToHome": "Back to Home"
   },
   "exploration": {
     "title": "Exploration",
@@ -81,21 +68,17 @@
     "writeAnswer": "Write your answer here...",
     "saveAnswer": "Save answer",
     "edit": "Edit",
-    "mustSave": "Save your answer first to continue.",
     "saved": "Saved",
-    "saveAnswers": "Save answers ({done}/{total})",
     "savedQuestion": "Saved Question {n}/{total}",
     "continue": "Continue",
-    "tryAgain": "Try again",
     "correct": "Correct!",
     "cassava": "Cassava",
     "wrong": "Wrong!",
-    "skipTyping": "Skip typing →",
+    "skipTyping": "Skip typing",
     "resume": "Continue",
     "resumeTitle": "Resume your journey?",
     "resumeMessage": "You stopped at step {current} of {total}. Do you want to continue from there or start over?",
     "restart": "Restart",
-    "hint": "Hint",
     "attemptsLeft": "Attempts left: {n}",
     "explanationTitle": "Explanation",
     "answer": "Answer",
@@ -105,28 +88,49 @@
     "reviewSubtitle": "Check and complete your essay answers before saving them as your final answers.",
     "reviewQuestion": "Question {n}",
     "saveFinal": "Submit Final Answer",
-    "goEvaluation": "Go to Evaluation",
     "reviewRequired": "Complete all essay answers to save.",
     "calcBanner": "Pak Restu and Pak Rafif earn a gross total of Rp400,000 for the day (from 20 kg × Rp20,000/kg). Based on the two composite functions you have constructed for their net income, calculate their final net income for x = 400,000",
-    "previousAnswerPill": "Essay {n} Answer"
+    "previousAnswerPill": "Essay {n} Answer",
+    "dragRetribution": "Retribution",
+    "dragDiscount": "Discount",
+    "dragStep1": "Step 1",
+    "dragStep2": "Step 2",
+    "dragResult": "Result for x = Rp1,000,000",
+    "dragSave": "Save answer",
+    "dragSaved": "Saved",
+    "dragConfirmTitle": "Are you sure about your answer?",
+    "dragConfirmDesc": "Once saved, your answer can no longer be changed. You will continue to the discussion of the experiment results.",
+    "dragConfirmYes": "Yes, Save",
+    "dragInvalidCombo": "Wrong combination: fill with one retribution (f) card and one discount (g) card.",
+    "dragRule": "Pick one retribution card and one discount card, then place them into the two slots.",
+    "dragInstruction": "Drag retribution and discount cards to the slots below. One retribution + one discount. Order matters!",
+    "dragYourAnswer": "Your answer",
+    "dragNoAnswer": "No saved answer yet.",
+    "dragFeedbackLow": "Your answer is still far from the target. The highest net income is reached with combination (f₂ ∘ g₁)(x) = Rp912,000. Notice how the order of composition strongly affects the final result!",
+    "dragFeedbackMid": "Your answer is close to the target! The combination you chose is decent, but there is still a higher one: (f₂ ∘ g₁)(x) = Rp912,000. Compare your order with that best combination.",
+    "dragFeedbackBest": "Great! Your answer is correct — combination (f₂ ∘ g₁)(x) = Rp912,000 gives the highest income among all combinations. The order of composition clearly delivers the best financial result.",
+    "experimentCombo": "Combination",
+    "experimentResult": "Net income",
+    "experimentBest": "Highest",
+    "nextReview": "Next: Verification"
   },
   "evaluation": {    "title": "Evaluation",
-    "intro": "You've made it to the end! Answer these questions to show what you have learned about function composition.",
     "question": "Question {current} of {total}",
-    "submit": "Submit answer",
-    "next": "Next question",
-    "finish": "See my result",
+    "submit": "Submit Answers",
+    "back": "Back",
+    "next": "Next",
+    "allAnswered": "Answer all questions before submitting.",
     "retry": "Try again",
     "backHome": "Back to Home",
+    "restart": "Restart",
+    "restartTitle": "Restart the evaluation?",
+    "restartMessage": "Your current answers will be cleared and the questions will be shuffled again.",
+    "restartConfirm": "Restart",
     "reviewTitle": "Your answers",
     "yourAnswer": "Your answer",
     "correctAnswer": "Correct answer",
     "yourScore": "Your score",
     "outOf": "{score} out of {total}",
-    "feedbackCorrect": "Great job!",
-    "feedbackWrong": "The correct answer is \"{answer}\".",
-    "doneTitle": "Exploration complete!",
-    "allSaved": "All your answers have been saved.",
     "summaryPerfect": "Perfect score! You mastered function composition — every answer is correct. Outstanding!",
     "summaryGood": "Great work! You understand function composition well. Review the questions you missed and you'll be flawless.",
     "summaryFair": "Not bad, but you can do better. Revisit the story of Pak Restu's workshop and practice composition again.",
@@ -137,12 +141,7 @@
     "subtitle": "Track your students' progress in Cassava Village.",
     "student": "Student",
     "email": "Email",
-    "answers": "Answers saved",
-    "correct": "Correct",
-    "score": "Score",
-    "joined": "Joined",
     "empty": "No students yet. Share the sign-up link with your class!",
-    "logout": "Log out",
     "onlyTitle": "Teacher only",
     "onlyDesc": "Only teachers can access this page.",
     "students": "students",
@@ -158,12 +157,8 @@
     "noClassesTitle": "No classes yet",
     "noClasses": "Create a class to get a join code, then share it with your students.",
     "totalStudents": "Total students",
-    "avgScore": "Average score",
-    "notStarted": "Not started",
-    "completed": "Completed",
     "status": "Status",
     "statusNew": "New",
-    "statusOngoing": "In progress",
     "statusExplored": "Exploration done",
     "statusDone": "Finished",
     "explorationCount": "Explorations",
@@ -178,9 +173,15 @@
     "perPage": "per page",
     "collapse": "Collapse sidebar",
     "expand": "Expand sidebar",
-    "essayAnswers": "Essay Answers",
+    "explorationAnswers": "Exploration",
+    "dragAnswer": "Drag & Drop Answer",
+    "evalTab": "Evaluation",
+    "evalScore": "Score: {correct}/{total}",
     "attempt": "Exploration {n}",
     "essayN": "Essay {n}",
+    "evalN": "Eval {n}",
+    "evalAttempt": "Evaluation {n}",
+    "evalNoAttempts": "No evaluation submissions yet.",
     "noAnswer": "Not answered",
     "noAttempts": "No exploration submissions yet.",
     "submittedAt": "Submitted {date}"
@@ -190,7 +191,6 @@
     "off": "Turn music off"
   },
   "money": {
-    "process": "Process",
     "flow": ["Gross Earnings", "Discount", "Retribution fees"]
   },
   "story": {
@@ -228,8 +228,7 @@
       "text": "See that? My cassava went through f first, then the result went through g. When two machines are used one after another like this, we call it function composition."
     },
     "open-gof-machines": {
-      "text": "See how I calculated that in two separate steps? Let's make it faster. If I combine both machines into one formula, (g ∘ f)(x), what does it look like?",
-      "hint": "(g ∘ f)(x) = g(f(x)) = 0,9 · (0,85x) − 0,5 = 0,765x − 0,5"
+      "text": "See how I calculated that in two separate steps? Let's make it faster. If I combine both machines into one formula, (g ∘ f)(x), what does it look like?"
     },
     "money-gross": {
       "text": "Today I sold 20 kg of cassava chips. My exact price is Rp20.000 per kg, so before anything else, my gross earnings are Rp400.000."
@@ -246,8 +245,7 @@
       "explain": "The fee is subtracted from the earnings: g(x) = x − 80.000."
     },
     "open-gof-money": {
-      "text": "Good job! Now you know. Could you create a composite function based on that? I apply the discount first, then the retribution fee.",
-      "hint": "(g ∘ f)(x) = g(f(x)) = 0,75x − 80.000"
+      "text": "Good job! Now you know. Could you create a composite function based on that? I apply the discount first, then the retribution fee."
     },
     "rafif-intro": {
       "text": "You're doing well. So, let me introduce you to my friend, Rafif. He's also selling cassava chips just like me. Even though we use the same machines, there are some different things..."
@@ -256,66 +254,58 @@
       "text": "Hey, I'm Pak Rafif! Same day, same 20 kg, same Rp20.000 price per kg, so same Rp400.000 gross earnings as Pak Restu. Same discount, same retribution fee too. But I do it backwards. Retribution first, then discount."
     },
     "open-fog-money": {
-      "text": "With that context in mind, please generate a composite function based on it.",
-      "hint": "(f ∘ g)(x) = f(g(x)) = 0,75 · (x − 80.000) = 0,75x − 60.000"
+      "text": "With that context in mind, please generate a composite function based on it."
     },
     "open-restu-calc": {
-      "text": "How much is my final net income if my gross earnings today are Rp400,000?",
-      "hint": "(g ∘ f)(400.000) = 0,75(400.000) − 80.000 = 300.000 − 80.000 = 220.000 (Rp220,000)"
+      "text": "How much is my final net income if my gross earnings today are Rp400,000?"
     },
     "open-rafif-calc": {
-      "text": "How about me, with today's gross earnings at Rp400,000, what would my final net income be?",
-      "hint": "(f ∘ g)(400.000) = 0,75(400.000 − 80.000) = 0,75(320.000) = 240.000 (Rp240,000)"
+      "text": "How about me, with today's gross earnings at Rp400,000, what would my final net income be?"
     },
     "open-difference-explanation": {
-      "text": "Now that you know their final net incomes, is there a difference between the two? Can you explain why?",
-      "hint": "There is a Rp20,000 difference! Pak Restu earns Rp220,000 while Pak Rafif earns Rp240,000 because the order of retribution fee and discount is reversed."
+      "text": "Now that you know their final net incomes, is there a difference between the two? Can you explain why?"
     },
     "open-conclusion": {
-      "text": "Based on the concept of composite functions, what conclusions can you draw regarding the net income of Pak Restu and Pak Rafif?",
-      "hint": "(g ∘ f)(x) ≠ (f ∘ g)(x), so function composition is generally NOT commutative (the order of operations affects the final result)."
+      "text": "Based on the concept of composite functions, what conclusions can you draw regarding the net income of Pak Restu and Pak Rafif?"
+    },
+    "quiz-drag-experiment": {
+      "text": "Now, let's try a little experiment. You have two retribution options and two discount options. Match one retribution card and one discount card into the slots below—and remember, order matters! Try to find the combination that gives the highest net income for gross earnings x = Rp1.000.000."
+    },
+    "dialogue-experiment-result": {
+      "text": "For x = Rp1.000.000, g₁(1.000.000) = 960.000, then f₂(960.000) = 0,95 × 960.000 = 912.000. This is the highest net income among all combinations — proof that choosing the right order is not just a math trick, but has a real financial impact."
     }
   },
   "quiz": {
     "eval-1": {
-      "text": "Given f(x) = 2x + 1 and g(x) = x − 3, what is (f ∘ g)(x)?",
-      "explain": "f(g(x)) = 2(x − 3) + 1 = 2x − 6 + 1 = 2x − 5.",
-      "options": ["2x − 5", "2x − 3", "2x + 1", "2x − 2"]
+      "text": "The Peeling Machine is f(x) = 0,85x and the Washing Machine is g(x) = 0,9x − 0,5. Pak Restu always peels first, then washes. For 10 kg of cassava, what is (g ∘ f)(10)?",
+      "explain": "(g ∘ f)(10) = g(f(10)) = g(8,5) = 0,9 × 8,5 − 0,5 = 7,65 − 0,5 = 7,15 kg.",
+      "options": ["6,15 kg", "6,65 kg", "7,15 kg", "7,65 kg", "8,5 kg"]
     },
     "eval-2": {
-      "text": "Using the same f(x) = 2x + 1 and g(x) = x − 3, what is (g ∘ f)(x)?",
-      "explain": "g(f(x)) = (2x + 1) − 3 = 2x − 2.",
-      "options": ["2x − 2", "2x + 1", "2x − 3", "2x − 4"]
+      "text": "Using the same machines as Question 1, Pak Rafif washes first, then peels. What is (f ∘ g)(10)?",
+      "explain": "(f ∘ g)(10) = f(g(10)) = f(0,9 × 10 − 0,5) = f(8,5) = 0,85 × 8,5 = 6,9125 kg.",
+      "options": ["6,5025 kg", "6,9125 kg", "7,15 kg", "7,225 kg", "8,075 kg"]
     },
     "eval-3": {
-      "text": "If f(x) = 3x and g(x) = x², what is (g ∘ f)(1)?",
-      "explain": "(g ∘ f)(1) = g(3) = 3² = 9.",
-      "options": ["3", "6", "9", "12"]
+      "text": "Pak Restu's gross earnings are x = Rp1.000.000. With f(x) = x − 60.000 (retribution) and g(x) = 0,9x (discount), applying retribution first then discount, what is the final amount?",
+      "explain": "(g ∘ f)(1.000.000) = g(1.000.000 − 60.000) = g(940.000) = 0,9 × 940.000 = Rp846.000.",
+      "options": ["Rp846.000", "Rp850.000", "Rp900.000", "Rp906.000", "Rp940.000"]
     },
     "eval-4": {
-      "text": "In Pak Restu's workshop, peeling is f(x) = 0,85x and washing is g(x) = 0,9x − 0,5. What is the combined formula (g ∘ f)(x)?",
-      "explain": "g(f(x)) = 0,9 · (0,85x) − 0,5 = 0,765x − 0,5.",
-      "options": ["0,765x − 0,5", "0,85x − 0,5", "0,9x − 0,5", "0,765x"]
+      "text": "The Frying Machine is f(x) = 0,8x and the Seasoning Machine is g(x) = x² + 2x. Pak Restu seasons first, then fries. For x = 4 kg of cassava, what is f(g(4))?",
+      "explain": "g(4) = 4² + 2(4) = 16 + 8 = 24. Then f(24) = 0,8 × 24 = 19,2 kg.",
+      "options": ["16,8 kg", "18 kg", "19,2 kg", "20,8 kg", "24 kg"]
     },
     "eval-5": {
-      "text": "Pak Restu's discount is f(x) = 0,75x and the retribution fee is g(x) = x − 80.000. If he applies discount first, what is (g ∘ f)(400.000)?",
-      "explain": "g(f(400.000)) = 0,75 × 400.000 − 80.000 = 300.000 − 80.000 = 220.000.",
-      "options": ["Rp220.000", "Rp240.000", "Rp300.000", "Rp320.000"]
-    },
-    "eval-6": {
-      "text": "Based on Pak Restu and Pak Rafif's story, is function composition commutative?",
-      "explain": "In general (g ∘ f)(x) ≠ (f ∘ g)(x), so function composition is not commutative.",
+      "text": "Comparing retribution-first-discount versus discount-first-retribution (using f(x) = x − 60.000 and g(x) = 0,9x from Question 3, starting from x = Rp1.000.000), which order gives Pak Restu the higher final amount, and what is the difference?",
+      "explain": "Retribution first: (g ∘ f)(1.000.000) = 0,9 × 940.000 = Rp846.000. Discount first: (f ∘ g)(1.000.000) = (0,9 × 1.000.000) − 60.000 = Rp840.000. Retribution first is higher by Rp6.000.",
       "options": [
-        "Yes, (f ∘ g)(x) is always equal to (g ∘ f)(x)",
-        "No, it is generally NOT commutative",
-        "Only for linear functions",
-        "Only when one function is the identity"
+        "Retribution first, Rp6.000 higher",
+        "Discount first, Rp6.000 higher",
+        "Retribution first, Rp60.000 higher",
+        "Discount first, Rp60.000 higher",
+        "Both orders give the same amount"
       ]
-    },
-    "eval-7": {
-      "text": "Pak Rafif applies the retribution fee first, then the discount: f(x) = 0,75x and g(x) = x − 80.000. What is (f ∘ g)(400.000)?",
-      "explain": "(f ∘ g)(400.000) = f(400.000 − 80.000) = 0,75 × 320.000 = 240.000.",
-      "options": ["Rp240.000", "Rp220.000", "Rp260.000", "Rp300.000"]
     }
   },
   "errors": {

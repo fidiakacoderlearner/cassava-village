@@ -215,6 +215,20 @@ export const STORY = [
     isOpenStep: true,
     emoji: '🔍',
   },
+  {
+    id: 'quiz-drag-experiment',
+    i18n: 'quiz-drag-experiment',
+    type: 'drag-quiz',
+    speaker: 'narrator',
+    emoji: '🧪',
+  },
+  {
+    id: 'dialogue-experiment-result',
+    i18n: 'dialogue-experiment-result',
+    type: 'experiment-table',
+    speaker: 'narrator',
+    emoji: '🏆',
+  },
 ];
 
 export const OPEN_STEPS = STORY.filter((s) => s.isOpenStep).map((s) => s.id);
