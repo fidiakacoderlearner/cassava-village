@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router';
 import Navbar from '../components/Navbar.jsx';
 import PageBackground from '../components/PageBackground.jsx';
 import AssetImage from '../components/AssetImage.jsx';
-import { ImageIcon, LockIcon } from '../components/icons.jsx';
+import { ImageIcon } from '../components/icons.jsx';
 import { useAuth } from '../context/AuthContext.jsx';
 import { useI18n } from '../context/I18nContext.jsx';
 import { useProgress } from '../context/ProgressContext.jsx';
@@ -23,7 +23,7 @@ const CARDS = [
     key: 'exploration',
     asset: 'card-exploration',
     bg: 'from-peach to-peach-light',
-    flag: 'aboutDone',
+    flag: null,
   },
   {
     to: '/evaluation',
@@ -39,7 +39,6 @@ export default function Home() {
   const { t } = useI18n();
   const navigate = useNavigate();
   const progress = useProgress();
-  const { loading } = progress;
   const [showResume, setShowResume] = useState(false);
 
   const storageKey = `cv_step_${user?.id}`;
@@ -96,15 +95,9 @@ export default function Home() {
 
         <section className="mt-6 grid gap-4 md:grid-cols-3">
           {CARDS.map((card) => {
-            const locked = !loading && card.flag && !progress[card.flag];
             const content = (
               <>
                 <div className="relative">
-                  {locked && (
-                    <span className="absolute -right-2 -top-2 flex h-8 w-8 items-center justify-center rounded-full bg-brown-800 text-cream shadow">
-                      <LockIcon className="h-4 w-4" />
-                    </span>
-                  )}
                   <AssetImage
                     name={card.asset}
                     alt={t(`home.cards.${card.key}`)}
@@ -121,31 +114,14 @@ export default function Home() {
                     {t(`home.cards.${card.key}`)}
                   </h2>
                   <p className="mt-1 text-sm text-brown-600">
-                    {locked ? t('home.locked') : t(`home.cards.${card.key}Desc`)}
+                    {t(`home.cards.${card.key}Desc`)}
                   </p>
                 </div>
-                <span
-                  className={`rounded-full px-5 py-1.5 text-sm font-semibold shadow transition-transform ${
-                    locked
-                      ? 'bg-brown-100 text-brown-400'
-                      : 'bg-brown-800 text-cream group-hover:scale-105'
-                  }`}
-                >
-                  {locked ? <LockIcon className="inline h-4 w-4" /> : t('home.start')}
+                <span className="rounded-full px-5 py-1.5 text-sm font-semibold shadow transition-transform bg-brown-800 text-cream group-hover:scale-105">
+                  {t('home.start')}
                 </span>
               </>
             );
-
-            if (locked) {
-              return (
-                <div
-                  key={card.key}
-                  className={`flex cursor-not-allowed flex-col items-center gap-4 rounded-3xl bg-gradient-to-br ${card.bg} p-6 text-center shadow-sm ring-1 ring-brown-200/50 opacity-70`}
-                >
-                  {content}
-                </div>
-              );
-            }
 
             if (card.to === '/exploration') {
               return (

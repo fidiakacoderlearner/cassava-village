@@ -34,8 +34,9 @@ function StatCard({ label, value, accent }) {
 }
 
 function statusOf(s, t) {
-  if (s.explorationDone && (s.evalCount ?? 0) >= 1) return { label: t('teacher.statusDone'), cls: 'bg-green-100 text-green-700' };
-  if (s.explorationDone) return { label: t('teacher.statusExplored'), cls: 'bg-sand text-brown-800' };
+  const evalDone = (s.evalCount ?? 0) >= 1;
+  if (s.explorationDone && evalDone) return { label: t('teacher.statusDone'), cls: 'bg-green-100 text-green-700' };
+  if (s.explorationDone || evalDone) return { label: t('teacher.statusOngoing'), cls: 'bg-sand text-brown-800' };
   return { label: t('teacher.statusNew'), cls: 'bg-brown-100 text-brown-500' };
 }
 
@@ -408,9 +409,10 @@ export default function TeacherDashboard() {
 
   const selected = classes.find((c) => c.id === classId) || null;
   const totalStudents = students.length;
-  const countNew = students.filter((s) => !s.explorationDone).length;
-  const countExplored = students.filter((s) => s.explorationDone && (s.evalCount ?? 0) < 1).length;
-  const countDone = students.filter((s) => s.explorationDone && (s.evalCount ?? 0) >= 1).length;
+  const evalDone = (s) => (s.evalCount ?? 0) >= 1;
+  const countNew = students.filter((s) => !s.explorationDone && !evalDone(s)).length;
+  const countOngoing = students.filter((s) => (s.explorationDone || evalDone(s)) && !(s.explorationDone && evalDone(s))).length;
+  const countDone = students.filter((s) => s.explorationDone && evalDone(s)).length;
 
   const q = search.trim().toLowerCase();
   const filtered = q
@@ -547,7 +549,7 @@ export default function TeacherDashboard() {
             <div className="mb-6 grid grid-cols-2 gap-4 lg:grid-cols-4">
               <StatCard label={t('teacher.totalStudents')} value={totalStudents} accent="text-brown-800" />
               <StatCard label={t('teacher.statusNew')} value={countNew} accent="text-brown-600" />
-              <StatCard label={t('teacher.statusExplored')} value={countExplored} accent="text-amber-600" />
+              <StatCard label={t('teacher.statusOngoing')} value={countOngoing} accent="text-amber-600" />
               <StatCard label={t('teacher.statusDone')} value={countDone} accent="text-green-600" />
             </div>
 

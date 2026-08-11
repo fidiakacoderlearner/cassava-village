@@ -1,20 +1,11 @@
 ﻿import { Navigate, Route, Routes, useLocation } from 'react-router';
 import { useAuth } from './context/AuthContext.jsx';
-import { useProgress } from './context/ProgressContext.jsx';
 import Login from './pages/Login.jsx';
 import Home from './pages/Home.jsx';
 import About from './pages/About.jsx';
 import Exploration from './pages/Exploration.jsx';
 import Evaluation from './pages/Evaluation.jsx';
 import TeacherDashboard from './pages/TeacherDashboard.jsx';
-
-function Spinner() {
-  return (
-    <div className="flex min-h-screen items-center justify-center bg-cream">
-      <div className="h-10 w-10 animate-spin rounded-full border-4 border-brown-200 border-t-brown-800" />
-    </div>
-  );
-}
 
 function RequireAuth({ children }) {
   const { isAuthed } = useAuth();
@@ -47,13 +38,6 @@ function TeacherOnly({ children }) {
   return children;
 }
 
-function RequireUnlocked({ flag, fallback, children }) {
-  const { loading, [flag]: ok } = useProgress();
-  if (loading) return <Spinner />;
-  if (!ok) return <Navigate to={fallback} replace />;
-  return children;
-}
-
 export default function App() {
   return (
     <Routes>
@@ -81,9 +65,7 @@ export default function App() {
         element={
           <RequireAuth>
             <StudentOnly>
-              <RequireUnlocked flag="aboutDone" fallback="/about">
-                <Exploration />
-              </RequireUnlocked>
+              <Exploration />
             </StudentOnly>
           </RequireAuth>
         }
