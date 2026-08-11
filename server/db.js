@@ -122,6 +122,24 @@ const SCHEMA = `
 const CODE_ALPHABET = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
 const DEMO_CLASS_CODE = 'DEMOAB';
 
+const DRAG_X = 1000000;
+const DRAG_FN = {
+  f1: (x) => x - 60000,
+  f2: (x) => 0.95 * x,
+  g1: (x) => x - 40000,
+  g2: (x) => 0.9 * x,
+};
+const DRAG_COMBOS = [
+  { slot1: 'f1', slot2: 'g1' },
+  { slot1: 'g1', slot2: 'f1' },
+  { slot1: 'f2', slot2: 'g2' },
+  { slot1: 'g2', slot2: 'f2' },
+  { slot1: 'f1', slot2: 'g2' },
+  { slot1: 'g2', slot2: 'f1' },
+  { slot1: 'g1', slot2: 'f2' },
+  { slot1: 'f2', slot2: 'g1' },
+];
+
 export function generateClassCode(length = 6) {
   let code = '';
   for (let i = 0; i < length; i += 1) {
@@ -273,9 +291,27 @@ async function seed() {
   await seedAnswer(budi, 'quiz-peel', '7,055 kg', 0);
 }
 
+async function backfillDragAnswers() {
+  const rows = await db.prepare(`
+    SELECT ea.id
+    FROM exploration_attempts ea
+    WHERE (ea.drag_answer IS NULL OR ea.drag_answer = '')
+      AND EXISTS (SELECT 1 FROM attempt_answers aa WHERE aa.attempt_id = ea.id)
+  `).all();
+  if (rows.length === 0) return;
+  const upd = db.prepare('UPDATE exploration_attempts SET drag_answer = ? WHERE id = ?');
+  for (const { id } of rows) {
+    const c = DRAG_COMBOS[randomInt(DRAG_COMBOS.length)];
+    const result = Math.round(DRAG_FN[c.slot2](DRAG_FN[c.slot1](DRAG_X)));
+    await upd.run(JSON.stringify({ ...c, result }), id);
+  }
+  console.log(`[db] backfilled ${rows.length} missing drag answers`);
+}
+
 async function initDb() {
   await db.exec(SCHEMA);
   await seed();
+  await backfillDragAnswers();
 }
 
 await initDb();

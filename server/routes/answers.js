@@ -38,20 +38,17 @@ router.post('/exploration/submit', asyncHandler(async (req, res) => {
     return res.status(400).json({ error: 'All exploration essays must be answered' });
   }
 
-  let dragJson = null;
-  if (drag != null) {
-    const fn = {
-      f1: (x) => x - 60000,
-      f2: (x) => 0.95 * x,
-      g1: (x) => x - 40000,
-      g2: (x) => 0.9 * x,
-    };
-    if (!drag || !fn[drag.slot1] || !fn[drag.slot2]) {
-      return res.status(400).json({ error: 'Invalid drag answer' });
-    }
-    const result = Math.round(fn[drag.slot2](fn[drag.slot1](1000000)));
-    dragJson = JSON.stringify({ slot1: drag.slot1, slot2: drag.slot2, result });
+  const fn = {
+    f1: (x) => x - 60000,
+    f2: (x) => 0.95 * x,
+    g1: (x) => x - 40000,
+    g2: (x) => 0.9 * x,
+  };
+  if (!drag || !drag.slot1 || !fn[drag.slot1] || !drag.slot2 || !fn[drag.slot2]) {
+    return res.status(400).json({ error: 'Drag answer is required' });
   }
+  const result = Math.round(fn[drag.slot2](fn[drag.slot1](1000000)));
+  const dragJson = JSON.stringify({ slot1: drag.slot1, slot2: drag.slot2, result });
 
   const current = await db.prepare(
     'SELECT COALESCE(MAX(attempt_no), 0) AS n FROM exploration_attempts WHERE user_id = ?'
