@@ -1,7 +1,7 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { useAuth } from './AuthContext.jsx';
 
-const audioFiles = import.meta.glob('/src/assets/audio/*.{mp3,ogg,wav}', { eager: true });
+const audioFiles = import.meta.glob('/src/assets/audio/*.{mp3,ogg,wav,opus,webm,m4a,aac}', { eager: true });
 const bgmUrl = Object.values(audioFiles)[0]?.default || null;
 
 let audioCtx = null;
@@ -229,7 +229,7 @@ export function AudioProvider({ children }) {
 
   return (
     <AudioContext.Provider value={value}>
-      {bgmUrl && <audio ref={audioRef} src={bgmUrl} loop preload="auto" />}
+      {bgmUrl && <audio ref={audioRef} src={bgmUrl} loop preload="none" />}
       {children}
     </AudioContext.Provider>
   );
