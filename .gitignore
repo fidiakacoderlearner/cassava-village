@@ -17,6 +17,12 @@ server/*.db-shm
 # vercel
 .vercel/
 
+# asset sources (konversi sudah WebP; asli di-backup di luar repo)
+client/src/assets/raw/
+
+# one-time conversion scripts
+scripts/
+
 work!.pdf
 AGENTS.md
 PLAN.md
