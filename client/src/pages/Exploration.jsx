@@ -945,7 +945,7 @@ export default function Exploration() {
   }
 
   return (
-    <div className="relative flex h-screen flex-col overflow-hidden">
+    <div className="relative flex h-screen flex-col overflow-y-auto">
       <PageBackground />
       <Navbar />
 
@@ -1030,7 +1030,7 @@ export default function Exploration() {
             )}
 
             {/* Center Stage Area */}
-            <div className="flex min-h-0 w-full flex-1 flex-col items-center justify-center overflow-hidden py-2 md:py-3">
+            <div className="flex min-h-0 w-full flex-1 flex-col items-center justify-center overflow-auto py-2 md:py-3">
               {step.type === 'drag-quiz' ? (
                 <div className="w-full overflow-y-auto">
                   <DragExperimentQuiz

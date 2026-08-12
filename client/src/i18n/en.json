@@ -321,6 +321,7 @@
     "title": "Leave this page?",
     "message": "Your progress is saved automatically. You can continue where you left off or start over from the beginning later.",
     "stay": "Stay",
-    "leave": "Leave"
+    "leave": "Leave",
+    "cancel": "Cancel"
   }
 }

@@ -322,6 +322,7 @@
     "title": "Keluar dari halaman ini?",
     "message": "Progresmu tersimpan otomatis. Kamu bisa melanjutkan dari tempat kamu berhenti atau memulai dari awal lagi nanti.",
     "stay": "Tetap di sini",
-    "leave": "Keluar"
+    "leave": "Keluar",
+    "cancel": "Batal"
   }
 }
