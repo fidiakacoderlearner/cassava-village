@@ -312,19 +312,19 @@ export default function TeacherDashboard() {
     let alive = true;
     (async () => {
       try {
-        const [sData, eData, evalData] = await Promise.all([
-          api(`/api/teacher/classes/${classId}/students`, { token }),
-          api(`/api/teacher/classes/${classId}/essay-answers`, { token }),
-          api(`/api/teacher/classes/${classId}/evaluation-answers`, { token }),
-        ]);
+        const data = await api(`/api/teacher/classes/${classId}/summary`, { token });
         if (alive) {
-          setStudents(sData.students);
+          setStudents(data.students);
           const essayMap = {};
-          for (const s of eData.students) essayMap[s.id] = s;
+          for (const s of data.essays) essayMap[s.id] = s;
           setEssayData(essayMap);
           const evalMap = {};
-          for (const s of evalData.students) evalMap[s.id] = s;
+          for (const s of data.evaluations) evalMap[s.id] = s;
           setEvaluationData(evalMap);
+          setClasses((prev) => {
+            const merged = prev.map((c) => (c.id === classId ? { ...c, student_count: data.class.student_count } : c));
+            return prev.some((c) => c.id === classId) ? merged : prev;
+          });
           setSearch('');
           setPage(1);
           setViewing(null);

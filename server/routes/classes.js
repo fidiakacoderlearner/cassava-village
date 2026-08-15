@@ -44,6 +44,42 @@ router.get('/classes/:id/students', asyncHandler(async (req, res) => {
   const cls = await db.prepare('SELECT id FROM classes WHERE id = ? AND teacher_id = ?').get(req.params.id, req.user.id);
   if (!cls) return res.status(404).json({ error: 'Class not found' });
 
+  res.json({ students: await fetchStudents(Number(req.params.id)) });
+}));
+
+router.get('/classes/:id/essay-answers', asyncHandler(async (req, res) => {
+  const cls = await db.prepare('SELECT id FROM classes WHERE id = ? AND teacher_id = ?').get(req.params.id, req.user.id);
+  if (!cls) return res.status(404).json({ error: 'Class not found' });
+
+  res.json({ students: await fetchEssays(Number(req.params.id)) });
+}));
+
+router.get('/classes/:id/evaluation-answers', asyncHandler(async (req, res) => {
+  const cls = await db.prepare('SELECT id FROM classes WHERE id = ? AND teacher_id = ?').get(req.params.id, req.user.id);
+  if (!cls) return res.status(404).json({ error: 'Class not found' });
+
+  res.json({ students: await fetchEvaluations(Number(req.params.id)) });
+}));
+
+router.get('/classes/:id/summary', asyncHandler(async (req, res) => {
+  const cls = await db.prepare(`
+    SELECT c.id, c.name, c.code, c.created_at,
+           (SELECT COUNT(*)::int FROM users u WHERE u.role = 'student' AND u.class_id = c.id) AS student_count
+    FROM classes c
+    WHERE c.id = ? AND c.teacher_id = ?
+  `).get(Number(req.params.id), req.user.id);
+  if (!cls) return res.status(404).json({ error: 'Class not found' });
+
+  const [students, essays, evaluations] = await Promise.all([
+    fetchStudents(Number(req.params.id)),
+    fetchEssays(Number(req.params.id)),
+    fetchEvaluations(Number(req.params.id)),
+  ]);
+
+  res.json({ class: cls, students, essays, evaluations });
+}));
+
+async function fetchStudents(classId) {
   const rows = await db.prepare(`
     SELECT u.id, u.name, u.email, u.about_done, u.exploration_done, u.created_at,
            COUNT(a.id)::int                                                        AS total_answers,
@@ -55,9 +91,9 @@ router.get('/classes/:id/students', asyncHandler(async (req, res) => {
     WHERE u.role = 'student' AND u.class_id = ?
     GROUP BY u.id
     ORDER BY u.name
-  `).all(Number(req.params.id));
+  `).all(classId);
 
-  const students = rows.map((s) => ({
+  return rows.map((s) => ({
     id: s.id,
     name: s.name,
     email: s.email,
@@ -71,14 +107,9 @@ router.get('/classes/:id/students', asyncHandler(async (req, res) => {
     evalCount: s.eval_count ?? 0,
     scorePercent: s.total_answers > 0 ? Math.round((s.correct_answers / s.total_answers) * 100) : 0,
   }));
+}
 
-  res.json({ students });
-}));
-
-router.get('/classes/:id/essay-answers', asyncHandler(async (req, res) => {
-  const cls = await db.prepare('SELECT id FROM classes WHERE id = ? AND teacher_id = ?').get(req.params.id, req.user.id);
-  if (!cls) return res.status(404).json({ error: 'Class not found' });
-
+async function fetchEssays(classId) {
   const rows = await db.prepare(`
     SELECT u.id                                 AS user_id,
            u.name,
@@ -94,7 +125,7 @@ router.get('/classes/:id/essay-answers', asyncHandler(async (req, res) => {
     LEFT JOIN attempt_answers aa ON aa.attempt_id = ea.id
     WHERE u.role = 'student' AND u.class_id = ?
     ORDER BY u.name, ea.attempt_no
-  `).all(Number(req.params.id));
+  `).all(classId);
 
   const byUser = {};
   for (const r of rows) {
@@ -125,13 +156,10 @@ router.get('/classes/:id/essay-answers', asyncHandler(async (req, res) => {
     }
   }
 
-  res.json({ students: Object.values(byUser) });
-}));
+  return Object.values(byUser);
+}
 
-router.get('/classes/:id/evaluation-answers', asyncHandler(async (req, res) => {
-  const cls = await db.prepare('SELECT id FROM classes WHERE id = ? AND teacher_id = ?').get(req.params.id, req.user.id);
-  if (!cls) return res.status(404).json({ error: 'Class not found' });
-
+async function fetchEvaluations(classId) {
   const rows = await db.prepare(`
     SELECT u.id AS user_id,
            u.name,
@@ -146,7 +174,7 @@ router.get('/classes/:id/evaluation-answers', asyncHandler(async (req, res) => {
     LEFT JOIN evaluation_attempt_answers aa ON aa.attempt_id = ea.id
     WHERE u.role = 'student' AND u.class_id = ?
     ORDER BY u.name, ea.attempt_no
-  `).all(Number(req.params.id));
+  `).all(classId);
 
   const byUser = {};
   for (const r of rows) {
@@ -170,7 +198,7 @@ router.get('/classes/:id/evaluation-answers', asyncHandler(async (req, res) => {
     }
   }
 
-  res.json({ students: Object.values(byUser) });
-}));
+  return Object.values(byUser);
+}
 
 export default router;

@@ -117,6 +117,13 @@ const SCHEMA = `
     created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
     UNIQUE (attempt_id, step_id)
   );
+
+  CREATE INDEX IF NOT EXISTS idx_classes_teacher ON classes(teacher_id);
+  CREATE INDEX IF NOT EXISTS idx_users_class ON users(class_id);
+  CREATE INDEX IF NOT EXISTS idx_exploration_attempts_user ON exploration_attempts(user_id);
+  CREATE INDEX IF NOT EXISTS idx_evaluation_attempts_user ON evaluation_attempts(user_id);
+  CREATE INDEX IF NOT EXISTS idx_attempt_answers_attempt ON attempt_answers(attempt_id);
+  CREATE INDEX IF NOT EXISTS idx_eval_answers_attempt ON evaluation_attempt_answers(attempt_id);
 `;
 
 const CODE_ALPHABET = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
