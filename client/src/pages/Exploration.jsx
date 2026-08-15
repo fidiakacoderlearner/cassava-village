@@ -912,7 +912,7 @@ export default function Exploration() {
     );
   }
 
-  const speaker = SPEAKERS[step.speaker] || SPEAKERS.narrator;
+  const speaker = SPEAKERS[step.speaker] || SPEAKERS['pak-restu'];
   const pitch = speaker.pitch ?? 1;
   const isRafif = step.speaker === 'pak-rafif';
   const isBoth = step.speaker === 'both';

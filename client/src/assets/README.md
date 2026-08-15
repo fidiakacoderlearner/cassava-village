@@ -7,7 +7,6 @@ gambar dipakai (sistem otomatis memakainya kalau file ada):
 | ------------------- | -------------------------------------- |
 | `pak-restu.webp`    | Avatar Pak Restu                       |
 | `pak-rafif.webp`    | Avatar Pak Rafif                       |
-| `narrator.webp`     | Avatar narator                         |
 | `peeling-machine.webp` | Ilustrasi mesin pengupas (label "Peeling Machine") |
 | `washing-machine.webp` | Ilustrasi mesin pencuci (label "Washing Machine")  |
 | `cassava.webp`      | Ilustrasi singkong pada diagram alur eksplorasi |

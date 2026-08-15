@@ -314,4 +314,12 @@ async function initDb() {
   await backfillDragAnswers();
 }
 
-await initDb();
+export { initDb };
+
+// Only auto-initialize in local dev or when explicitly opted in
+// On Vercel (serverless), skip to avoid cold-start penalty
+const shouldInit = isLocal || process.env.INIT_DB === '1';
+
+if (shouldInit) {
+  await initDb();
+}

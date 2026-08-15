@@ -3,7 +3,7 @@ import AssetImage from './AssetImage.jsx';
 export default function SpeakerCharacter({ speakerId, speaker }) {
   const name = speaker?.name || 'Pak Restu';
   const emoji = speaker?.emoji || '🧑‍🌾';
-  const assetName = speakerId === 'narrator' ? 'narrator' : speakerId;
+  const assetName = speakerId;
 
   return (
     <div className="relative flex shrink-0 items-end justify-center self-end">

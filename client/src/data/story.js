@@ -17,12 +17,6 @@ export const SPEAKERS = {
     color: '#8a5a30',
     pitch: 1.0,
   },
-  narrator: {
-    name: 'Narrator',
-    emoji: '📖',
-    color: '#b6884b',
-    pitch: 1.35,
-  },
 };
 
 export const STORY = [
@@ -219,14 +213,12 @@ export const STORY = [
     id: 'quiz-drag-experiment',
     i18n: 'quiz-drag-experiment',
     type: 'drag-quiz',
-    speaker: 'narrator',
     emoji: '🧪',
   },
   {
     id: 'dialogue-experiment-result',
     i18n: 'dialogue-experiment-result',
     type: 'experiment-table',
-    speaker: 'narrator',
     emoji: '🏆',
   },
 ];

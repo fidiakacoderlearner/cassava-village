@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "node --env-file=../.env --watch index.js",
-    "start": "node --env-file=../.env index.js"
+    "start": "node --env-file=../.env index.js",
+    "init-db": "node --env-file=../.env init-db.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
