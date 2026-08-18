@@ -109,12 +109,13 @@ const SCHEMA = `
   );
 
   CREATE TABLE IF NOT EXISTS evaluation_attempt_answers (
-    id         SERIAL PRIMARY KEY,
-    attempt_id INTEGER NOT NULL REFERENCES evaluation_attempts(id) ON DELETE CASCADE,
-    step_id    TEXT NOT NULL,
-    answer     TEXT NOT NULL,
-    is_correct INTEGER,
-    created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    id           SERIAL PRIMARY KEY,
+    attempt_id   INTEGER NOT NULL REFERENCES evaluation_attempts(id) ON DELETE CASCADE,
+    step_id      TEXT NOT NULL,
+    answer       TEXT NOT NULL,
+    answer_index INTEGER,
+    is_correct   INTEGER,
+    created_at   TIMESTAMPTZ NOT NULL DEFAULT now(),
     UNIQUE (attempt_id, step_id)
   );
 
@@ -223,10 +224,10 @@ async function seed() {
     const info = await db.prepare(
       'INSERT INTO evaluation_attempts (user_id, attempt_no) VALUES (?, ?) RETURNING id'
     ).run(userId, attemptNo);
-    const ins = db.prepare('INSERT INTO evaluation_attempt_answers (attempt_id, step_id, answer, is_correct) VALUES (?, ?, ?, ?)');
+    const ins = db.prepare('INSERT INTO evaluation_attempt_answers (attempt_id, step_id, answer, answer_index, is_correct) VALUES (?, ?, ?, ?, ?)');
     for (const stepId of EVAL_STEP_IDS) {
       const e = answersByStep[stepId];
-      if (e) await ins.run(info.lastInsertRowid, stepId, e.answer, e.isCorrect ? 1 : 0);
+      if (e) await ins.run(info.lastInsertRowid, stepId, e.answer, e.answerIndex ?? null, e.isCorrect ? 1 : 0);
     }
   }
 
@@ -269,18 +270,18 @@ async function seed() {
   await seedAttempt(budi, 2, BUDI_ESSAYS_2, { slot1: 'g1', slot2: 'f2', result: 912000 });
 
   const GITHA_EVAL = {
-    'eval-1': { answer: '7,15 kg', isCorrect: true },
-    'eval-2': { answer: '6,9125 kg', isCorrect: true },
-    'eval-3': { answer: 'Rp846.000', isCorrect: true },
-    'eval-4': { answer: '19,2 kg', isCorrect: true },
-    'eval-5': { answer: 'Retribusi dulu, lebih tinggi Rp6.000', isCorrect: true },
+    'eval-1': { answer: 'S(x) = 0.92x, D(x) = x − 0.6', answerIndex: 0, isCorrect: true },
+    'eval-2': { answer: '(D ∘ S)(x) = 0.92x − 0.6', answerIndex: 1, isCorrect: true },
+    'eval-3': { answer: '22.4 kg', answerIndex: 1, isCorrect: true },
+    'eval-4': { answer: '(D ∘ S)(25) is smaller than (S ∘ D)(25) by 0.048 kg', answerIndex: 2, isCorrect: true },
+    'eval-5': { answer: '(D ∘ S)(x) ≠ (S ∘ D)(x) in general, meaning function composition is not commutative — the order of the machines affects the final result.', answerIndex: 1, isCorrect: true },
   };
   const BUDI_EVAL_1 = {
-    'eval-1': { answer: '7,15 kg', isCorrect: true },
-    'eval-2': { answer: '7,15 kg', isCorrect: false },
-    'eval-3': { answer: 'Rp846.000', isCorrect: true },
-    'eval-4': { answer: '24 kg', isCorrect: false },
-    'eval-5': { answer: 'Retribusi dulu, lebih tinggi Rp6.000', isCorrect: true },
+    'eval-1': { answer: 'S(x) = 0.92x, D(x) = x − 0.6', answerIndex: 0, isCorrect: true },
+    'eval-2': { answer: '(D ∘ S)(x) = 1.52x', answerIndex: 0, isCorrect: false },
+    'eval-3': { answer: '22.4 kg', answerIndex: 1, isCorrect: true },
+    'eval-4': { answer: 'Both compositions give exactly the same result', answerIndex: 4, isCorrect: false },
+    'eval-5': { answer: '(D ∘ S)(x) ≠ (S ∘ D)(x) in general, meaning function composition is not commutative — the order of the machines affects the final result.', answerIndex: 1, isCorrect: true },
   };
 
   await seedEvalAttempt(githa, 1, GITHA_EVAL);
@@ -315,10 +316,65 @@ async function backfillDragAnswers() {
   console.log(`[db] backfilled ${rows.length} missing drag answers`);
 }
 
+async function backfillEmptyEssays() {
+  const attempts = await db.prepare(`
+    SELECT ea.id, ea.user_id, ea.attempt_no
+    FROM exploration_attempts ea
+    WHERE (
+      SELECT COUNT(*) FROM attempt_answers aa WHERE aa.attempt_id = ea.id
+    ) < 7
+    OR EXISTS (
+      SELECT 1 FROM attempt_answers aa2
+      WHERE aa2.attempt_id = ea.id
+        AND (TRIM(aa2.answer) = '' OR aa2.answer LIKE '(jawaban kosong)%')
+    )
+  `).all();
+  if (attempts.length === 0) return;
+  const ids = attempts.map((a) => a.id);
+  const ph = ids.map(() => '?').join(',');
+  await db.prepare(`DELETE FROM attempt_answers WHERE attempt_id IN (${ph})`).run(...ids);
+  await db.prepare(`DELETE FROM exploration_attempts WHERE id IN (${ph})`).run(...ids);
+  console.log(`[db] removed ${ids.length} incomplete exploration attempts`);
+}
+
+async function renumberAttempts() {
+  const expUsers = await db.prepare(
+    'SELECT DISTINCT user_id FROM exploration_attempts ORDER BY user_id'
+  ).all();
+  for (const { user_id } of expUsers) {
+    const rows = await db.prepare(
+      'SELECT id FROM exploration_attempts WHERE user_id = ? ORDER BY submitted_at, id'
+    ).all(user_id);
+    for (let i = 0; i < rows.length; i++) {
+      await db.prepare(
+        'UPDATE exploration_attempts SET attempt_no = ? WHERE id = ?'
+      ).run(i + 1, rows[i].id);
+    }
+  }
+
+  const evalUsers = await db.prepare(
+    'SELECT DISTINCT user_id FROM evaluation_attempts ORDER BY user_id'
+  ).all();
+  for (const { user_id } of evalUsers) {
+    const rows = await db.prepare(
+      'SELECT id FROM evaluation_attempts WHERE user_id = ? ORDER BY submitted_at, id'
+    ).all(user_id);
+    for (let i = 0; i < rows.length; i++) {
+      await db.prepare(
+        'UPDATE evaluation_attempts SET attempt_no = ? WHERE id = ?'
+      ).run(i + 1, rows[i].id);
+    }
+  }
+  console.log('[db] renumbered all attempt numbers sequentially');
+}
+
 async function initDb() {
   await db.exec(SCHEMA);
+  await db.exec('ALTER TABLE evaluation_attempt_answers ADD COLUMN IF NOT EXISTS answer_index INTEGER');
   await seed();
   await backfillDragAnswers();
+  await backfillEmptyEssays();
+  await renumberAttempts();
 }
 
 export { initDb };

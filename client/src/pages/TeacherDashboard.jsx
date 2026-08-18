@@ -167,9 +167,13 @@ function EvaluationAnswersPanel({ student, t }) {
         {EVAL_STEP_IDS.map((stepId, i) => {
           const evalData = current.answers[stepId];
           const isCorrect = evalData?.isCorrect === true;
-          const userAnswer = evalData?.answer;
+          const answerIndex = evalData?.answerIndex;
+          const options = t(`quiz.${stepId}.options`);
+          const userAnswer = answerIndex != null && Array.isArray(options) && options[answerIndex]
+            ? options[answerIndex]
+            : evalData?.answer;
           const correctIdx = EVALUATION.find((q) => q.id === stepId)?.correct ?? 0;
-          const correctAnswer = t(`quiz.${stepId}.options`)[correctIdx];
+          const correctAnswer = Array.isArray(options) ? options[correctIdx] : '';
           return (
             <div
               key={stepId}

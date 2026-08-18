@@ -47,13 +47,15 @@
     "learningIndicators": "Learning Indicators",
     "outcomesText": "By the end of Phase F, students will be able to identify inverse functions, function composition, and function transformations to model real-world situations using appropriate functions (linear, quadratic, exponential).",
     "objectives": [
-      "Determine the concept of composition functions"
+      "Students are able to correctly apply the concept of function composition to contextual problems through group discussion activities involving at least two functions.",
+      "Students are able to accurately analyze the properties of function composition through the Cassava Village exploration activity."
     ],
     "indicators": [
-      "Students can define function composition using the notation (f ∘ g)(x) or (g ∘ f)(x), and explain it using a real-world example with two sequential processes.",
-      "Students can determine (g ∘ f)(x) and (f ∘ g)(x) given two functions (linear, quadratic, or exponential), including finding an unknown function when the composite result is known.",
-      "Students can compare (f ∘ g)(x) and (g ∘ f)(x) numerically and conclude that function composition is generally not commutative.",
-      "Students can translate a real-world situation into two functions, form the composite function, and use it to solve a contextual problem."
+      "1.1 Students are able to model contextual problems as appropriate mathematical functions.",
+      "1.2 Students are able to determine the composition of at least two functions based on the mathematical models they have created.",
+      "1.3 Students are able to apply the results of function composition to correctly solve contextual problems through group discussions.",
+      "2.1 Students are able to compare the properties of composite functions identified at each stage of the process.",
+      "2.2 Students are able to accurately conclude the properties of composite functions based on the results of their exploratory activities."
     ],
     "outcomesDesc": "What you will be able to do after this lesson",
     "objectivesDesc": "The goal you will achieve in this lesson",
@@ -277,34 +279,34 @@
   },
   "quiz": {
     "eval-1": {
-      "text": "The Peeling Machine is f(x) = 0,85x and the Washing Machine is g(x) = 0,9x − 0,5. Pak Restu always peels first, then washes. For 10 kg of cassava, what is (g ∘ f)(10)?",
-      "explain": "(g ∘ f)(10) = g(f(10)) = g(8,5) = 0,9 × 8,5 − 0,5 = 7,65 − 0,5 = 7,15 kg.",
-      "options": ["6,15 kg", "6,65 kg", "7,15 kg", "7,65 kg", "8,5 kg"]
+      "text": "Pak Restu runs a small cassava chip business. He has a Slicing Machine that reduces the cassava's weight by 8% (due to trimming), and a Drying Machine that removes an additional 0.6 kg of water weight after slicing. Let x represent the weight of cassava (in kg) before processing.\n\nWhich pair of functions correctly models the Slicing Machine S(x) and the Drying Machine D(x)?",
+      "explain": "A reduction of 8% means 92% remains, so S(x) = 0.92x. The Drying Machine removes 0.6 kg, so D(x) = x − 0.6.",
+      "options": ["S(x) = 0.92x, D(x) = x − 0.6", "S(x) = x − 0.08, D(x) = 0.6x", "S(x) = 0.08x, D(x) = x + 0.6", "S(x) = 1.08x, D(x) = x − 0.6", "S(x) = 0.92x, D(x) = x + 0.6"]
     },
     "eval-2": {
-      "text": "Using the same machines as Question 1, Pak Rafif washes first, then peels. What is (f ∘ g)(10)?",
-      "explain": "(f ∘ g)(10) = f(g(10)) = f(0,9 × 10 − 0,5) = f(8,5) = 0,85 × 8,5 = 6,9125 kg.",
-      "options": ["6,5025 kg", "6,9125 kg", "7,15 kg", "7,225 kg", "8,075 kg"]
+      "text": "Using S(x) = 0.92x and D(x) = x − 0.6 from Question 1, Pak Restu slices the cassava first, then dries it. Which expression correctly represents the composition function (D ∘ S)(x) in simplified form?",
+      "explain": "(D ∘ S)(x) = D(S(x)) = D(0.92x) = 0.92x − 0.6.",
+      "options": ["(D ∘ S)(x) = 1.52x", "(D ∘ S)(x) = 0.92x − 0.6", "(D ∘ S)(x) = 0.92(x − 0.6)", "(D ∘ S)(x) = x − 0.6 − 0.08x", "(D ∘ S)(x) = 0.92x + 0.6"]
     },
     "eval-3": {
-      "text": "Pak Restu's gross earnings are x = Rp1.000.000. With f(x) = x − 60.000 (retribution) and g(x) = 0,9x (discount), applying retribution first then discount, what is the final amount?",
-      "explain": "(g ∘ f)(1.000.000) = g(1.000.000 − 60.000) = g(940.000) = 0,9 × 940.000 = Rp846.000.",
-      "options": ["Rp846.000", "Rp850.000", "Rp900.000", "Rp906.000", "Rp940.000"]
+      "text": "In their group discussion, Pak Restu's team uses (D ∘ S)(x) = 0.92x − 0.6 to plan production. If they start with 25 kg of cassava, what is the final weight after slicing and drying?",
+      "explain": "(D ∘ S)(25) = 0.92 × 25 − 0.6 = 23 − 0.6 = 22.4 kg.",
+      "options": ["22.0 kg", "22.4 kg", "22.5 kg", "23.0 kg", "23.6 kg"]
     },
     "eval-4": {
-      "text": "The Frying Machine is f(x) = 0,8x and the Seasoning Machine is g(x) = x² + 2x. Pak Restu seasons first, then fries. For x = 4 kg of cassava, what is f(g(4))?",
-      "explain": "g(4) = 4² + 2(4) = 16 + 8 = 24. Then f(24) = 0,8 × 24 = 19,2 kg.",
-      "options": ["16,8 kg", "18 kg", "19,2 kg", "20,8 kg", "24 kg"]
+      "text": "The group now investigates what happens if Pak Restu dries first, then slices instead. This gives the composition (S ∘ D)(x).\n\n(S ∘ D)(x) = S(D(x)) = S(x − 0.6) = 0.92(x − 0.6) = 0.92x − 0.552\n\nComparing (D ∘ S)(x) = 0.92x − 0.6 with (S ∘ D)(x) = 0.92x − 0.552 for x = 25 kg, which statement is correct?",
+      "explain": "(D ∘ S)(25) = 22.4 and (S ∘ D)(25) = 22.448. So (D ∘ S)(25) is smaller than (S ∘ D)(25) by 0.048 kg.",
+      "options": ["(S ∘ D)(25) is smaller than (D ∘ S)(25) by 0.6 kg", "(D ∘ S)(25) is larger than (S ∘ D)(25) by 0.6 kg", "(D ∘ S)(25) is smaller than (S ∘ D)(25) by 0.048 kg", "(D ∘ S)(25) is larger than (S ∘ D)(25) by 0.048 kg", "Both compositions give exactly the same result"]
     },
     "eval-5": {
-      "text": "Comparing retribution-first-discount versus discount-first-retribution (using f(x) = x − 60.000 and g(x) = 0,9x from Question 3, starting from x = Rp1.000.000), which order gives Pak Restu the higher final amount, and what is the difference?",
-      "explain": "Retribution first: (g ∘ f)(1.000.000) = 0,9 × 940.000 = Rp846.000. Discount first: (f ∘ g)(1.000.000) = (0,9 × 1.000.000) − 60.000 = Rp840.000. Retribution first is higher by Rp6.000.",
+      "text": "Based on the exploration in Questions 2–4, which conclusion about function composition is most accurate?",
+      "explain": "(D ∘ S)(x) ≠ (S ∘ D)(x) in general. The order of operations matters — function composition is not commutative.",
       "options": [
-        "Retribution first, Rp6.000 higher",
-        "Discount first, Rp6.000 higher",
-        "Retribution first, Rp60.000 higher",
-        "Discount first, Rp60.000 higher",
-        "Both orders give the same amount"
+        "(D ∘ S)(x) = (S ∘ D)(x) for all values of x, so the order of operations does not matter.",
+        "(D ∘ S)(x) ≠ (S ∘ D)(x) in general, meaning function composition is not commutative — the order of the machines affects the final result.",
+        "(D ∘ S)(x) is always greater than (S ∘ D)(x) regardless of the functions used.",
+        "Function composition only works correctly when both functions are linear.",
+        "The difference between (D ∘ S)(x) and (S ∘ D)(x) is always constant for any two functions."
       ]
     }
   },

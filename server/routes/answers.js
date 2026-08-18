@@ -74,7 +74,7 @@ router.post('/evaluation/submit', asyncHandler(async (req, res) => {
   const map = {};
   for (const a of answers) {
     if (a && EVAL_STEP_IDS.includes(String(a.stepId)) && a.answer != null) {
-      map[String(a.stepId)] = { answer: String(a.answer), isCorrect: a.isCorrect ? 1 : 0 };
+      map[String(a.stepId)] = { answer: String(a.answer), answerIndex: a.answerIndex ?? null, isCorrect: a.isCorrect ? 1 : 0 };
     }
   }
   const missing = EVAL_STEP_IDS.filter((id) => !map[id]);
@@ -101,9 +101,9 @@ router.post('/evaluation/submit', asyncHandler(async (req, res) => {
   const info = await db.prepare(
     'INSERT INTO evaluation_attempts (user_id, attempt_no) VALUES (?, ?) RETURNING id'
   ).run(req.user.id, attemptNo);
-  const ins = db.prepare('INSERT INTO evaluation_attempt_answers (attempt_id, step_id, answer, is_correct) VALUES (?, ?, ?, ?)');
+  const ins = db.prepare('INSERT INTO evaluation_attempt_answers (attempt_id, step_id, answer, answer_index, is_correct) VALUES (?, ?, ?, ?, ?)');
   for (const stepId of EVAL_STEP_IDS) {
-    await ins.run(info.lastInsertRowid, stepId, map[stepId].answer, map[stepId].isCorrect);
+    await ins.run(info.lastInsertRowid, stepId, map[stepId].answer, map[stepId].answerIndex, map[stepId].isCorrect);
   }
 
   res.status(201).json({ ok: true, attemptNo });

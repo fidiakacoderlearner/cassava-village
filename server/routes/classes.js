@@ -168,6 +168,7 @@ async function fetchEvaluations(classId) {
            to_char(ea.submitted_at, 'YYYY-MM-DD HH24:MI:SS') AS submitted_at,
            aa.step_id,
            aa.answer,
+           aa.answer_index,
            aa.is_correct
     FROM users u
     LEFT JOIN evaluation_attempts ea ON ea.user_id = u.id
@@ -193,7 +194,7 @@ async function fetchEvaluations(classId) {
       byUser[r.user_id].attempts.push(attempt);
     }
     if (r.step_id) {
-      attempt.answers[r.step_id] = { answer: r.answer, isCorrect: Boolean(r.is_correct) };
+      attempt.answers[r.step_id] = { answer: r.answer, answerIndex: r.answer_index, isCorrect: Boolean(r.is_correct) };
       if (r.is_correct) attempt.correctCount += 1;
     }
   }

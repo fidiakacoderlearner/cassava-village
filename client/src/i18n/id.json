@@ -47,13 +47,15 @@
     "learningIndicators": "Indikator Pembelajaran",
     "outcomesText": "Di akhir Fase F, peserta didik dapat mengidentifikasi fungsi invers, komposisi fungsi, dan transformasi fungsi untuk memodelkan situasi dunia nyata menggunakan fungsi yang sesuai (linear, kuadrat, eksponensial).",
     "objectives": [
-      "Menentukan konsep fungsi komposisi"
+      "Peserta didik dapat menerapkan konsep fungsi komposisi pada masalah kontekstual melalui kegiatan diskusi kelompok yang melibatkan minimal dua fungsi.",
+      "Peserta didik dapat menganalisis sifat-sifat fungsi komposisi secara tepat melalui kegiatan eksplorasi Desa Singkong."
     ],
     "indicators": [
-      "Peserta didik dapat mendefinisikan komposisi fungsi menggunakan notasi (f ∘ g)(x) atau (g ∘ f)(x), dan menjelaskannya menggunakan contoh dunia nyata dengan dua proses berurutan.",
-      "Peserta didik dapat menentukan (g ∘ f)(x) dan (f ∘ g)(x) dari dua fungsi (linear, kuadrat, atau eksponensial), termasuk mencari fungsi yang tidak diketahui ketika hasil komposisi diketahui.",
-      "Peserta didik dapat membandingkan (f ∘ g)(x) dan (g ∘ f)(x) secara numerik dan menyimpulkan bahwa komposisi fungsi umumnya tidak komutatif.",
-      "Peserta didik dapat menerjemahkan situasi dunia nyata menjadi dua fungsi, membentuk fungsi komposisi, dan menggunakannya untuk menyelesaikan masalah kontekstual."
+      "1.1 Peserta didik dapat memodelkan masalah kontekstual sebagai fungsi matematika yang sesuai.",
+      "1.2 Peserta didik dapat menentukan komposisi minimal dua fungsi berdasarkan model matematika yang telah dibuat.",
+      "1.3 Peserta didik dapat menerapkan hasil komposisi fungsi untuk menyelesaikan masalah kontekstual secara tepat melalui diskusi kelompok.",
+      "2.1 Peserta didik dapat membandingkan sifat-sifat fungsi komposisi yang diidentifikasi pada setiap tahap proses.",
+      "2.2 Peserta didik dapat menyimpulkan sifat-sifat fungsi komposisi secara tepat berdasarkan hasil kegiatan eksplorasi mereka."
     ],
     "outcomesDesc": "Yang bisa kamu lakukan setelah pembelajaran ini",
     "objectivesDesc": "Tujuan yang akan kamu capai di pembelajaran ini",
@@ -278,34 +280,34 @@
   },
   "quiz": {
     "eval-1": {
-      "text": "Mesin Pengupas adalah f(x) = 0,85x dan Mesin Pencuci adalah g(x) = 0,9x − 0,5. Pak Restu selalu mengupas dulu, baru mencuci. Untuk 10 kg singkong, berapakah (g ∘ f)(10)?",
-      "explain": "(g ∘ f)(10) = g(f(10)) = g(8,5) = 0,9 × 8,5 − 0,5 = 7,65 − 0,5 = 7,15 kg.",
-      "options": ["6,15 kg", "6,65 kg", "7,15 kg", "7,65 kg", "8,5 kg"]
+      "text": "Pak Restu menjalankan usaha keripik singkong kecil. Ia memiliki Mesin Irisan yang mengurangi berat singkong sebesar 8% (karena pemotongan), dan Mesin Pengering yang menghilangkan tambahan 0,6 kg berat air setelah pengirisan. Misalkan x adalah berat singkong (dalam kg) sebelum diproses.\n\nPasangan fungsi mana yang dengan benar memodelkan Mesin Irisan S(x) dan Mesin Pengering D(x)?",
+      "explain": "Pengurangan 8% berarti 92% tersisa, jadi S(x) = 0,92x. Mesin Pengering menghilangkan 0,6 kg, jadi D(x) = x − 0,6.",
+      "options": ["S(x) = 0,92x, D(x) = x − 0,6", "S(x) = x − 0,08, D(x) = 0,6x", "S(x) = 0,08x, D(x) = x + 0,6", "S(x) = 1,08x, D(x) = x − 0,6", "S(x) = 0,92x, D(x) = x + 0,6"]
     },
     "eval-2": {
-      "text": "Menggunakan mesin yang sama dengan Soal 1, Pak Rafif mencuci dulu, baru mengupas. Berapakah (f ∘ g)(10)?",
-      "explain": "(f ∘ g)(10) = f(g(10)) = f(0,9 × 10 − 0,5) = f(8,5) = 0,85 × 8,5 = 6,9125 kg.",
-      "options": ["6,5025 kg", "6,9125 kg", "7,15 kg", "7,225 kg", "8,075 kg"]
+      "text": "Menggunakan S(x) = 0,92x dan D(x) = x − 0,6 dari Soal 1, Pak Restu mengiris singkong terlebih dahulu, baru mengeringkannya. Ekspresi mana yang dengan benar merepresentasikan fungsi komposisi (D ∘ S)(x) dalam bentuk yang disederhanakan?",
+      "explain": "(D ∘ S)(x) = D(S(x)) = D(0,92x) = 0,92x − 0,6.",
+      "options": ["(D ∘ S)(x) = 1,52x", "(D ∘ S)(x) = 0,92x − 0,6", "(D ∘ S)(x) = 0,92(x − 0,6)", "(D ∘ S)(x) = x − 0,6 − 0,08x", "(D ∘ S)(x) = 0,92x + 0,6"]
     },
     "eval-3": {
-      "text": "Pendapatan kotor Pak Restu adalah x = Rp1.000.000. Dengan f(x) = x − 60.000 (retribusi) dan g(x) = 0,9x (diskon), menerapkan retribusi dulu baru diskon, berapakah pendapatan akhirnya?",
-      "explain": "(g ∘ f)(1.000.000) = g(1.000.000 − 60.000) = g(940.000) = 0,9 × 940.000 = Rp846.000.",
-      "options": ["Rp846.000", "Rp850.000", "Rp900.000", "Rp906.000", "Rp940.000"]
+      "text": "Dalam diskusi kelompok, tim Pak Restu menggunakan (D ∘ S)(x) = 0,92x − 0,6 untuk merencanakan produksi. Jika mereka mulai dengan 25 kg singkong, berapakah berat akhir setelah pengirisan dan pengeringan?",
+      "explain": "(D ∘ S)(25) = 0,92 × 25 − 0,6 = 23 − 0,6 = 22,4 kg.",
+      "options": ["22,0 kg", "22,4 kg", "22,5 kg", "23,0 kg", "23,6 kg"]
     },
     "eval-4": {
-      "text": "Mesin Penggoreng adalah f(x) = 0,8x dan Mesin Bumbu adalah g(x) = x² + 2x. Pak Restu memberi bumbu dulu, baru menggoreng. Untuk x = 4 kg singkong, berapakah f(g(4))?",
-      "explain": "g(4) = 4² + 2(4) = 16 + 8 = 24. Lalu f(24) = 0,8 × 24 = 19,2 kg.",
-      "options": ["16,8 kg", "18 kg", "19,2 kg", "20,8 kg", "24 kg"]
+      "text": "Kelompok tersebut sekarang menyelidiki apa yang terjadi jika Pak Restu mengeringkan terlebih dahulu, baru mengiris. Ini menghasilkan komposisi (S ∘ D)(x).\n\n(S ∘ D)(x) = S(D(x)) = S(x − 0,6) = 0,92(x − 0,6) = 0,92x − 0,552\n\nMembandingkan (D ∘ S)(x) = 0,92x − 0,6 dengan (S ∘ D)(x) = 0,92x − 0,552 untuk x = 25 kg, pernyataan mana yang benar?",
+      "explain": "(D ∘ S)(25) = 22,4 dan (S ∘ D)(25) = 22,448. Jadi (D ∘ S)(25) lebih kecil dari (S ∘ D)(25) sebesar 0,048 kg.",
+      "options": ["(S ∘ D)(25) lebih kecil dari (D ∘ S)(25) sebesar 0,6 kg", "(D ∘ S)(25) lebih besar dari (S ∘ D)(25) sebesar 0,6 kg", "(D ∘ S)(25) lebih kecil dari (S ∘ D)(25) sebesar 0,048 kg", "(D ∘ S)(25) lebih besar dari (S ∘ D)(25) sebesar 0,048 kg", "Kedua komposisi menghasilkan nilai yang sama persis"]
     },
     "eval-5": {
-      "text": "Membandingkan retribusi-dulu-diskon versus diskon-dulu-retribusi (menggunakan f(x) = x − 60.000 dan g(x) = 0,9x dari Soal 3, mulai dari x = Rp1.000.000), urutan mana yang memberikan jumlah akhir lebih tinggi bagi Pak Restu, dan berapakah selisihnya?",
-      "explain": "Retribusi dulu: (g ∘ f)(1.000.000) = 0,9 × 940.000 = Rp846.000. Diskon dulu: (f ∘ g)(1.000.000) = (0,9 × 1.000.000) − 60.000 = Rp840.000. Retribusi dulu lebih tinggi Rp6.000.",
+      "text": "Berdasarkan eksplorasi pada Soal 2–4, kesimpulan mana tentang komposisi fungsi yang paling akurat?",
+      "explain": "(D ∘ S)(x) ≠ (S ∘ D)(x) secara umum. Urutan operasi berpengaruh — komposisi fungsi tidak komutatif.",
       "options": [
-        "Retribusi dulu, lebih tinggi Rp6.000",
-        "Diskon dulu, lebih tinggi Rp6.000",
-        "Retribusi dulu, lebih tinggi Rp60.000",
-        "Diskon dulu, lebih tinggi Rp60.000",
-        "Kedua urutan menghasilkan jumlah yang sama"
+        "(D ∘ S)(x) = (S ∘ D)(x) untuk semua nilai x, sehingga urutan operasi tidak berpengaruh.",
+        "(D ∘ S)(x) ≠ (S ∘ D)(x) secara umum, artinya komposisi fungsi tidak komutatif — urutan mesin memengaruhi hasil akhir.",
+        "(D ∘ S)(x) selalu lebih besar dari (S ∘ D)(x) tanpa mempedulikan fungsi yang digunakan.",
+        "Komposisi fungsi hanya berfungsi dengan benar jika kedua fungsi tersebut linear.",
+        "Selisih antara (D ∘ S)(x) dan (S ∘ D)(x) selalu konstan untuk dua fungsi apa pun."
       ]
     }
   },

@@ -92,10 +92,7 @@ export default function About() {
               <ol className="space-y-3">
                 {(Array.isArray(t('about.indicators')) ? t('about.indicators') : [t('about.indicators')]).map(
                   (ind, i) => (
-                    <li key={i} className="flex gap-3 rounded-2xl bg-cream p-4 text-brown-700">
-                      <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-brown-800 text-xs font-bold text-cream">
-                        {i + 1}.1
-                      </span>
+                    <li key={i} className="rounded-2xl bg-cream p-4 text-brown-700">
                       <span className="leading-relaxed">{ind}</span>
                     </li>
                   )

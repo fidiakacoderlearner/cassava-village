@@ -844,7 +844,9 @@ export default function Exploration() {
 
   function saveEssay(stepId, text) {
     setTempEssays((prev) => {
-      const next = { ...prev, [stepId]: { text: text ?? prev[stepId]?.text ?? '', saved: true } };
+      const safeText = (text ?? '').trim() || (prev[stepId]?.text ?? '');
+      if (!safeText) return prev;
+      const next = { ...prev, [stepId]: { text: safeText, saved: true } };
       localStorage.setItem(essayKey, JSON.stringify(next));
       return next;
     });

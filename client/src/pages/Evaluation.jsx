@@ -134,6 +134,7 @@ export default function Evaluation() {
       entries.push({
         stepId: ev.id,
         answer: qShuffledFor(i)[chosen],
+        answerIndex: orders[i][chosen],
         isCorrect: chosen === orders[i].indexOf(ev.correct),
       });
     }
@@ -367,7 +368,7 @@ export default function Evaluation() {
               </div>
             )}
             <div className="mt-4 rounded-3xl bg-white p-6 shadow-sm ring-1 ring-brown-200/60 md:p-8">
-              <h2 className="font-display text-lg font-bold leading-snug text-brown-800">
+              <h2 className="font-display text-lg font-medium leading-snug text-brown-800">
                 {qText}
               </h2>
 
