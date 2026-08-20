@@ -1,6 +1,14 @@
 @import "tailwindcss";
 
 @font-face {
+  font-family: 'KaTeX Math Italic';
+  src: url('./assets/fonts/KaTeX_Math-Italic.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
   font-family: "Beaver Punch";
   src: url("./assets/fonts/beaver-punch.otf") format("opentype");
   font-display: swap;
@@ -127,4 +135,13 @@ h6 {
 }
 .scrollbar-thin::-webkit-scrollbar-track {
   background: transparent;
+}
+
+.math-text i {
+  font-family: 'KaTeX Math Italic', 'STIX Two Math', 'Times New Roman', Georgia, serif;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  letter-spacing: normal;
+  text-rendering: auto;
 }

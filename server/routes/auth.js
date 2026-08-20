@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import bcrypt from 'bcryptjs';
 import { db } from '../db.js';
-import { signToken, publicUser, asyncHandler } from '../middleware/auth.js';
+import { signToken, publicUser, requireAuth, asyncHandler } from '../middleware/auth.js';
 
 const router = Router();
 
@@ -49,6 +49,20 @@ router.post('/login', asyncHandler(async (req, res) => {
     return res.status(401).json({ error: 'Incorrect email or password' });
   }
   res.json({ token: signToken(user), user: publicUser(user) });
+}));
+
+router.post('/join-class', requireAuth, asyncHandler(async (req, res) => {
+  const { classCode } = req.body || {};
+  if (!classCode || typeof classCode !== 'string') {
+    return res.status(400).json({ error: 'Class code is required' });
+  }
+  const cls = await db.prepare('SELECT id FROM classes WHERE code = ?').get(classCode.trim().toUpperCase());
+  if (!cls) {
+    return res.status(400).json({ error: 'Invalid class code' });
+  }
+  await db.prepare('UPDATE users SET class_id = ? WHERE id = ? AND role = ?').run(cls.id, req.user.id, 'student');
+  const user = await db.prepare('SELECT id, name, email, role, class_id FROM users WHERE id = ?').get(req.user.id);
+  res.json({ user: publicUser(user) });
 }));
 
 export default router;

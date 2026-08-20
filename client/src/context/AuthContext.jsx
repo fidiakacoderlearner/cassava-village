@@ -52,6 +52,14 @@ export function AuthProvider({ children }) {
     setState({ token: null, user: null });
   }, []);
 
+  const updateUser = useCallback(
+    (nextUser) => {
+      localStorage.setItem('cv_user', JSON.stringify(nextUser));
+      setState((prev) => ({ ...prev, user: nextUser }));
+    },
+    []
+  );
+
   useEffect(() => {
     setOnUnauthorized(() => {
       logout();
@@ -60,8 +68,8 @@ export function AuthProvider({ children }) {
   }, [logout]);
 
   const value = useMemo(
-    () => ({ token, user, isAuthed: Boolean(token), login, signup, logout }),
-    [token, user, login, signup, logout]
+    () => ({ token, user, isAuthed: Boolean(token), login, signup, logout, updateUser }),
+    [token, user, login, signup, logout, updateUser]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

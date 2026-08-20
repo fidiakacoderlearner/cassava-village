@@ -55,7 +55,6 @@ const SCHEMA = `
     email            TEXT NOT NULL UNIQUE,
     password_hash    TEXT NOT NULL,
     role             TEXT NOT NULL DEFAULT 'student',
-    about_done       INTEGER NOT NULL DEFAULT 0,
     exploration_done INTEGER NOT NULL DEFAULT 0,
     created_at       TIMESTAMPTZ NOT NULL DEFAULT now()
   );
@@ -76,15 +75,17 @@ const SCHEMA = `
     step_id    TEXT NOT NULL,
     answer     TEXT NOT NULL,
     is_correct INTEGER,
+    class_id   INTEGER REFERENCES classes(id) ON DELETE SET NULL,
     created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
-    UNIQUE (user_id, step_id)
+    UNIQUE (user_id, step_id, class_id)
   );
 
   CREATE TABLE IF NOT EXISTS exploration_attempts (
     id           SERIAL PRIMARY KEY,
     user_id      INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     attempt_no   INTEGER NOT NULL,
+    class_id     INTEGER REFERENCES classes(id) ON DELETE SET NULL,
     submitted_at TIMESTAMPTZ NOT NULL DEFAULT now(),
     UNIQUE (user_id, attempt_no)
   );
@@ -104,6 +105,7 @@ const SCHEMA = `
     id           SERIAL PRIMARY KEY,
     user_id      INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     attempt_no   INTEGER NOT NULL,
+    class_id     INTEGER REFERENCES classes(id) ON DELETE SET NULL,
     submitted_at TIMESTAMPTZ NOT NULL DEFAULT now(),
     UNIQUE (user_id, attempt_no)
   );
@@ -121,8 +123,11 @@ const SCHEMA = `
 
   CREATE INDEX IF NOT EXISTS idx_classes_teacher ON classes(teacher_id);
   CREATE INDEX IF NOT EXISTS idx_users_class ON users(class_id);
+  CREATE INDEX IF NOT EXISTS idx_answers_class ON answers(class_id);
   CREATE INDEX IF NOT EXISTS idx_exploration_attempts_user ON exploration_attempts(user_id);
+  CREATE INDEX IF NOT EXISTS idx_exploration_attempts_class ON exploration_attempts(class_id);
   CREATE INDEX IF NOT EXISTS idx_evaluation_attempts_user ON evaluation_attempts(user_id);
+  CREATE INDEX IF NOT EXISTS idx_evaluation_attempts_class ON evaluation_attempts(class_id);
   CREATE INDEX IF NOT EXISTS idx_attempt_answers_attempt ON attempt_answers(attempt_id);
   CREATE INDEX IF NOT EXISTS idx_eval_answers_attempt ON evaluation_attempt_answers(attempt_id);
 `;
@@ -180,50 +185,50 @@ async function seed() {
     demoClass = { id: info.lastInsertRowid };
   }
 
-  async function ensureStudent(email, password, name, aboutDone = 0, explorationDone = 0) {
+  async function ensureStudent(email, password, name, explorationDone = 0) {
     let student = await db.prepare('SELECT id FROM users WHERE email = ?').get(email);
     if (!student) {
       const info = await db.prepare(
-        'INSERT INTO users (name, email, password_hash, role, class_id, about_done, exploration_done) VALUES (?, ?, ?, ?, ?, ?, ?) RETURNING id'
-      ).run(name, email, hash(password), 'student', demoClass.id, aboutDone, explorationDone);
+        'INSERT INTO users (name, email, password_hash, role, class_id, exploration_done) VALUES (?, ?, ?, ?, ?, ?) RETURNING id'
+      ).run(name, email, hash(password), 'student', demoClass.id, explorationDone);
       student = { id: info.lastInsertRowid };
     } else {
       await db.prepare(
-        'UPDATE users SET class_id = ?, about_done = GREATEST(about_done, ?), exploration_done = GREATEST(exploration_done, ?) WHERE id = ?'
-      ).run(demoClass.id, aboutDone, explorationDone, student.id);
+        'UPDATE users SET class_id = ?, exploration_done = GREATEST(exploration_done, ?) WHERE id = ?'
+      ).run(demoClass.id, explorationDone, student.id);
     }
     return student.id;
   }
 
-  async function seedAnswer(userId, stepId, answer, isCorrect = null) {
+  async function seedAnswer(userId, stepId, answer, isCorrect = null, classId = null) {
     await db.prepare(
-      `INSERT INTO answers (user_id, step_id, answer, is_correct) VALUES (?, ?, ?, ?)
-       ON CONFLICT (user_id, step_id) DO NOTHING`
-    ).run(userId, stepId, answer, isCorrect == null ? null : (isCorrect ? 1 : 0));
+      `INSERT INTO answers (user_id, step_id, answer, is_correct, class_id) VALUES (?, ?, ?, ?, ?)
+       ON CONFLICT (user_id, step_id, class_id) DO NOTHING`
+    ).run(userId, stepId, answer, isCorrect == null ? null : (isCorrect ? 1 : 0), classId);
   }
 
-  async function seedAttempt(userId, attemptNo, answersByStep, drag = null) {
+  async function seedAttempt(userId, attemptNo, answersByStep, drag = null, classId = null) {
     const existing = await db.prepare(
       'SELECT COUNT(*) AS n FROM exploration_attempts WHERE user_id = ? AND attempt_no = ?'
     ).get(userId, attemptNo);
     if (existing.n > 0) return;
     const info = await db.prepare(
-      'INSERT INTO exploration_attempts (user_id, attempt_no, drag_answer) VALUES (?, ?, ?) RETURNING id'
-    ).run(userId, attemptNo, drag ? JSON.stringify(drag) : null);
+      'INSERT INTO exploration_attempts (user_id, attempt_no, drag_answer, class_id) VALUES (?, ?, ?, ?) RETURNING id'
+    ).run(userId, attemptNo, drag ? JSON.stringify(drag) : null, classId);
     const ins = db.prepare('INSERT INTO attempt_answers (attempt_id, step_id, answer) VALUES (?, ?, ?)');
     for (const stepId of OPEN_STEP_IDS) {
       if (answersByStep[stepId]) await ins.run(info.lastInsertRowid, stepId, answersByStep[stepId]);
     }
   }
 
-  async function seedEvalAttempt(userId, attemptNo, answersByStep) {
+  async function seedEvalAttempt(userId, attemptNo, answersByStep, classId = null) {
     const existing = await db.prepare(
       'SELECT COUNT(*) AS n FROM evaluation_attempts WHERE user_id = ? AND attempt_no = ?'
     ).get(userId, attemptNo);
     if (existing.n > 0) return;
     const info = await db.prepare(
-      'INSERT INTO evaluation_attempts (user_id, attempt_no) VALUES (?, ?) RETURNING id'
-    ).run(userId, attemptNo);
+      'INSERT INTO evaluation_attempts (user_id, attempt_no, class_id) VALUES (?, ?, ?) RETURNING id'
+    ).run(userId, attemptNo, classId);
     const ins = db.prepare('INSERT INTO evaluation_attempt_answers (attempt_id, step_id, answer, answer_index, is_correct) VALUES (?, ?, ?, ?, ?)');
     for (const stepId of EVAL_STEP_IDS) {
       const e = answersByStep[stepId];
@@ -231,9 +236,9 @@ async function seed() {
     }
   }
 
-  const githa = await ensureStudent('student@cassava.com', 'student123', 'Githa Sayang', 1, 1);
-  const budi = await ensureStudent('budi@cassava.com', 'budi123', 'Budi Santoso', 1, 1);
-  await ensureStudent('siti@cassava.com', 'siti123', 'Siti Aminah', 0);
+  const githa = await ensureStudent('student@cassava.com', 'student123', 'Githa Sayang', 1);
+  const budi = await ensureStudent('budi@cassava.com', 'budi123', 'Budi Santoso', 1);
+  await ensureStudent('siti@cassava.com', 'siti123', 'Siti Aminah');
 
   const GITHA_ESSAYS = {
     'open-gof-machines': '(g ∘ f)(x) = 0,765x − 0,5',
@@ -265,9 +270,9 @@ async function seed() {
     'open-conclusion': '(g ∘ f) ≠ (f ∘ g), urutan komposisi menentukan hasil akhir.',
   };
 
-  await seedAttempt(githa, 1, GITHA_ESSAYS, { slot1: 'g1', slot2: 'f2', result: 912000 });
-  await seedAttempt(budi, 1, BUDI_ESSAYS_1, { slot1: 'f2', slot2: 'g2', result: 855000 });
-  await seedAttempt(budi, 2, BUDI_ESSAYS_2, { slot1: 'g1', slot2: 'f2', result: 912000 });
+  await seedAttempt(githa, 1, GITHA_ESSAYS, { slot1: 'g1', slot2: 'f2', result: 912000 }, demoClass.id);
+  await seedAttempt(budi, 1, BUDI_ESSAYS_1, { slot1: 'f2', slot2: 'g2', result: 855000 }, demoClass.id);
+  await seedAttempt(budi, 2, BUDI_ESSAYS_2, { slot1: 'g1', slot2: 'f2', result: 912000 }, demoClass.id);
 
   const GITHA_EVAL = {
     'eval-1': { answer: 'S(x) = 0.92x, D(x) = x − 0.6', answerIndex: 0, isCorrect: true },
@@ -284,19 +289,19 @@ async function seed() {
     'eval-5': { answer: '(D ∘ S)(x) ≠ (S ∘ D)(x) in general, meaning function composition is not commutative — the order of the machines affects the final result.', answerIndex: 1, isCorrect: true },
   };
 
-  await seedEvalAttempt(githa, 1, GITHA_EVAL);
-  await seedEvalAttempt(budi, 1, BUDI_EVAL_1);
-  await seedEvalAttempt(budi, 2, GITHA_EVAL);
+  await seedEvalAttempt(githa, 1, GITHA_EVAL, demoClass.id);
+  await seedEvalAttempt(budi, 1, BUDI_EVAL_1, demoClass.id);
+  await seedEvalAttempt(budi, 2, GITHA_EVAL, demoClass.id);
 
   for (const id of EVAL_STEP_IDS) {
-    await seedAnswer(githa, id, 'ok', 1);
-    await seedAnswer(budi, id, 'ok', 1);
+    await seedAnswer(githa, id, 'ok', 1, demoClass.id);
+    await seedAnswer(budi, id, 'ok', 1, demoClass.id);
   }
-  await seedAnswer(githa, 'quiz-peel', '7,225 kg', 1);
-  await seedAnswer(githa, 'quiz-wash', '6,0025 kg', 1);
-  await seedAnswer(githa, 'quiz-discount', 'f(x) = 0,75x', 1);
-  await seedAnswer(githa, 'quiz-retribution', 'g(x) = x − 80.000', 1);
-  await seedAnswer(budi, 'quiz-peel', '7,055 kg', 0);
+  await seedAnswer(githa, 'quiz-peel', '7,225 kg', 1, demoClass.id);
+  await seedAnswer(githa, 'quiz-wash', '6,0025 kg', 1, demoClass.id);
+  await seedAnswer(githa, 'quiz-discount', 'f(x) = 0,75x', 1, demoClass.id);
+  await seedAnswer(githa, 'quiz-retribution', 'g(x) = x − 80.000', 1, demoClass.id);
+  await seedAnswer(budi, 'quiz-peel', '7,055 kg', 0, demoClass.id);
 }
 
 async function backfillDragAnswers() {
@@ -368,9 +373,31 @@ async function renumberAttempts() {
   console.log('[db] renumbered all attempt numbers sequentially');
 }
 
+async function migrateDb() {
+  await db.exec('ALTER TABLE evaluation_attempt_answers ADD COLUMN IF NOT EXISTS answer_index INTEGER');
+  await db.exec('ALTER TABLE answers ADD COLUMN IF NOT EXISTS class_id INTEGER REFERENCES classes(id) ON DELETE SET NULL');
+  await db.exec('ALTER TABLE exploration_attempts ADD COLUMN IF NOT EXISTS class_id INTEGER REFERENCES classes(id) ON DELETE SET NULL');
+  await db.exec('ALTER TABLE evaluation_attempts ADD COLUMN IF NOT EXISTS class_id INTEGER REFERENCES classes(id) ON DELETE SET NULL');
+  try { await db.exec('ALTER TABLE answers DROP CONSTRAINT IF EXISTS answers_user_id_step_key'); } catch { /* ignore */ }
+  try { await db.exec('ALTER TABLE answers ADD CONSTRAINT answers_user_step_class UNIQUE (user_id, step_id, class_id)'); } catch { /* ignore */ }
+  await db.exec('CREATE INDEX IF NOT EXISTS idx_answers_class ON answers(class_id)');
+  await db.exec('CREATE INDEX IF NOT EXISTS idx_exploration_attempts_class ON exploration_attempts(class_id)');
+  await db.exec('CREATE INDEX IF NOT EXISTS idx_evaluation_attempts_class ON evaluation_attempts(class_id)');
+  await db.exec(`
+    UPDATE answers SET class_id = u.class_id FROM users u WHERE answers.user_id = u.id AND answers.class_id IS NULL AND u.class_id IS NOT NULL
+  `);
+  await db.exec(`
+    UPDATE exploration_attempts SET class_id = u.class_id FROM users u WHERE exploration_attempts.user_id = u.id AND exploration_attempts.class_id IS NULL AND u.class_id IS NOT NULL
+  `);
+  await db.exec(`
+    UPDATE evaluation_attempts SET class_id = u.class_id FROM users u WHERE evaluation_attempts.user_id = u.id AND evaluation_attempts.class_id IS NULL AND u.class_id IS NOT NULL
+  `);
+  console.log('[db] migrations applied');
+}
+
 async function initDb() {
   await db.exec(SCHEMA);
-  await db.exec('ALTER TABLE evaluation_attempt_answers ADD COLUMN IF NOT EXISTS answer_index INTEGER');
+  await migrateDb();
   await seed();
   await backfillDragAnswers();
   await backfillEmptyEssays();
@@ -378,6 +405,9 @@ async function initDb() {
 }
 
 export { initDb };
+
+// Always run migrations (safe, idempotent — runs on every server start)
+await migrateDb();
 
 // Only auto-initialize in local dev or when explicitly opted in
 // On Vercel (serverless), skip to avoid cold-start penalty

@@ -5,8 +5,6 @@ import PageBackground from '../components/PageBackground.jsx';
 import { TargetIcon, PinIcon, CheckCircleIcon, LockIcon } from '../components/icons.jsx';
 import { useAuth } from '../context/AuthContext.jsx';
 import { useI18n } from '../context/I18nContext.jsx';
-import { useProgress } from '../context/ProgressContext.jsx';
-import { api } from '../context/api.js';
 
 const SECTIONS = [
   {
@@ -33,9 +31,8 @@ const SECTIONS = [
 ];
 
 export default function About() {
-  const { token, user } = useAuth();
+  const { user } = useAuth();
   const { t } = useI18n();
-  const { aboutDone, refresh } = useProgress();
   const navigate = useNavigate();
   const [active, setActive] = useState(null);
 
@@ -44,14 +41,11 @@ export default function About() {
   }
 
   function isOpened(id) {
-    return Boolean(aboutDone) || localStorage.getItem(openedKey(id)) === '1';
+    return localStorage.getItem(openedKey(id)) === '1';
   }
 
   function openSection(id) {
     localStorage.setItem(openedKey(id), '1');
-    if (id === 'indicators' && !aboutDone) {
-      api('/api/progress/about-done', { method: 'POST', token }).then(() => refresh());
-    }
     setActive(id);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }

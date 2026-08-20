@@ -1,5 +1,6 @@
 import { createPortal } from 'react-dom';
 import { useI18n } from '../context/I18nContext.jsx';
+import MathText from './MathText.jsx';
 
 export default function ExplainModal({ open, question, answer, explain, onContinue }) {
   const { t } = useI18n();
@@ -18,19 +19,19 @@ export default function ExplainModal({ open, question, answer, explain, onContin
         <div className="space-y-3 p-5">
           {question && (
             <p className="rounded-2xl bg-white/80 p-3 text-sm font-medium text-brown-900 ring-1 ring-brown-200/60">
-              {question}
+              <MathText text={question} />
             </p>
           )}
 
           {answer && (
             <p className="rounded-2xl bg-green-100 p-3 text-sm font-bold text-green-900 ring-1 ring-green-300">
-              {t('exploration.answer')}: {answer}
+              {t('exploration.answer')}: <MathText text={answer} />
             </p>
           )}
 
           {explain && (
             <p className="rounded-2xl bg-amber-50 p-3 text-sm font-medium text-brown-800 ring-1 ring-amber-200/70">
-              {t('exploration.explanation')}: {explain}
+              {t('exploration.explanation')}: <MathText text={explain} />
             </p>
           )}
         </div>

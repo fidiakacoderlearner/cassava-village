@@ -10,6 +10,7 @@ import SpeakerCharacter from '../components/SpeakerCharacter.jsx';
 import { MachineFlowDiagram, MoneyFlowDiagram, MachineShowcase } from '../components/StageDiagram.jsx';
 import QuizFeedbackModal from '../components/QuizFeedbackModal.jsx';
 import ExplainModal from '../components/ExplainModal.jsx';
+import MathText from '../components/MathText.jsx';
 import { LogOutIcon } from '../components/icons.jsx';
 import { useAuth } from '../context/AuthContext.jsx';
 import { useI18n } from '../context/I18nContext.jsx';
@@ -19,28 +20,17 @@ import { api } from '../context/api.js';
 import { STORY, SPEAKERS, OPEN_STEPS } from '../data/story.js';
 import { DRAG_CARDS, DRAG_X, DRAG_BEST, DRAG_SUB, EXPERIMENT_ROWS, formatRupiah } from '../data/drag.js';
 
-function shuffledIndexes(n) {
-  const arr = Array.from({ length: n }, (_, i) => i);
-  for (let i = arr.length - 1; i > 0; i -= 1) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [arr[i], arr[j]] = [arr[j], arr[i]];
-  }
-  return arr;
-}
-
 function QuizOptions({ step, done, question, answer, explain, onCorrect, onWrong, onContinue }) {
   const { t } = useI18n();
   const MAX_ATTEMPTS = 3;
   const [selected, setSelected] = useState(null);
   const [status, setStatus] = useState(done ? 'correct' : 'idle'); // idle | wrong | correct
   const [attempts, setAttempts] = useState(0);
-  const [order, setOrder] = useState(() => shuffledIndexes(step.options.length));
   const [modalOpen, setModalOpen] = useState(false);
   const [explainOpen, setExplainOpen] = useState(false);
   const [fresh, setFresh] = useState(false);
 
-  const shuffled = order.map((o) => step.options[o]);
-  const correctPos = order.indexOf(step.correct);
+  const correctPos = step.correct;
 
   function choose(i) {
     if (status === 'correct' || explainOpen) return;
@@ -50,13 +40,13 @@ function QuizOptions({ step, done, question, answer, explain, onCorrect, onWrong
       setFresh(true);
       playCorrect();
       setModalOpen(true);
-      onCorrect(shuffled[i]);
+      onCorrect(step.options[i]);
     } else {
       setAttempts((a) => a + 1);
       setStatus('wrong');
       playWrong();
       setModalOpen(true);
-      onWrong(shuffled[i]);
+      onWrong(step.options[i]);
     }
   }
 
@@ -73,9 +63,9 @@ function QuizOptions({ step, done, question, answer, explain, onCorrect, onWrong
   }
 
   return (
-    <div className="relative mt-4 w-full animate-pop-in">
-      <div className="mb-2 flex items-center justify-between">
-        <span className="rounded-full bg-white/80 px-3 py-1 text-xs font-semibold text-brown-700 ring-1 ring-brown-200">
+    <div className="relative mt-3 w-full animate-pop-in md:mt-3 lg:mt-2 xl:mt-3 2xl:mt-4">
+      <div className="mb-2 flex items-center justify-between md:mb-2.5 lg:mb-2 xl:mb-2.5 2xl:mb-3">
+        <span className="rounded-full bg-white/80 px-2 py-0.5 text-[10px] font-semibold text-brown-700 ring-1 ring-brown-200 md:px-2.5 md:py-0.5 md:text-xs lg:px-2 lg:py-0.5 lg:text-[10px] xl:px-3 xl:py-1 xl:text-xs 2xl:px-4 2xl:py-1.5 2xl:text-sm">
           {status === 'correct'
             ? `✓ ${t('exploration.correct')}`
             : t('exploration.attemptsLeft', { n: Math.max(0, MAX_ATTEMPTS - attempts) })}
@@ -83,7 +73,7 @@ function QuizOptions({ step, done, question, answer, explain, onCorrect, onWrong
       </div>
 
       <div className={`grid grid-cols-1 gap-2.5 sm:grid-cols-2 ${status === 'wrong' ? 'animate-shake' : ''}`}>
-        {shuffled.map((opt, i) => {
+        {step.options.map((opt, i) => {
           let cls = 'bg-white/95 ring-brown-200 hover:ring-amber-500 hover:bg-amber-50/80';
           let badge = 'bg-amber-200 text-brown-900';
           if (status === 'correct' && i === correctPos) {
@@ -98,12 +88,12 @@ function QuizOptions({ step, done, question, answer, explain, onCorrect, onWrong
             <button
               key={i}
               onClick={() => choose(i)}
-              className={`flex items-center gap-3 rounded-2xl px-4 py-3.5 text-left font-medium text-brown-900 shadow-xs ring-1 transition active:scale-98 ${cls}`}
+              className={`flex items-center gap-2 rounded-2xl px-3 py-3 text-left font-medium text-brown-900 shadow-xs ring-1 transition active:scale-98 md:gap-2.5 md:px-3.5 md:py-3 lg:gap-2 lg:px-3 lg:py-2.5 xl:gap-3 xl:px-4 xl:py-3.5 2xl:gap-4 2xl:px-5 2xl:py-4 ${cls}`}
             >
-              <span className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs font-bold shadow-xs ${badge}`}>
+              <span className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-[10px] font-bold shadow-xs md:h-6.5 md:w-6.5 md:text-[10px] lg:h-6 lg:w-6 lg:text-[10px] xl:h-7 xl:w-7 xl:text-xs 2xl:h-8 2xl:w-8 2xl:text-sm ${badge}`}>
                 {status === 'wrong' && i === selected ? '✗' : String.fromCharCode(65 + i)}
               </span>
-              <span className="text-sm font-semibold">{opt}</span>
+              <span className="text-xs font-semibold md:text-sm lg:text-xs xl:text-sm 2xl:text-base"><MathText text={opt} /></span>
             </button>
           );
         })}
@@ -111,7 +101,7 @@ function QuizOptions({ step, done, question, answer, explain, onCorrect, onWrong
         {status === 'correct' && !fresh && (
           <button
             onClick={onContinue}
-            className="absolute right-1 bottom-1 z-10 rounded-full bg-brown-800 px-7 py-2.5 font-display font-bold text-cream shadow-md transition-transform hover:scale-105 active:scale-95"
+            className="absolute right-1 bottom-1 z-10 rounded-full bg-brown-800 px-4 py-1.5 font-display text-[10px] font-bold text-cream shadow-md transition-transform hover:scale-105 active:scale-95 md:px-5 md:py-2 md:text-xs lg:px-4 lg:py-1.5 lg:text-[10px] xl:px-7 xl:py-2.5 xl:text-xs 2xl:px-8 2xl:py-3 2xl:text-sm"
           >
             {t('exploration.continue')}
           </button>
@@ -146,7 +136,7 @@ function OpenStepInput({ step, value: initialValue, saved, onDraft, onSave, onUn
   const canContinue = saved && value.trim().length > 0;
 
   return (
-    <div className="mt-4 w-full animate-pop-in">
+    <div className="mt-2 w-full animate-pop-in md:mt-3 lg:mt-2 xl:mt-4">
       <textarea
         value={value}
         readOnly={saved}
@@ -156,29 +146,29 @@ function OpenStepInput({ step, value: initialValue, saved, onDraft, onSave, onUn
         }}
         rows={3}
         placeholder={t('exploration.writeAnswer')}
-        className={`w-full resize-none rounded-2xl border px-4 py-3 text-sm text-brown-900 placeholder-brown-400 shadow-xs outline-none transition ${
+        className={`w-full resize-none rounded-2xl border px-3 py-2 text-xs text-brown-900 placeholder-brown-400 shadow-xs outline-none transition md:px-4 md:py-2.5 md:text-sm lg:px-3 lg:py-2 lg:text-xs xl:px-4 xl:py-3 xl:text-sm 2xl:px-5 2xl:py-3.5 2xl:text-base ${
           saved
             ? 'border-green-300 bg-green-50/70'
             : 'border-brown-200 bg-white/95 focus:border-amber-500 focus:ring-2 focus:ring-amber-200'
         }`}
       />
 
-      <div className="mt-3 flex flex-wrap items-center justify-end gap-2">
+      <div className="mt-2 flex flex-wrap items-center justify-end gap-1.5 md:mt-2.5 md:gap-2 lg:mt-2 lg:gap-1.5 xl:mt-3 xl:gap-2 2xl:mt-4 2xl:gap-2.5">
         {saved ? (
           <>
-            <span className="rounded-full bg-green-100 px-3 py-1.5 text-xs font-bold text-green-700">
+            <span className="rounded-full bg-green-100 px-2 py-1 text-[10px] font-bold text-green-700 md:px-2.5 md:py-1 md:text-xs lg:px-2 lg:py-0.5 lg:text-[10px] xl:px-3 xl:py-1.5 xl:text-xs 2xl:px-4 2xl:py-2 2xl:text-sm">
               ✓ {t('exploration.saved')}
             </span>
             <button
               onClick={onUnsave}
-              className="rounded-full bg-brown-200 px-5 py-2.5 font-display font-bold text-brown-800 shadow-sm transition-transform hover:scale-105 active:scale-95"
+              className="rounded-full bg-brown-200 px-3 py-1.5 text-[10px] font-display font-bold text-brown-800 shadow-sm transition-transform hover:scale-105 active:scale-95 md:px-4 md:py-2 md:text-xs lg:px-3 lg:py-1.5 lg:text-[10px] xl:px-5 xl:py-2.5 xl:text-xs 2xl:px-6 2xl:py-3 2xl:text-sm"
             >
               ✎ {t('exploration.edit')}
             </button>
             <button
               onClick={onContinue}
               disabled={!canContinue}
-              className="rounded-full bg-brown-800 px-7 py-2.5 font-display font-bold text-cream shadow-md transition-transform hover:scale-105 active:scale-95 disabled:opacity-50"
+              className="rounded-full bg-brown-800 px-4 py-1.5 text-[10px] font-display font-bold text-cream shadow-md transition-transform hover:scale-105 active:scale-95 disabled:opacity-50 md:px-5 md:py-2 md:text-xs lg:px-4 lg:py-1.5 lg:text-[10px] xl:px-7 xl:py-2.5 xl:text-xs 2xl:px-8 2xl:py-3 2xl:text-sm"
             >
               {t('exploration.continue')}
             </button>
@@ -188,14 +178,14 @@ function OpenStepInput({ step, value: initialValue, saved, onDraft, onSave, onUn
             <button
               onClick={() => onSave(value)}
               disabled={!value.trim()}
-              className="rounded-full bg-green-600 px-6 py-2.5 font-display font-bold text-white shadow-md transition-transform hover:scale-105 active:scale-95 disabled:opacity-50"
+              className="rounded-full bg-green-600 px-4 py-1.5 text-[10px] font-display font-bold text-white shadow-md transition-transform hover:scale-105 active:scale-95 disabled:opacity-50 md:px-5 md:py-2 md:text-xs lg:px-4 lg:py-1.5 lg:text-[10px] xl:px-6 xl:py-2.5 xl:text-xs 2xl:px-7 2xl:py-3 2xl:text-sm"
             >
               ✓ {t('exploration.saveAnswer')}
             </button>
             <button
               onClick={onContinue}
               disabled={!canContinue}
-              className="rounded-full bg-brown-800 px-7 py-2.5 font-display font-bold text-cream shadow-md transition-transform hover:scale-105 active:scale-95 disabled:opacity-50"
+              className="rounded-full bg-brown-800 px-4 py-1.5 text-[10px] font-display font-bold text-cream shadow-md transition-transform hover:scale-105 active:scale-95 disabled:opacity-50 md:px-5 md:py-2 md:text-xs lg:px-4 lg:py-1.5 lg:text-[10px] xl:px-7 xl:py-2.5 xl:text-xs 2xl:px-8 2xl:py-3 2xl:text-sm"
             >
               {t('exploration.continue')}
             </button>
@@ -209,10 +199,10 @@ function OpenStepInput({ step, value: initialValue, saved, onDraft, onSave, onUn
 function DialogueActions({ onContinue }) {
   const { t } = useI18n();
   return (
-    <div className="mt-3 flex justify-end animate-pop-in">
+    <div className="mt-2 flex justify-end animate-pop-in md:mt-2.5 lg:mt-2 xl:mt-3 2xl:mt-4">
       <button
         onClick={onContinue}
-        className="ml-auto rounded-full bg-brown-800 px-7 py-2.5 font-display font-bold text-cream shadow-md transition-transform hover:scale-105 active:scale-95"
+        className="ml-auto rounded-full bg-brown-800 px-4 py-1.5 font-display text-[10px] font-bold text-cream shadow-md transition-transform hover:scale-105 active:scale-95 md:px-5 md:py-2 md:text-xs lg:px-4 lg:py-1.5 lg:text-[10px] xl:px-7 xl:py-2.5 xl:text-xs 2xl:px-8 2xl:py-3 2xl:text-sm"
       >
         {t('exploration.continue')}
       </button>
@@ -363,7 +353,7 @@ function DragExperimentQuiz({ question, initialAnswer, onSave, onContinue }) {
               isDraggingOut ? 'opacity-0' : saved ? 'cursor-default opacity-70' : ''
             }`}
           >
-            {card.label}
+            <MathText text={card.label} />
           </button>
         ) : (
           <span className="text-xs font-semibold text-brown-400">?</span>
@@ -398,7 +388,7 @@ function DragExperimentQuiz({ question, initialAnswer, onSave, onContinue }) {
                       : 'bg-[#eab277] text-brown-900 ring-brown-400/60 hover:bg-[#eaa76a] active:scale-95 cursor-grab active:cursor-grabbing'
               }`}
             >
-              {card.label}
+              <MathText text={card.label} />
             </button>
           );
         })}
@@ -410,7 +400,7 @@ function DragExperimentQuiz({ question, initialAnswer, onSave, onContinue }) {
     <div className="w-full rounded-3xl bg-peach-light/90 p-5 shadow-xl ring-1 ring-brown-200/60 animate-pop-in md:p-7">
       {question && (
         <h3 className="mb-4 text-left font-display text-base font-bold text-brown-800 md:text-lg leading-relaxed">
-          {question}
+          <MathText text={question} />
         </h3>
       )}
       <p className="mb-3 text-left text-sm font-semibold text-brown-600">
@@ -515,7 +505,7 @@ function DragExperimentQuiz({ question, initialAnswer, onSave, onContinue }) {
             className="pointer-events-none fixed left-0 top-0 z-50 select-none rounded-xl bg-[#eab277] px-3 py-2.5 font-display text-sm font-bold text-brown-900 shadow-xl ring-2 ring-amber-500/80 rotate-2"
             style={{ transform: 'translate(-9999px, -9999px)' }}
           >
-            {cardOf(drag.cardId)?.label}
+            <MathText text={cardOf(drag.cardId)?.label} />
           </div>,
           document.body
         )}
@@ -528,7 +518,7 @@ function ExperimentResultTable({ answer, question, onContinue }) {
   const hasAnswer = Boolean(
     answer && answer.slot1 && answer.slot2 && DRAG_SUB[answer.slot1] && DRAG_SUB[answer.slot2]
   );
-  const myCombo = hasAnswer ? `(${DRAG_SUB[answer.slot2]} ∘ ${DRAG_SUB[answer.slot1]})(x)` : null;
+  const myCombo = hasAnswer ? `(${DRAG_SUB[answer.slot2]} ∘ ${DRAG_SUB[answer.slot1]})(<i>x</i>)` : null;
   const result = hasAnswer ? Number(answer.result) : null;
 
   let feedbackKey = null;
@@ -542,7 +532,7 @@ function ExperimentResultTable({ answer, question, onContinue }) {
     <div className="w-full rounded-3xl bg-peach-light/90 p-5 shadow-xl ring-1 ring-brown-200/60 animate-pop-in md:p-7">
       {question && (
         <h3 className="mb-4 text-left font-display text-base font-bold text-brown-800 md:text-lg leading-relaxed">
-          {question}
+          <MathText text={question} />
         </h3>
       )}
 
@@ -551,13 +541,13 @@ function ExperimentResultTable({ answer, question, onContinue }) {
         <div>
           <div className="rounded-2xl bg-white/85 p-4 shadow-sm ring-1 ring-brown-200/60">
             <p className="text-sm leading-relaxed text-brown-800">
-              {feedbackKey ? t(`exploration.${feedbackKey}`) : t('exploration.dragNoAnswer')}
+              <MathText text={feedbackKey ? t(`exploration.${feedbackKey}`) : t('exploration.dragNoAnswer')} />
             </p>
             {hasAnswer && (
               <div className="mt-3 flex flex-wrap items-center gap-2 rounded-xl bg-cream/80 px-3 py-2 text-xs font-semibold text-brown-700 ring-1 ring-brown-200/60">
                 <span>{t('exploration.dragYourAnswer')}:</span>
-                <span className="font-mono">{myCombo}</span>
-                <span className="font-bold text-brown-900">{formatRupiah(result)}</span>
+                <span className="font-mono"><MathText text={myCombo} /></span>
+                <span className="font-bold text-brown-900">= {formatRupiah(result)}</span>
                 {result === DRAG_BEST && (
                   <span className="rounded-full bg-green-500 px-2 py-0.5 text-[10px] font-bold text-white">
                     🏆 {t('exploration.experimentBest')}
@@ -590,7 +580,7 @@ function ExperimentResultTable({ answer, question, onContinue }) {
                     key={r.combo}
                     className={`border-t border-brown-100 ${isBest ? 'bg-green-100/80' : isYour ? 'bg-amber-100/90' : 'bg-white/85'}`}
                   >
-                    <td className="px-4 py-2 font-mono text-xs font-semibold text-brown-800">{r.combo}</td>
+                    <td className="px-4 py-2 font-mono text-xs font-semibold text-brown-800"><MathText text={r.combo} /></td>
                     <td className="px-4 py-2 text-right">
                       <span
                         className={`inline-flex flex-wrap items-center justify-end gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-bold ${
@@ -649,7 +639,7 @@ function ReviewPage({ items, initialValues, saving, error, onSave, onBack }) {
             <p className="text-xs font-bold uppercase tracking-wide text-brown-500">
               {t('exploration.reviewQuestion', { n: n + 1 })}
             </p>
-            <p className="mt-1 text-sm font-semibold leading-relaxed text-brown-900">{it.question}</p>
+            <p className="mt-1 text-sm font-semibold leading-relaxed text-brown-900"><MathText text={it.question} /></p>
 
             <textarea
               value={values[it.id] || ''}
@@ -696,7 +686,7 @@ function CalcContextBanner({ text, pillLabel, prevAnswer }) {
   return (
     <div className="w-full animate-pop-in space-y-2">
       <div className="rounded-2xl bg-[#f3c599]/50 px-4 py-3 text-left text-sm font-medium leading-relaxed text-brown-800 ring-1 ring-peach">
-        {text}
+        <MathText text={text} />
       </div>
       {pillLabel && prevAnswer && (
         <div className="flex flex-wrap items-center gap-2 rounded-2xl bg-white/85 px-4 py-2 shadow-sm ring-1 ring-brown-200/70">
@@ -951,39 +941,39 @@ export default function Exploration() {
       <PageBackground />
       <Navbar />
 
-      <main className="mx-auto flex w-full max-w-6xl flex-1 min-h-0 flex-col px-4 pt-4 pb-0 md:pt-6">
+      <main className="mx-auto flex w-full max-w-6xl flex-1 min-h-0 flex-col px-3 pt-3 pb-0 md:px-4 md:pt-4 lg:px-3 lg:pt-3 xl:px-4 xl:pt-4 2xl:px-5">
         {/* Top Exploration Header */}
         <div className="w-full shrink-0">
-          <div className="mb-3 flex items-center justify-between gap-4">
-            <div>
-              <h1 className="font-display text-2xl font-bold text-brown-900 drop-shadow-xs">
+          <div className="mb-2 flex items-center justify-between gap-2 md:mb-2.5 md:gap-3 lg:mb-2 lg:gap-2 xl:mb-3 xl:gap-4 2xl:mb-4">
+            <div className="min-w-0">
+              <h1 className="font-display text-lg font-bold text-brown-900 drop-shadow-xs md:text-xl lg:text-lg xl:text-2xl 2xl:text-3xl">
                 {isReview ? t('exploration.reviewTitle') : t('exploration.title')}
               </h1>
-              <p className="flex flex-wrap items-center gap-2 text-xs font-semibold text-brown-700">
+              <p className="flex flex-wrap items-center gap-1 text-[10px] font-semibold text-brown-700 md:gap-1.5 md:text-xs lg:gap-1 lg:text-[10px] xl:gap-2 xl:text-xs 2xl:gap-2.5 2xl:text-sm">
                 {isReview
                   ? t('exploration.reviewSubtitle')
                   : t('exploration.step', { current: index + 1, total: STORY.length })}
                 {!isReview && (
-                  <span className="rounded-full bg-amber-200/80 px-2.5 py-0.5 font-bold text-brown-800 ring-1 ring-amber-300/60">
+                  <span className="rounded-full bg-amber-200/80 px-1.5 py-px font-bold text-brown-800 ring-1 ring-amber-300/60 md:px-2 md:py-0.5 lg:px-1.5 lg:py-px xl:px-2.5 xl:py-0.5 2xl:px-3 2xl:py-1">
                     {t('exploration.savedQuestion', { n: savedEssayCount, total: OPEN_STEPS.length })}
                   </span>
                 )}
               </p>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex shrink-0 items-center gap-1 md:gap-1.5 lg:gap-1 xl:gap-2 2xl:gap-2.5">
               {index > 0 && (
                 <button
                   onClick={back}
-                  className="flex items-center gap-1 rounded-full bg-brown-500 px-4 py-2 text-xs font-bold text-cream shadow-sm transition-transform hover:scale-105"
+                  className="flex items-center gap-0.5 rounded-full bg-brown-500 px-2.5 py-1.5 text-[10px] font-bold text-cream shadow-sm transition-transform hover:scale-105 md:px-3 md:py-1.5 md:text-[10px] lg:px-2.5 lg:py-1 lg:text-[10px] xl:px-4 xl:py-2 xl:text-xs 2xl:px-5 2xl:py-2.5 2xl:text-sm"
                 >
                   {t('exploration.back')}
                 </button>
               )}
               <button
                 onClick={() => setShowExit(true)}
-                className="flex items-center gap-2 rounded-full bg-brown-800 px-4 py-2 text-xs font-bold text-cream shadow-md transition-transform hover:scale-105"
+                className="flex items-center gap-1 rounded-full bg-brown-800 px-2.5 py-1.5 text-[10px] font-bold text-cream shadow-md transition-transform hover:scale-105 md:gap-1.5 md:px-3 md:py-1.5 lg:gap-1 lg:px-2.5 lg:py-1 lg:text-[10px] xl:gap-2 xl:px-4 xl:py-2 xl:text-xs 2xl:gap-2.5 2xl:px-5 2xl:py-2.5 2xl:text-sm"
               >
-                <LogOutIcon className="h-4 w-4" />
+                <LogOutIcon className="h-3 w-3 md:h-3.5 md:w-3.5 lg:h-3 lg:w-3 xl:h-4 xl:w-4" />
                 {t('exit.leave')}
               </button>
             </div>
@@ -991,7 +981,7 @@ export default function Exploration() {
           <ExitModal open={showExit} onClose={() => setShowExit(false)} />
 
           {/* Progress bar */}
-          <div className="h-2 w-full overflow-hidden rounded-full bg-brown-200/80 shadow-inner">
+          <div className="h-1.5 w-full overflow-hidden rounded-full bg-brown-200/80 shadow-inner md:h-2 lg:h-1.5 xl:h-2 2xl:h-2.5">
             <div
               className="h-full rounded-full bg-gradient-to-r from-amber-400 to-brown-700 transition-all duration-500"
               style={{ width: `${isReview ? 100 : ((index + 1) / STORY.length) * 100}%` }}
@@ -1060,7 +1050,7 @@ export default function Exploration() {
             {/* Bottom Speaker & Dialogue Box Area */}
             {step.type !== 'drag-quiz' && step.type !== 'experiment-table' && (
             <div
-              className={`mt-auto flex shrink-0 items-end gap-0 md:gap-1 ${
+              className={`mt-auto flex shrink-0 items-end gap-0 md:gap-0.5 lg:gap-0 xl:gap-1 2xl:gap-1.5 ${
                 isBoth ? 'justify-center' : ''
               } ${isRafif ? 'flex-row-reverse' : ''}`}
             >
@@ -1073,23 +1063,23 @@ export default function Exploration() {
 
               {/* Right Column (Left when Rafif; Centered when Both): Dialogue Card + Interactive Options Below */}
               <div
-                className={`relative mb-4 min-w-0 flex-1 md:mb-6 ${
-                  isRafif ? '-mr-6 md:-mr-10' : isBoth ? 'mx-1 md:mx-3' : '-ml-6 md:-ml-10'
+                className={`relative mb-2 min-w-0 flex-1 md:mb-3 lg:mb-2 xl:mb-4 ${
+                  isRafif ? '-mr-4 md:-mr-6 lg:-mr-5 xl:-mr-6 2xl:-mr-7' : isBoth ? 'mx-0.5 md:mx-1 lg:mx-1 xl:mx-3 2xl:mx-4' : '-ml-4 md:-ml-6 lg:-ml-5 xl:-ml-6 2xl:-ml-7'
                 }`}
               >
                 {/* Speaker Name Tag pinned on top of dialogue card */}
                 <div
-                  className={`absolute -top-4 z-10 rounded-full bg-[#f3c599] px-5 py-1.5 shadow-sm ring-1 ring-[#f3c599] ${
-                    isBoth ? 'left-1/2 -translate-x-1/2' : isRafif ? 'right-4' : 'left-4'
+                  className={`absolute -top-3 z-10 rounded-full bg-[#f3c599] px-3 py-0.5 shadow-sm ring-1 ring-[#f3c599] md:-top-3.5 md:px-4 md:py-1 lg:-top-3 lg:px-3 lg:py-0.5 xl:-top-4 xl:px-5 xl:py-1.5 2xl:-top-5 2xl:px-6 2xl:py-2 ${
+                    isBoth ? 'left-1/2 -translate-x-1/2' : isRafif ? 'right-2.5 md:right-3 lg:right-2.5 xl:right-4 2xl:right-5' : 'left-2.5 md:left-3 lg:left-2.5 xl:left-4 2xl:left-5'
                   }`}
                 >
-                  <span className="font-display text-base font-bold text-[#543e27] md:text-lg">
+                  <span className="font-display text-sm font-bold text-[#543e27] md:text-base lg:text-sm xl:text-base 2xl:text-lg">
                     {speaker.name}
                   </span>
                 </div>
 
                 {/* Dialogue Card */}
-                <div className="rounded-3xl bg-[#ffedd8] p-5 pt-6 backdrop-blur-xs shadow-xl ring-1 ring-brown-200/80 md:p-6 md:pt-7">
+                <div className="rounded-3xl bg-[#ffedd8] p-3 pt-4 backdrop-blur-xs shadow-xl ring-1 ring-brown-200/80 md:p-4 md:pt-5 lg:p-3 lg:pt-4 xl:p-5 xl:pt-6">
                   <Typewriter
                     key={step.id}
                     text={stepText}
@@ -1098,7 +1088,7 @@ export default function Exploration() {
                     playSound={() => playTypeBlip(620 * pitch)}
                     onDone={() => setTypedDone(true)}
                     skipLabel={t('exploration.skipTyping')}
-                    className="text-sm md:text-base leading-relaxed text-[#543e27] font-medium"
+                    className="text-xs leading-relaxed text-[#543e27] font-medium md:text-sm lg:text-xs xl:text-sm 2xl:text-base"
                   />
                   {step.formula && (
                     <Formula value={step.formula} note={stepFormulaNote} />

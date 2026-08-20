@@ -9,6 +9,7 @@ const assetMap = Object.fromEntries(
 export default function AssetImage({ 
   name, 
   className = '', 
+  style = {},
   fallback = null, 
   alt = '',
   loading = 'lazy' // Add lazy loading by default
@@ -53,6 +54,7 @@ export default function AssetImage({
           src={imageSrc}
           alt={alt}
           className={className}
+          style={style}
           loading={loading}
           decoding="async"
         />
@@ -65,7 +67,8 @@ export default function AssetImage({
     <img 
       src={imageSrc} 
       alt={alt} 
-      className={className} 
+      className={className}
+      style={style}
       loading={loading}
       decoding="async"
     />

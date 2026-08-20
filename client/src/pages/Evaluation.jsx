@@ -3,20 +3,12 @@ import { Link } from 'react-router';
 import Navbar from '../components/Navbar.jsx';
 import PageBackground from '../components/PageBackground.jsx';
 import ExitModal from '../components/ExitModal.jsx';
+import MathText from '../components/MathText.jsx';
 import { TrophyIcon, LogOutIcon } from '../components/icons.jsx';
 import { useAuth } from '../context/AuthContext.jsx';
 import { useI18n } from '../context/I18nContext.jsx';
 import { api } from '../context/api.js';
 import { EVALUATION } from '../data/evaluation.js';
-
-function shuffledIndexes(n) {
-  const arr = Array.from({ length: n }, (_, i) => i);
-  for (let i = arr.length - 1; i > 0; i -= 1) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [arr[i], arr[j]] = [arr[j], arr[i]];
-  }
-  return arr;
-}
 
 export default function Evaluation() {
   const { token, user } = useAuth();
@@ -34,8 +26,6 @@ export default function Evaluation() {
       const raw = JSON.parse(localStorage.getItem(`cv_eval_${user?.id}`));
       if (
         raw &&
-        Array.isArray(raw.orders) &&
-        raw.orders.length === EVALUATION.length &&
         Array.isArray(raw.answers) &&
         raw.answers.length === EVALUATION.length
       ) {
@@ -55,13 +45,11 @@ export default function Evaluation() {
     return 0;
   });
 
-  const [orders, setOrders] = useState(() =>
-    savedState
-      ? savedState.orders
-      : EVALUATION.map((q) => {
-          const optsLen = t(`quiz.${q.id}.options`).length;
-          return shuffledIndexes(optsLen);
-        })
+  const [orders] = useState(() =>
+    EVALUATION.map((q) => {
+      const optsLen = t(`quiz.${q.id}.options`).length;
+      return Array.from({ length: optsLen }, (_, i) => i);
+    })
   );
   const [answers, setAnswers] = useState(() =>
     savedState ? savedState.answers : Array(EVALUATION.length).fill(null)
@@ -73,11 +61,9 @@ export default function Evaluation() {
   const qBase = `quiz.${q.id}`;
   const qText = t(`${qBase}.text`);
   const qOptions = t(`${qBase}.options`);
-  const qOrder = orders[current] || [];
-  const qShuffled = qOrder.map((o) => qOptions[o]);
   const selected = answers[current];
 
-  const isCorrectAnswer = (i) => answers[i] === orders[i].indexOf(EVALUATION[i].correct);
+  const isCorrectAnswer = (i) => answers[i] === EVALUATION[i].correct;
   const correctCount = submitted
     ? EVALUATION.map((_, i) => (isCorrectAnswer(i) ? 1 : 0)).reduce((a, b) => a + b, 0)
     : 0;
@@ -93,7 +79,7 @@ export default function Evaluation() {
 
   function persist(next) {
     try {
-      localStorage.setItem(evalKey, JSON.stringify({ orders, answers: next }));
+      localStorage.setItem(evalKey, JSON.stringify({ answers: next }));
     } catch {
       /* ignore */
     }
@@ -133,9 +119,9 @@ export default function Evaluation() {
       const chosen = answers[i];
       entries.push({
         stepId: ev.id,
-        answer: qShuffledFor(i)[chosen],
-        answerIndex: orders[i][chosen],
-        isCorrect: chosen === orders[i].indexOf(ev.correct),
+        answer: qOptions[chosen],
+        answerIndex: chosen,
+        isCorrect: chosen === ev.correct,
       });
     }
     try {
@@ -151,13 +137,6 @@ export default function Evaluation() {
     } finally {
       setSaving(false);
     }
-  }
-
-  function qShuffledFor(i) {
-    const ev = EVALUATION[i];
-    const order = orders[i] || [];
-    const opts = t(`quiz.${ev.id}.options`);
-    return order.map((o) => opts[o]);
   }
 
   function retry() {
@@ -178,12 +157,6 @@ export default function Evaluation() {
     setSubmitError('');
     setCurrent(0);
     setAnswers(Array(total).fill(null));
-    setOrders(
-      EVALUATION.map((q) => {
-        const optsLen = t(`quiz.${q.id}.options`).length;
-        return shuffledIndexes(optsLen);
-      })
-    );
     try {
       localStorage.removeItem(evalKey);
     } catch {
@@ -307,11 +280,9 @@ export default function Evaluation() {
               {EVALUATION.map((ev, i) => {
                 const base = `quiz.${ev.id}`;
                 const opts = t(`${base}.options`);
-                const qOrder = orders[i] || [];
-                const qShuffled = qOrder.map((o) => opts[o]);
                 const isRight = isCorrectAnswer(i);
                 const chosen = answers[i];
-                const userAnswer = qShuffled[chosen];
+                const userAnswer = opts[chosen];
                 const rightAnswer = opts[ev.correct];
                 return (
                   <div
@@ -322,20 +293,20 @@ export default function Evaluation() {
                   >
                     <p className="font-semibold text-brown-800">
                       <span className="mr-1.5 font-bold">{i + 1}.</span>
-                      {t(`${base}.text`)}
+                      <MathText text={t(`${base}.text`)} />
                     </p>
                     <div className="mt-2 text-sm">
                       {isRight ? (
                         <p className="font-semibold text-green-700">
-                          ✓ {t('evaluation.yourAnswer')}: {userAnswer}
+                          ✓ {t('evaluation.yourAnswer')}: <MathText text={userAnswer} />
                         </p>
                       ) : (
                         <>
                           <p className="font-semibold text-red-700">
-                            ✗ {t('evaluation.yourAnswer')}: {userAnswer}
+                            ✗ {t('evaluation.yourAnswer')}: <MathText text={userAnswer} />
                           </p>
                           <p className="mt-1 font-semibold text-green-700">
-                            {t('evaluation.correctAnswer')}: {rightAnswer}
+                            {t('evaluation.correctAnswer')}: <MathText text={rightAnswer} />
                           </p>
                         </>
                       )}
@@ -369,11 +340,11 @@ export default function Evaluation() {
             )}
             <div className="mt-4 rounded-3xl bg-white p-6 shadow-sm ring-1 ring-brown-200/60 md:p-8">
               <h2 className="font-display text-lg font-medium leading-snug text-brown-800">
-                {qText}
+                <MathText text={qText} />
               </h2>
 
               <div className="mt-5 space-y-2.5">
-                {qShuffled.map((opt, i) => {
+                {qOptions.map((opt, i) => {
                   let cls = 'bg-white ring-brown-200 hover:ring-brown-400 hover:bg-brown-50';
                   if (i === selected) {
                     cls = 'bg-brown-50 ring-brown-500';
@@ -387,7 +358,7 @@ export default function Evaluation() {
                       <span className="mr-3 inline-flex h-6 w-6 items-center justify-center rounded-full bg-brown-100 text-xs font-bold text-brown-600">
                         {String.fromCharCode(65 + i)}
                       </span>
-                      {opt}
+                      <MathText text={opt} />
                     </button>
                   );
                 })}

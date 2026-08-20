@@ -40,6 +40,22 @@ router.post('/classes', asyncHandler(async (req, res) => {
   res.status(201).json({ class: cls });
 }));
 
+router.delete('/classes/:id', asyncHandler(async (req, res) => {
+  const cls = await db.prepare('SELECT id FROM classes WHERE id = ? AND teacher_id = ?').get(req.params.id, req.user.id);
+  if (!cls) return res.status(404).json({ error: 'Class not found' });
+  await db.prepare('DELETE FROM classes WHERE id = ?').run(req.params.id);
+  res.json({ ok: true });
+}));
+
+router.delete('/classes/:classId/students/:studentId', asyncHandler(async (req, res) => {
+  const cls = await db.prepare('SELECT id FROM classes WHERE id = ? AND teacher_id = ?').get(req.params.classId, req.user.id);
+  if (!cls) return res.status(404).json({ error: 'Class not found' });
+  const student = await db.prepare('SELECT id FROM users WHERE id = ? AND class_id = ? AND role = ?').get(req.params.studentId, req.params.classId, 'student');
+  if (!student) return res.status(404).json({ error: 'Student not found' });
+  await db.prepare('UPDATE users SET class_id = NULL WHERE id = ?').run(Number(req.params.studentId));
+  res.json({ ok: true });
+}));
+
 router.get('/classes/:id/students', asyncHandler(async (req, res) => {
   const cls = await db.prepare('SELECT id FROM classes WHERE id = ? AND teacher_id = ?').get(req.params.id, req.user.id);
   if (!cls) return res.status(404).json({ error: 'Class not found' });
@@ -81,13 +97,13 @@ router.get('/classes/:id/summary', asyncHandler(async (req, res) => {
 
 async function fetchStudents(classId) {
   const rows = await db.prepare(`
-    SELECT u.id, u.name, u.email, u.about_done, u.exploration_done, u.created_at,
+    SELECT u.id, u.name, u.email, u.exploration_done, u.created_at,
            COUNT(a.id)::int                                                        AS total_answers,
            COALESCE(SUM(CASE WHEN a.is_correct = 1 THEN 1 ELSE 0 END), 0)::int     AS correct_answers,
-           (SELECT COUNT(*)::int FROM exploration_attempts ea WHERE ea.user_id = u.id) AS open_done,
-           (SELECT COUNT(*)::int FROM evaluation_attempts ea2 WHERE ea2.user_id = u.id) AS eval_count
+           (SELECT COUNT(*)::int FROM exploration_attempts ea WHERE ea.user_id = u.id AND ea.class_id = u.class_id) AS open_done,
+           (SELECT COUNT(*)::int FROM evaluation_attempts ea2 WHERE ea2.user_id = u.id AND ea2.class_id = u.class_id) AS eval_count
     FROM users u
-    LEFT JOIN answers a ON a.user_id = u.id
+    LEFT JOIN answers a ON a.user_id = u.id AND a.class_id = u.class_id
     WHERE u.role = 'student' AND u.class_id = ?
     GROUP BY u.id
     ORDER BY u.name
@@ -97,12 +113,11 @@ async function fetchStudents(classId) {
     id: s.id,
     name: s.name,
     email: s.email,
-    aboutDone: Boolean(s.about_done),
-    explorationDone: Boolean(s.exploration_done),
+    explorationDone: s.open_done > 0,
     joined: s.created_at,
     totalAnswers: s.total_answers,
     correctAnswers: s.correct_answers,
-    openDone: s.exploration_done ? TOTAL_OPEN_STEPS : s.open_done,
+    openDone: s.open_done,
     explorationCount: s.open_done ?? 0,
     evalCount: s.eval_count ?? 0,
     scorePercent: s.total_answers > 0 ? Math.round((s.correct_answers / s.total_answers) * 100) : 0,
@@ -121,7 +136,7 @@ async function fetchEssays(classId) {
            aa.step_id,
            aa.answer
     FROM users u
-    LEFT JOIN exploration_attempts ea ON ea.user_id = u.id
+    LEFT JOIN exploration_attempts ea ON ea.user_id = u.id AND ea.class_id = u.class_id
     LEFT JOIN attempt_answers aa ON aa.attempt_id = ea.id
     WHERE u.role = 'student' AND u.class_id = ?
     ORDER BY u.name, ea.attempt_no
@@ -171,7 +186,7 @@ async function fetchEvaluations(classId) {
            aa.answer_index,
            aa.is_correct
     FROM users u
-    LEFT JOIN evaluation_attempts ea ON ea.user_id = u.id
+    LEFT JOIN evaluation_attempts ea ON ea.user_id = u.id AND ea.class_id = u.class_id
     LEFT JOIN evaluation_attempt_answers aa ON aa.attempt_id = ea.id
     WHERE u.role = 'student' AND u.class_id = ?
     ORDER BY u.name, ea.attempt_no

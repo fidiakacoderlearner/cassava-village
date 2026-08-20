@@ -14,11 +14,15 @@ import {
   ClipboardIcon,
   LockIcon,
   LogOutIcon,
+  MenuIcon,
+  CloseIcon,
   TeacherIcon,
+  TrashIcon,
 } from '../components/icons.jsx';
 import { EVALUATION } from '../data/evaluation.js';
 import { OPEN_STEPS } from '../data/story.js';
 import { DRAG_CARDS, DRAG_BEST, formatRupiah } from '../data/drag.js';
+import MathText from '../components/MathText.jsx';
 
 const TOTAL_EVAL = EVALUATION.length;
 const EVAL_STEP_IDS = EVALUATION.map((q) => q.id);
@@ -81,11 +85,11 @@ function EssayAnswersPanel({ student, t }) {
         {drag && dragLabel(drag.slot1) && dragLabel(drag.slot2) ? (
           <div className="mt-2 flex flex-wrap items-center gap-2">
             <span className="rounded-lg bg-[#eab277] px-2.5 py-1 font-mono text-xs font-bold text-brown-900">
-              {t('exploration.dragStep1')}: {dragLabel(drag.slot1)}
+              {t('exploration.dragStep1')}: <MathText text={dragLabel(drag.slot1)} />
             </span>
             <span className="font-bold text-brown-600">→</span>
             <span className="rounded-lg bg-[#eab277] px-2.5 py-1 font-mono text-xs font-bold text-brown-900">
-              {t('exploration.dragStep2')}: {dragLabel(drag.slot2)}
+              {t('exploration.dragStep2')}: <MathText text={dragLabel(drag.slot2)} />
             </span>
             <span className="ml-auto font-display text-sm font-bold text-brown-900">
               {formatRupiah(drag.result)}
@@ -185,21 +189,21 @@ function EvaluationAnswersPanel({ student, t }) {
                 {t('teacher.evalN', { n: i + 1 })}
               </p>
               <p className="mt-1 font-semibold text-brown-800">
-                {t(`quiz.${stepId}.text`)}
+                <MathText text={t(`quiz.${stepId}.text`)} />
               </p>
               <div className="mt-2 text-sm">
                 {userAnswer ? (
                   isCorrect ? (
                     <p className="font-semibold text-green-700">
-                      ✓ {t('evaluation.yourAnswer')}: {userAnswer}
+                      ✓ {t('evaluation.yourAnswer')}: <MathText text={userAnswer} />
                     </p>
                   ) : (
                     <>
                       <p className="font-semibold text-red-700">
-                        ✗ {t('evaluation.yourAnswer')}: {userAnswer}
+                        ✗ {t('evaluation.yourAnswer')}: <MathText text={userAnswer} />
                       </p>
                       <p className="mt-1 font-semibold text-green-700">
-                        {t('evaluation.correctAnswer')}: {correctAnswer}
+                        {t('evaluation.correctAnswer')}: <MathText text={correctAnswer} />
                       </p>
                     </>
                   )
@@ -282,6 +286,10 @@ export default function TeacherDashboard() {
   const [showCreate, setShowCreate] = useState(false);
   const [newName, setNewName] = useState('');
   const [creating, setCreating] = useState(false);
+  const [showDelete, setShowDelete] = useState(false);
+  const [deleting, setDeleting] = useState(false);
+  const [showKick, setShowKick] = useState(null);
+  const [kicking, setKicking] = useState(false);
   const [copied, setCopied] = useState(false);
   const [collapsed, setCollapsed] = useState(() => {
     try {
@@ -290,6 +298,7 @@ export default function TeacherDashboard() {
       return false;
     }
   });
+  const [mobileOpen, setMobileOpen] = useState(false);
   const [search, setSearch] = useState('');
   const [perPage, setPerPage] = useState(5);
   const [page, setPage] = useState(1);
@@ -367,6 +376,43 @@ export default function TeacherDashboard() {
     }
   }
 
+  async function deleteClass() {
+    if (!selected || deleting) return;
+    setDeleting(true);
+    try {
+      await api(`/api/teacher/classes/${selected.id}`, { method: 'DELETE', token });
+      setShowDelete(false);
+      await loadClasses();
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setDeleting(false);
+    }
+  }
+
+  async function kickStudent() {
+    if (!showKick || kicking || !classId) return;
+    setKicking(true);
+    try {
+      await api(`/api/teacher/classes/${classId}/students/${showKick.id}`, { method: 'DELETE', token });
+      setShowKick(null);
+      const data = await api(`/api/teacher/classes/${classId}/summary`, { token });
+      setStudents(data.students);
+      const essayMap = {};
+      for (const s of data.essays) essayMap[s.id] = s;
+      setEssayData(essayMap);
+      const evalMap = {};
+      for (const s of data.evaluations) evalMap[s.id] = s;
+      setEvaluationData(evalMap);
+      setClasses((prev) => prev.map((c) => (c.id === classId ? { ...c, student_count: data.class.student_count } : c)));
+      setViewing(null);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setKicking(false);
+    }
+  }
+
   async function copyCode() {
     const cls = classes.find((c) => c.id === classId);
     if (!cls) return;
@@ -432,8 +478,30 @@ export default function TeacherDashboard() {
     'flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold text-cream/80 transition-colors hover:bg-white/10 hover:text-cream';
 
   return (
-    <div className="flex min-h-screen flex-col bg-cream lg:flex-row">
-      <aside className={`relative flex shrink-0 flex-col bg-brown-900 text-cream transition-[width] duration-300 lg:sticky lg:top-0 lg:h-screen ${collapsed ? 'lg:w-20' : 'lg:w-64'}`}>
+    <div className="relative flex min-h-screen flex-col bg-cream lg:flex-row">
+      {/* Mobile backdrop */}
+      {mobileOpen && (
+        <div
+          className="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm lg:hidden"
+          onClick={() => setMobileOpen(false)}
+        />
+      )}
+
+      <aside className={`
+        ${mobileOpen ? 'fixed inset-y-0 left-0 z-50 flex w-64 flex-col bg-brown-900 text-cream shadow-2xl' : 'hidden'}
+        lg:relative lg:z-auto lg:flex lg:flex-col lg:bg-brown-900 lg:text-cream lg:shrink-0 lg:shadow-none
+        transition-[width] duration-300
+        lg:sticky lg:top-0 lg:h-screen ${collapsed ? 'lg:w-20' : 'lg:w-64'}
+      `}>
+        {/* Mobile close button */}
+        <button
+          onClick={() => setMobileOpen(false)}
+          className="absolute right-2 top-2 z-50 flex h-8 w-8 items-center justify-center rounded-full bg-white/10 text-cream transition-colors hover:bg-white/20 lg:hidden"
+          aria-label="Close menu"
+        >
+          <CloseIcon className="h-4 w-4" />
+        </button>
+
         <div className={`flex items-center gap-2 px-5 py-5 ${collapsed ? 'lg:justify-center lg:px-0' : ''}`}>
           {collapsed ? (
             <span
@@ -488,7 +556,23 @@ export default function TeacherDashboard() {
             <p className="mt-1 text-sm text-brown-600">{t('teacher.subtitle')}</p>
           </div>
           <div className="flex flex-wrap items-center gap-2">
+            <button
+              onClick={() => setMobileOpen(true)}
+              className="flex h-10 w-10 items-center justify-center rounded-xl bg-brown-800 text-cream shadow lg:hidden"
+              aria-label="Open menu"
+            >
+              <MenuIcon className="h-5 w-5" />
+            </button>
             <ClassDropdown classes={classes} value={classId} onChange={setClassId} t={t} />
+            {selected && (
+              <button
+                onClick={() => setShowDelete(true)}
+                className="flex items-center justify-center rounded-2xl border border-red-200 bg-white p-2.5 text-red-500 shadow-sm transition-colors hover:bg-red-50 hover:text-red-600"
+                title={t('teacher.deleteClass')}
+              >
+                <TrashIcon className="h-4 w-4" />
+              </button>
+            )}
             <button
               onClick={() => setLanguage(lang === 'en' ? 'id' : 'en')}
               className="rounded-2xl border border-brown-200 bg-white px-4 py-2.5 text-xs font-bold text-brown-800 shadow-sm transition-colors hover:bg-peach/40"
@@ -618,12 +702,21 @@ export default function TeacherDashboard() {
                                 </span>
                               </td>
                               <td className="px-5 py-3 text-center">
-                                <button
-                                  onClick={() => { setActiveTab('essay'); setViewing(s); }}
-                                  className="rounded-full bg-peach/70 px-4 py-1.5 text-xs font-bold text-brown-800 transition-colors hover:bg-peach"
-                                >
-                                  {t('teacher.viewAnswers')}
-                                </button>
+                                <div className="flex items-center justify-center gap-1.5">
+                                  <button
+                                    onClick={() => { setActiveTab('essay'); setViewing(s); }}
+                                    className="rounded-full bg-peach/70 px-4 py-1.5 text-xs font-bold text-brown-800 transition-colors hover:bg-peach"
+                                  >
+                                    {t('teacher.viewAnswers')}
+                                  </button>
+                                  <button
+                                    onClick={() => setShowKick(s)}
+                                    className="flex items-center justify-center rounded-full border border-red-200 bg-white p-1.5 text-red-500 transition-colors hover:bg-red-50 hover:text-red-600"
+                                    title={t('teacher.kickStudent')}
+                                  >
+                                    <TrashIcon className="h-3.5 w-3.5" />
+                                  </button>
+                                </div>
                               </td>
                             </tr>
                           );
@@ -748,6 +841,67 @@ export default function TeacherDashboard() {
               </button>
             </div>
           </form>
+        </div>
+      )}
+
+      {showDelete && selected && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-brown-900/40 px-4">
+          <div className="w-full max-w-sm rounded-3xl bg-white p-6 shadow-2xl">
+            <h2 className="font-display text-lg font-bold text-brown-800">{t('teacher.deleteClassTitle')}</h2>
+            <p className="mt-2 text-sm leading-relaxed text-brown-600">
+              {t('teacher.deleteClassDesc', { name: selected.name })}
+            </p>
+            {selected.student_count > 0 && (
+              <p className="mt-3 rounded-xl bg-amber-50 p-3 text-xs font-semibold text-amber-700 ring-1 ring-amber-200">
+                {t('teacher.deleteClassWarning', { n: selected.student_count })}
+              </p>
+            )}
+            <div className="mt-5 flex justify-end gap-2">
+              <button
+                type="button"
+                onClick={() => setShowDelete(false)}
+                className="rounded-full bg-brown-100 px-5 py-2.5 text-sm font-semibold text-brown-700 transition-colors hover:bg-brown-200"
+              >
+                {t('teacher.cancel')}
+              </button>
+              <button
+                type="button"
+                onClick={deleteClass}
+                disabled={deleting}
+                className="rounded-full bg-red-600 px-5 py-2.5 text-sm font-semibold text-white shadow transition-colors hover:bg-red-700 disabled:opacity-50"
+              >
+                {deleting ? '...' : t('teacher.deleteClassConfirm')}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showKick && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-brown-900/40 px-4">
+          <div className="w-full max-w-sm rounded-3xl bg-white p-6 shadow-2xl">
+            <h2 className="font-display text-lg font-bold text-brown-800">{t('teacher.kickStudentTitle')}</h2>
+            <p className="mt-2 text-sm leading-relaxed text-brown-600">
+              {t('teacher.kickStudentDesc', { name: showKick.name })}
+            </p>
+            <div className="mt-5 flex justify-end gap-2">
+              <button
+                type="button"
+                onClick={() => setShowKick(null)}
+                className="rounded-full bg-brown-100 px-5 py-2.5 text-sm font-semibold text-brown-700 transition-colors hover:bg-brown-200"
+              >
+                {t('teacher.cancel')}
+              </button>
+              <button
+                type="button"
+                onClick={kickStudent}
+                disabled={kicking}
+                className="rounded-full bg-red-600 px-5 py-2.5 text-sm font-semibold text-white shadow transition-colors hover:bg-red-700 disabled:opacity-50"
+              >
+                {kicking ? '...' : t('teacher.kickStudentConfirm')}
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>
