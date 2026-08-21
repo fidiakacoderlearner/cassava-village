@@ -29,7 +29,7 @@
   "joinClass": {
     "title": "Gabung Kelas",
     "desc": "Kamu belum terdaftar di kelas mana pun. Masukkan kode kelas dari gurumu untuk melanjutkan.",
-    "placeholder": "Kode kelas, mis. DEMOAB",
+    "placeholder": "Kode kelas, mis. abcdef",
     "join": "Gabung",
     "error": "Kode kelas tidak valid. Silakan hubungi gurumu."
   },
@@ -170,7 +170,7 @@
     "deleteClassConfirm": "Hapus",
     "kickStudent": "Keluarkan siswa",
     "kickStudentTitle": "Keluarkan Siswa",
-    "kickStudentDesc": "Apakah kamu yakin ingin mengeluarkan \"{name}\" dari kelas ini? Semua data eksplorasi dan evaluasinya akan dihapus secara permanen.",
+    "kickStudentDesc": "Apakah kamu yakin ingin mengeluarkan \"{name}\" dari kelas ini? Data akun dan progresnya tetap tersimpan, tetapi ia tidak akan bisa mengakses kelas ini lagi.",
     "kickStudentConfirm": "Keluarkan",
     "dashboard": "Dashboard",
     "noClassesTitle": "Belum ada kelas",
@@ -222,7 +222,7 @@
     },
     "peeling-function": {
       "text": "Proses ini kuberi nama <i>f</i>, jadi:",
-      "formulaNote": "dengan x adalah berat singkong dalam kg."
+      "formulaNote": "dengan <i>x</i> adalah berat singkong dalam kg."
     },
     "washing-machine": {
       "text": "Dan yang ini adalah Mesin Pencuciku. Setelah dikupas, singkong masih menempel getah dan kotoran, jadi aku membilasnya sampai bersih. Setiap kali, sekitar 10% beratnya hilang karena air dan pati yang terbilas, tapi ada juga sedikit yang selalu tersangkut di sikat mesin, sekitar setengah kilogram, berapa pun jumlah singkong yang masuk.",
@@ -230,7 +230,7 @@
     },
     "washing-function": {
       "text": "Proses ini kuberi nama <i>g</i>, jadi:",
-      "formulaNote": "dengan x adalah berat singkong dalam kg."
+      "formulaNote": "dengan <i>x</i> adalah berat singkong dalam kg."
     },
     "machine-flow": {
       "text": "Begini, aku tidak pernah menggunakan satu mesin saja. Aku selalu mengupas dulu, baru mencucinya. Katakanlah hari ini aku punya 10 kg singkong. Kita lihat saja hasilnya!"
@@ -244,7 +244,7 @@
       "explain": "<i>g</i>(7,225) = 0,9 × 7,225 − 0,5 = 6,5025 − 0,5 = 6,0025 kg"
     },
     "composition-explanation": {
-      "text": "Lihat? Singkongku melewati f lebih dulu, lalu hasilnya melewati g. Ketika dua mesin digunakan berurutan seperti ini, kita menyebutnya komposisi fungsi."
+      "text": "Lihat? Singkongku melewati <i>f</i> lebih dulu, lalu hasilnya melewati <i>g</i>. Ketika dua mesin digunakan berurutan seperti ini, kita menyebutnya komposisi fungsi."
     },
     "open-gof-machines": {
       "text": "Lihat bagaimana aku menghitungnya dalam dua langkah terpisah? Ayo kita buat lebih cepat. Jika aku gabungkan kedua mesin menjadi satu rumus, (<i>g ∘ f</i>)(<i>x</i>), bagaimana bentuknya?"
@@ -256,7 +256,7 @@
       "text": "Tapi tentu saja, aku memberi diskon kepada pelangganku, dan ada juga biaya retribusi pasar yang harus kubayar. Aku selalu menerapkan diskon lebih dulu."
     },
     "quiz-discount": {
-      "text": "Jika x adalah pendapatan kotorku dan aku ingin memberi pelangganku diskon 25%. Anggap diskon sebagai proses <i>f</i>, bagaimana fungsi <i>f(x)</i>-nya?",
+      "text": "Jika <i>x</i> adalah pendapatan kotorku dan aku ingin memberi pelangganku diskon 25%. Anggap diskon sebagai proses <i>f</i>, bagaimana fungsi <i>f(x)</i>-nya?",
       "explain": "Diskon 25% berarti pelanggan membayar 75%, jadi <i>f(x)</i> = 0,75<i>x</i>."
     },
     "quiz-retribution": {

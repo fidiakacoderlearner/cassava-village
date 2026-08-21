@@ -275,7 +275,14 @@ export default function TeacherDashboard() {
   const navigate = useNavigate();
 
   const [classes, setClasses] = useState([]);
-  const [classId, setClassId] = useState(null);
+  const [classId, setClassId] = useState(() => {
+    try {
+      const saved = localStorage.getItem(`cv_last_class_${user?.id}`);
+      return saved ? parseInt(saved, 10) : null;
+    } catch {
+      return null;
+    }
+  });
   const [students, setStudents] = useState([]);
   const [essayData, setEssayData] = useState({});
   const [evaluationData, setEvaluationData] = useState({});
@@ -308,7 +315,14 @@ export default function TeacherDashboard() {
     try {
       const data = await api('/api/teacher/classes', { token });
       setClasses(data.classes);
-      setClassId((prev) => data.classes.some((c) => c.id === prev) ? prev : (data.classes[0]?.id ?? null));
+      setClassId((prev) => {
+        // Prefer the saved classId (from localStorage) if still accessible
+        if (prev && data.classes.some((c) => c.id === prev)) {
+          return prev;
+        }
+        // Fallback to first class
+        return data.classes[0]?.id ?? null;
+      });
     } catch (err) {
       setError(err.message);
     } finally {
@@ -319,6 +333,13 @@ export default function TeacherDashboard() {
   useEffect(() => {
     loadClasses();
   }, [loadClasses]);
+
+  // Save last opened class to localStorage
+  useEffect(() => {
+    if (classId && user?.id) {
+      localStorage.setItem(`cv_last_class_${user.id}`, String(classId));
+    }
+  }, [classId, user?.id]);
 
   useEffect(() => {
     if (!classId) return;
@@ -382,6 +403,10 @@ export default function TeacherDashboard() {
     try {
       await api(`/api/teacher/classes/${selected.id}`, { method: 'DELETE', token });
       setShowDelete(false);
+      // Clear saved class if the deleted class was the currently selected one
+      if (selected.id === classId) {
+        localStorage.removeItem(`cv_last_class_${user?.id}`);
+      }
       await loadClasses();
     } catch (err) {
       setError(err.message);

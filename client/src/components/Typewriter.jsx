@@ -130,7 +130,7 @@ export default function Typewriter({ text, speed = 26, playSound, onDone, classN
     <div>
       <p className={className}>
         {isHtml ? (
-          <span dangerouslySetInnerHTML={{ __html: display }} />
+          <span className="math-text" dangerouslySetInnerHTML={{ __html: display }} />
         ) : (
           display
         )}

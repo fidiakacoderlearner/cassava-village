@@ -580,7 +580,14 @@ function ExperimentResultTable({ answer, question, onContinue }) {
                     key={r.combo}
                     className={`border-t border-brown-100 ${isBest ? 'bg-green-100/80' : isYour ? 'bg-amber-100/90' : 'bg-white/85'}`}
                   >
-                    <td className="px-4 py-2 font-mono text-xs font-semibold text-brown-800"><MathText text={r.combo} /></td>
+                    <td className="px-4 py-2 font-mono text-xs font-semibold text-brown-800">
+                      {isYour && (
+                        <span className="mr-2 text-[10px] font-bold uppercase text-amber-600">
+                          {t('exploration.dragYourAnswer')}
+                        </span>
+                      )}
+                      <MathText text={r.combo} />
+                    </td>
                     <td className="px-4 py-2 text-right">
                       <span
                         className={`inline-flex flex-wrap items-center justify-end gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-bold ${

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import Navbar from '../components/Navbar.jsx';
 import PageBackground from '../components/PageBackground.jsx';
-import { TargetIcon, PinIcon, CheckCircleIcon, LockIcon } from '../components/icons.jsx';
+import { TargetIcon, PinIcon, CheckCircleIcon } from '../components/icons.jsx';
 import { useAuth } from '../context/AuthContext.jsx';
 import { useI18n } from '../context/I18nContext.jsx';
 
@@ -95,7 +95,7 @@ export default function About() {
             )}
           </div>
 
-                    <div className="mt-6 text-center">
+          <div className="mt-6 text-center">
             <button
               onClick={() => setActive(null)}
               className="rounded-full bg-brown-100 px-6 py-2.5 font-semibold text-brown-800 transition-colors hover:bg-brown-200"
@@ -123,59 +123,28 @@ export default function About() {
         </div>
 
         <section className="grid w-full gap-5 md:grid-cols-3">
-          {SECTIONS.map((s, i) => {
-            const unlocked = i === 0 || isOpened(SECTIONS[i - 1].id);
+          {SECTIONS.map((s) => {
             const done = isOpened(s.id);
-            const content = (
-              <>
-                <div className="relative">
-                  {!unlocked && (
-                    <span className="absolute -right-2 -top-2 flex h-8 w-8 items-center justify-center rounded-full bg-brown-800 text-cream shadow">
-                      <LockIcon className="h-4 w-4" />
-                    </span>
-                  )}
-                  <div className="flex h-20 w-20 items-center justify-center rounded-3xl bg-white/60 text-brown-700 shadow-inner">
-                    <s.icon className="h-9 w-9" />
-                  </div>
-                </div>
-                <div>
-                  <h2 className="font-display text-xl font-bold text-brown-800">
-                    {t(`about.${s.titleKey}`)}
-                  </h2>
-                  <p className="mt-1 text-sm text-brown-600">
-                    {unlocked ? t(`about.${s.descKey}`) : t('home.locked')}
-                  </p>
-                </div>
-                <span
-                  className={`rounded-full px-5 py-1.5 text-sm font-semibold shadow transition-transform ${
-                    unlocked
-                      ? 'bg-brown-800 text-cream group-hover:scale-105'
-                      : 'bg-brown-100 text-brown-400'
-                  }`}
-                >
-                  {unlocked ? (done ? t('about.read') : t('home.start')) : <LockIcon className="inline h-4 w-4" />}
-                </span>
-              </>
-            );
-
-            if (!unlocked) {
-              return (
-                <div
-                  key={s.id}
-                  className={`flex cursor-not-allowed flex-col items-center gap-4 rounded-3xl bg-gradient-to-br ${s.bg} p-8 text-center shadow-sm ring-1 ring-brown-200/50 opacity-70`}
-                >
-                  {content}
-                </div>
-              );
-            }
-
             return (
               <button
                 key={s.id}
                 onClick={() => openSection(s.id)}
                 className={`group flex flex-col items-center gap-4 rounded-3xl bg-gradient-to-br ${s.bg} p-8 text-center shadow-sm ring-1 ring-brown-200/50 transition-transform hover:-translate-y-1 hover:shadow-lg`}
               >
-                {content}
+                <div className="flex h-20 w-20 items-center justify-center rounded-3xl bg-white/60 text-brown-700 shadow-inner">
+                  <s.icon className="h-9 w-9" />
+                </div>
+                <div>
+                  <h2 className="font-display text-xl font-bold text-brown-800">
+                    {t(`about.${s.titleKey}`)}
+                  </h2>
+                  <p className="mt-1 text-sm text-brown-600">
+                    {t(`about.${s.descKey}`)}
+                  </p>
+                </div>
+                <span className="rounded-full bg-brown-800 px-5 py-1.5 text-sm font-semibold text-cream shadow transition-transform group-hover:scale-105">
+                  {done ? t('about.read') : t('home.start')}
+                </span>
               </button>
             );
           })}

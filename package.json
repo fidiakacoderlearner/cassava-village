@@ -11,6 +11,7 @@
     "init-db": "npm --prefix server run init-db"
   },
   "devDependencies": {
+    "@playwright/test": "^1.62.1",
     "concurrently": "^9.1.2"
   },
   "dependencies": {

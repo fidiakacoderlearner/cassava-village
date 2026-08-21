@@ -29,7 +29,7 @@
   "joinClass": {
     "title": "Join a Class",
     "desc": "You are not enrolled in any class yet. Enter a class code from your teacher to continue.",
-    "placeholder": "Class code, e.g. DEMOAB",
+    "placeholder": "Class code, e.g. abcdef",
     "join": "Join",
     "error": "Invalid class code. Please check with your teacher."
   },
@@ -104,7 +104,7 @@
     "dragDiscount": "Discount",
     "dragStep1": "Step 1",
     "dragStep2": "Step 2",
-    "dragResult": "Result for <i>x</i> = Rp1,000,000",
+    "dragResult": "Result for <i>x</i> = Rp1.000.000",
     "dragSave": "Save answer",
     "dragSaved": "Saved",
     "dragConfirmTitle": "Are you sure about your answer?",
@@ -169,7 +169,7 @@
     "deleteClassConfirm": "Delete",
     "kickStudent": "Remove student",
     "kickStudentTitle": "Remove student",
-    "kickStudentDesc": "Are you sure you want to remove \"{name}\" from this class? All their exploration and evaluation data will be permanently deleted.",
+    "kickStudentDesc": "Are you sure you want to remove \"{name}\" from this class? Data account and progress will remain saved, but they will not be able to access this class again.",
     "kickStudentConfirm": "Remove",
     "dashboard": "Dashboard",
     "noClassesTitle": "No classes yet",
@@ -221,7 +221,7 @@
     },
     "peeling-function": {
       "text": "I call this process <i>f</i>, so:",
-      "formulaNote": "where x is the weight of the cassava in kg."
+      "formulaNote": "where <i>x</i> is the weight of the cassava in kg."
     },
     "washing-machine": {
       "text": "And this one over here is my Washing Machine. After peeling, the cassava still has some sticky sap and dirt clinging to it, so I rinse it clean. Each time, it loses about 10% of its weight to water and rinsed-off starch, but there's also a little bit that always gets stuck in the machine's brush, about half a kilogram, no matter how much goes in.",
@@ -229,7 +229,7 @@
     },
     "washing-function": {
       "text": "I call this process <i>g</i>, so:",
-      "formulaNote": "where x is the weight of the cassava in kg."
+      "formulaNote": "where <i>x</i> is the weight of the cassava in kg."
     },
     "machine-flow": {
       "text": "Now here's the thing, I never use just one machine by itself. I always peel first, then wash. Let's say I've got 10 kg of cassava today. We'll find out!"
@@ -243,7 +243,7 @@
       "explain": "<i>g</i>(7,225) = 0,9 × 7,225 − 0,5 = 6,5025 − 0,5 = 6,0025 kg"
     },
     "composition-explanation": {
-      "text": "See that? My cassava went through f first, then the result went through g. When two machines are used one after another like this, we call it function composition."
+      "text": "See that? My cassava went through <i>f</i> first, then the result went through <i>g</i>. When two machines are used one after another like this, we call it function composition."
     },
     "open-gof-machines": {
       "text": "See how I calculated that in two separate steps? Let's make it faster. If I combine both machines into one formula, (<i>g ∘ f</i>)(<i>x</i>), what does it look like?"
@@ -255,7 +255,7 @@
       "text": "But of course, I give my customers a discount, and there's also a market retribution fee I have to pay. I always apply the discount first."
     },
     "quiz-discount": {
-      "text": "If x is my gross earnings and I want to give my customer a 25% discount per kilos. Let's say discount as process <i>f</i>, what's the function of <i>f(x)</i>?",
+      "text": "If <i>x</i> is my gross earnings and I want to give my customer a 25% discount per kilos. Let's say discount as process <i>f</i>, what's the function of <i>f(x)</i>?",
       "explain": "A 25% discount means the customer pays 75%, so <i>f(x)</i> = 0,75<i>x</i>."
     },
     "quiz-retribution": {
@@ -290,7 +290,7 @@
       "text": "Now, let's try a little experiment. You have two retribution options and two discount options. Match one retribution card and one discount card into the slots below—and remember, order matters! Try to find the combination that gives the highest net income for gross earnings <i>x</i> = Rp1.000.000."
     },
     "dialogue-experiment-result": {
-      "text": "For <i>x</i> = Rp1.000.000, <i>g<sub>1</sub></i>(1.000.000) = 960.000, then <i>f<sub>2</sub></i>(960.000) = 0,95 × 960.000 = 912.000. This is the highest net income among all combinations — proof that choosing the right order is not just a math trick, but has a real financial impact."
+      "text": "For <i>x</i> = Rp1.000.000, <i>g<sub>1</sub>(1.000.000)</i> = 960.000, then <i>f<sub>2</sub>(960.000)</i> = 0,95 × 960.000 = 912.000. This is the highest net income among all combinations — proof that choosing the right order is not just a math trick, but has a real financial impact."
     }
   },
   "quiz": {

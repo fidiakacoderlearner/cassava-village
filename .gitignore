@@ -23,6 +23,9 @@ client/src/assets/raw/
 # one-time conversion scripts
 scripts/
 
+# playwright test results
+client/test-results/
+
 work!.pdf
 AGENTS.md
 PLAN.md

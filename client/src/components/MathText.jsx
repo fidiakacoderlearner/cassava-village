@@ -5,8 +5,9 @@ function sanitize(html) {
     const low = tag.toLowerCase();
     if (!ALLOWED.has(low)) return '';
     if (low === 'span') {
+      if (match.startsWith('</')) return '</span>';
       const styleMatch = attrs.match(/style="([^"]*)"/);
-      if (!styleMatch) return '';
+      if (!styleMatch) return '<span>';
       return `<span style="${styleMatch[1]}">`;
     }
     return match;

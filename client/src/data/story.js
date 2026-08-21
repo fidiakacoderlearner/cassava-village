@@ -132,7 +132,7 @@ export const STORY = [
     i18n: 'quiz-retribution',
     type: 'quiz',
     speaker: 'pak-restu',
-    options: ['<i>g(x)</i> = <i>x</i> − 80.000', '<i>g(x)</i> = 80.000<i>x</i>', '<i>g(x)</i> = 80.000 / <i>x</i>', '<i>g(x)</i> = <i>x</i> + 80.000', '<i>g(x)</i> = 80.000 − <i>x</i>'],
+    options: ['<i>g(x)</i> = <i>x</i> − 80.000', '<i>g(x)</i> = 80.000<i>x</i>', '<i>g(x)</i> = <span style="display:inline-flex;flex-direction:column;align-items:center;font-size:0.85em;vertical-align:middle"><span style="border-bottom:1px solid currentColor;padding:0 2px">80.000</span><span><i>x</i></span></span>', '<i>g(x)</i> = <i>x</i> + 80.000', '<i>g(x)</i> = 80.000 − <i>x</i>'],
     correct: 0,
     emoji: '🧾',
     moneyFlow: 2,
