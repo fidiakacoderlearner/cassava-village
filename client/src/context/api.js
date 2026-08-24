@@ -1,10 +1,4 @@
-let onUnauthorized = null;
-
-export function setOnUnauthorized(fn) {
-  onUnauthorized = fn;
-}
-
-export async function api(path, { method = 'GET', body, token } = {}) {
+export async function api(path, { method = 'GET', body, token, on401 } = {}) {
   const headers = { 'Content-Type': 'application/json' };
   if (token) headers.Authorization = `Bearer ${token}`;
   let res;
@@ -19,7 +13,7 @@ export async function api(path, { method = 'GET', body, token } = {}) {
   }
   const data = await res.json().catch(() => ({}));
   if (!res.ok) {
-    if (res.status === 401 && token) onUnauthorized?.();
+    if (res.status === 401 && token) on401?.();
     throw new Error(data.error || 'Request failed');
   }
   return data;

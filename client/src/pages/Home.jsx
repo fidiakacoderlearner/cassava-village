@@ -7,7 +7,6 @@ import { ImageIcon } from '../components/icons.jsx';
 import { useAuth } from '../context/AuthContext.jsx';
 import { useI18n } from '../context/I18nContext.jsx';
 import { useProgress } from '../context/ProgressContext.jsx';
-import { api } from '../context/api.js';
 import { STORY } from '../data/story.js';
 
 const CARDS = [
@@ -35,7 +34,7 @@ const CARDS = [
 ];
 
 export default function Home() {
-  const { user, token } = useAuth();
+  const { user, token, api } = useAuth();
   const { t } = useI18n();
   const navigate = useNavigate();
   const progress = useProgress();
@@ -60,7 +59,7 @@ export default function Home() {
   async function startOver() {
     setShowResume(false);
     try {
-      await api('/api/progress/reset-exploration', { method: 'POST', token });
+      await api('/api/progress/reset-exploration', { method: 'POST' });
     } catch {
       /* ignore */
     }

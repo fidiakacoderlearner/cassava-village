@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { db, generateClassCode } from '../db.js';
 import { requireAuth, requireTeacher, asyncHandler } from '../middleware/auth.js';
-import { TOTAL_OPEN_STEPS } from '../constants.js';
+import { TOTAL_OPEN_STEPS } from '../../shared/constants.js';
 
 const router = Router();
 

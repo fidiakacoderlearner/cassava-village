@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { db } from '../db.js';
 import { requireAuth, asyncHandler } from '../middleware/auth.js';
-import { OPEN_STEP_IDS, EVAL_STEP_IDS, EXPLORE_STEP_IDS, TOTAL_OPEN_STEPS } from '../constants.js';
+import { OPEN_STEP_IDS, EVAL_STEP_IDS, EXPLORE_STEP_IDS, TOTAL_OPEN_STEPS, DRAG_FN, DRAG_X } from '../../shared/constants.js';
 
 const router = Router();
 
@@ -44,16 +44,10 @@ router.post('/exploration/submit', asyncHandler(async (req, res) => {
     return res.status(400).json({ error: 'All exploration essays must be answered' });
   }
 
-  const fn = {
-    f1: (x) => x - 60000,
-    f2: (x) => 0.95 * x,
-    g1: (x) => x - 40000,
-    g2: (x) => 0.9 * x,
-  };
-  if (!drag || !drag.slot1 || !fn[drag.slot1] || !drag.slot2 || !fn[drag.slot2]) {
+  if (!drag || !drag.slot1 || !DRAG_FN[drag.slot1] || !drag.slot2 || !DRAG_FN[drag.slot2]) {
     return res.status(400).json({ error: 'Drag answer is required' });
   }
-  const result = Math.round(fn[drag.slot2](fn[drag.slot1](1000000)));
+  const result = Math.round(DRAG_FN[drag.slot2](DRAG_FN[drag.slot1](DRAG_X)));
   const dragJson = JSON.stringify({ slot1: drag.slot1, slot2: drag.slot2, result });
 
   const classId = await getUserClassId(req.user.id);

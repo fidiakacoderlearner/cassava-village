@@ -1,5 +1,5 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
-import { api, setOnUnauthorized } from './api';
+import { api } from './api.js';
 
 const AuthContext = createContext(null);
 
@@ -60,16 +60,15 @@ export function AuthProvider({ children }) {
     []
   );
 
-  useEffect(() => {
-    setOnUnauthorized(() => {
-      logout();
-    });
-    return () => setOnUnauthorized(null);
-  }, [logout]);
+  // Authenticated API wrapper - includes token and 401 handler
+  const authedApi = useCallback(
+    (path, options = {}) => api(path, { ...options, token, on401: logout }),
+    [token, logout]
+  );
 
   const value = useMemo(
-    () => ({ token, user, isAuthed: Boolean(token), login, signup, logout, updateUser }),
-    [token, user, login, signup, logout, updateUser]
+    () => ({ token, user, isAuthed: Boolean(token), login, signup, logout, updateUser, api: authedApi }),
+    [token, user, login, signup, logout, updateUser, authedApi]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

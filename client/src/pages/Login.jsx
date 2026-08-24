@@ -1,11 +1,10 @@
-﻿import { useState } from 'react';
+﻿import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import { useAuth } from '../context/AuthContext.jsx';
 import { useI18n } from '../context/I18nContext.jsx';
 import { useAudio, playBubble } from '../context/AudioContext.jsx';
 import LetterTitle from '../components/LetterTitle.jsx';
 import { EyeIcon, EyeOffIcon } from '../components/icons.jsx';
-import { api } from '../context/api.js';
 import SponsorLogos from '../components/SponsorLogos.jsx';
 
 const loginBg = import.meta.glob('/src/assets/login-bg.{png,jpg,jpeg,svg,webp,gif}', { eager: true });
@@ -46,6 +45,13 @@ export default function Login() {
   });
   const [joinCode, setJoinCode] = useState('');
 
+  // Check for joinClass state from navigation (when student is redirected due to missing class_id)
+  useEffect(() => {
+    if (location.state?.joinClass) {
+      setNeedClass(true);
+    }
+  }, [location.state]);
+
   async function handleJoinClass(e) {
     e.preventDefault();
     if (!joinCode.trim() || loading) return;
@@ -54,7 +60,6 @@ export default function Login() {
     try {
       const data = await api('/api/auth/join-class', {
         method: 'POST',
-        token,
         body: { classCode: joinCode },
       });
       updateUser(data.user);

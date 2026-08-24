@@ -1,7 +1,7 @@
 import pg from 'pg';
 import { randomInt } from 'node:crypto';
 import bcrypt from 'bcryptjs';
-import { OPEN_STEP_IDS, EVAL_STEP_IDS } from './constants.js';
+import { OPEN_STEP_IDS, EVAL_STEP_IDS, DRAG_FN, DRAG_COMBOS, DRAG_X, DRAG_BEST } from '../shared/constants.js';
 
 const { Pool } = pg;
 
@@ -134,24 +134,6 @@ const SCHEMA = `
 
 const CODE_ALPHABET = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
 const DEMO_CLASS_CODE = 'DEMOAB';
-
-const DRAG_X = 1000000;
-const DRAG_FN = {
-  f1: (x) => x - 60000,
-  f2: (x) => 0.95 * x,
-  g1: (x) => x - 40000,
-  g2: (x) => 0.9 * x,
-};
-const DRAG_COMBOS = [
-  { slot1: 'f1', slot2: 'g1' },
-  { slot1: 'g1', slot2: 'f1' },
-  { slot1: 'f2', slot2: 'g2' },
-  { slot1: 'g2', slot2: 'f2' },
-  { slot1: 'f1', slot2: 'g2' },
-  { slot1: 'g2', slot2: 'f1' },
-  { slot1: 'g1', slot2: 'f2' },
-  { slot1: 'f2', slot2: 'g1' },
-];
 
 export function generateClassCode(length = 6) {
   let code = '';

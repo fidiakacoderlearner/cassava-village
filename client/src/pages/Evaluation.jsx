@@ -7,11 +7,10 @@ import MathText from '../components/MathText.jsx';
 import { TrophyIcon, LogOutIcon } from '../components/icons.jsx';
 import { useAuth } from '../context/AuthContext.jsx';
 import { useI18n } from '../context/I18nContext.jsx';
-import { api } from '../context/api.js';
 import { EVALUATION } from '../data/evaluation.js';
 
 export default function Evaluation() {
-  const { token, user } = useAuth();
+  const { token, user, api } = useAuth();
   const { t } = useI18n();
   const [submitted, setSubmitted] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -127,7 +126,6 @@ export default function Evaluation() {
     try {
       await api('/api/evaluation/submit', {
         method: 'POST',
-        token,
         body: { answers: entries },
       });
       localStorage.removeItem(evalKey);

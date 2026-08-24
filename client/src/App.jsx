@@ -23,12 +23,14 @@ function RequireAuth({ children }) {
 function StudentOnly({ children }) {
   const { user } = useAuth();
   if (user?.role === 'teacher') return <Navigate to="/teacher" replace />;
+  if (user?.role === 'student' && !user?.class_id) return <Navigate to="/login" state={{ joinClass: true }} replace />;
   return children;
 }
 
 function StudentHome() {
   const { user } = useAuth();
   if (user?.role === 'teacher') return <Navigate to="/teacher" replace />;
+  if (!user?.class_id) return <Navigate to="/login" state={{ joinClass: true }} replace />;
   return <Home />;
 }
 
