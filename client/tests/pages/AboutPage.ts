@@ -4,8 +4,8 @@ export class AboutPage {
   constructor(private page: Page) {}
 
   async expectSections() {
-    await expect(this.page.locator('text=Learning Outcomes')).toBeVisible({ timeout: 10000 });
-    await expect(this.page.locator('text=Learning Objectives')).toBeVisible();
+    await expect(this.page.locator('text=Capaian Pembelajaran')).toBeVisible({ timeout: 10000 });
+    await expect(this.page.locator('text=Tujuan Pembelajaran')).toBeVisible();
   }
 
   async openSection(sectionText: string) {
@@ -15,6 +15,6 @@ export class AboutPage {
   }
 
   async goBack() {
-    await this.page.click('text=Back');
+    await this.page.click('text=Back, text=Kembali');
   }
 }

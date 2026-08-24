@@ -15,7 +15,15 @@ export class TeacherDashboardPage {
   }
 
   async selectClass(className: string) {
-    await this.page.click('text=' + className);
+    // Buka dropdown via trigger (stabil, terlepas dari label aktif)
+    await this.page.locator('[data-testid="class-dropdown-trigger"]').click();
+    // Pilih opsi kelas yang diminta
+    await this.page
+      .locator('[data-testid="class-option"]', { hasText: className })
+      .first()
+      .click({ timeout: 5000 });
+    // Tunggu data kelas termuat
+    await this.page.waitForTimeout(1500);
   }
 
   async viewStudentAnswers(studentName: string) {
@@ -28,24 +36,34 @@ export class TeacherDashboardPage {
   }
 
   async closeModal() {
-    await this.page.click('text=Close');
+    await this.page.click('text=Close, text=Tutup');
   }
 
   async kickStudent(studentName: string) {
     const row = this.page.locator('tr').filter({ hasText: studentName });
     await row.locator('button').last().click();
-    await this.page.click('text=Keluarkan');
+    await this.page.click('text=Keluarkan, text=Kick Out');
   }
 
   async deleteClass() {
-    await this.page.click('[title="Delete class"]');
-    await this.page.click('text=Delete');
+    await this.page.click('[title="Delete class"], [title="Hapus kelas"]');
+    await this.page.click('text=Delete, text=Hapus');
   }
 
   async createClass(name: string) {
-    await this.page.click('text=+ Create class');
-    await this.page.fill('input[placeholder*="Class name"]', name);
-    await this.page.click('text=Create');
+    await this.page
+      .locator('button:has-text("+ Create class"), button:has-text("+ Buat Kelas")')
+      .first()
+      .click();
+    // Modal ConfirmationModal: input children dirender di dalam overlay .fixed
+    const input = this.page.locator('.fixed input[type="text"]').first();
+    await input.waitFor({ state: 'visible', timeout: 10000 });
+    await input.fill(name);
+    // Tombol konfirmasi ("Buat"/"Create") di dalam modal
+    await this.page
+      .locator('.fixed button:has-text("Buat"), .fixed button:has-text("Create")')
+      .first()
+      .click();
   }
 
   async expectStudentCount(expected: number) {

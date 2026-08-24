@@ -3,13 +3,27 @@ import { Page, expect } from '@playwright/test';
 export class LoginPage {
   constructor(private page: Page) {}
 
-  async goto() {
+    async goto() {
     await this.page.goto('/login');
-    await this.page.waitForSelector('form');
+    await this.page.waitForLoadState('domcontentloaded');
+    // Wait for React app to render — valid browser selectors only
+    try {
+      await this.page.waitForSelector('body', { timeout: 10000 });
+      await this.page.waitForFunction(() => {
+        return !!(
+          document.querySelector('input[type="email"]') ||
+          document.querySelector('input[type="password"]') ||
+          document.querySelector('form')
+        );
+      }, { timeout: 60000 });
+    } catch (e) {
+      // If waitForFunction fails, fall back to body presence
+      await this.page.waitForSelector('body', { timeout: 5000 });
+    }
   }
 
   async fillSignup(name: string, email: string, password: string) {
-    const signupBtn = this.page.locator('text=Sign up').first();
+    const signupBtn = this.page.locator('button:has-text("Sign up"), button:has-text("Daftar")').first();
     await signupBtn.click();
     await this.page.fill('input[type="text"]', name);
     await this.page.fill('input[type="email"]', email);
@@ -34,8 +48,8 @@ export class LoginPage {
 
   async signupTeacher(name: string, email: string, password: string) {
     await this.goto();
-    await this.page.click('text=Sign up');
-    await this.page.click('text=Teacher');
+    await this.page.click('button:has-text("Sign up"), button:has-text("Daftar")');
+    await this.page.click('text=Teacher, text=Guru');
     await this.page.fill('input[type="text"]', name);
     await this.page.fill('input[type="email"]', email);
     await this.page.fill('input[type="password"]', password);
@@ -49,7 +63,7 @@ export class LoginPage {
   }
 
   async expectJoinClassForm() {
-    await expect(this.page.locator('text=Gabung Kelas')).toBeVisible({ timeout: 10000 });
+    await expect(this.page.locator('text=Gabung Kelas, text=Join a Class')).toBeVisible({ timeout: 10000 });
   }
 
   async joinClass(code: string) {

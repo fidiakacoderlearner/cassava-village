@@ -4,17 +4,23 @@ export class HomePage {
   constructor(private page: Page) {}
 
   async expectVisible() {
-    await expect(this.page.locator('text=Hi,')).toBeVisible({ timeout: 10000 });
+    // Use regex for partial match - the greeting is "Hai, {name}" or "Hi, {name}"
+    await expect(this.page.locator('p:has-text("Hai,"), p:has-text("Hi,")')).toBeVisible({ timeout: 10000 });
   }
 
   async expectCards() {
-    await expect(this.page.locator('text=About')).toBeVisible();
-    await expect(this.page.locator('text=Exploration')).toBeVisible();
-    await expect(this.page.locator('text=Evaluation')).toBeVisible();
+    await expect(this.page.locator('text=Tentang')).toBeVisible({ timeout: 10000 });
+    await expect(this.page.locator('text=Eksplorasi')).toBeVisible({ timeout: 10000 });
+    await expect(this.page.locator('text=Evaluasi')).toBeVisible({ timeout: 10000 });
   }
 
   async clickCard(name: string) {
-    const card = this.page.locator(`text=${name}`).first();
+    const translations: Record<string, string> = {
+      'About': 'Tentang',
+      'Exploration': 'Eksplorasi',
+      'Evaluation': 'Evaluasi',
+    };
+    const card = this.page.locator(`text=${translations[name] || name}`).first();
     await card.click();
   }
 

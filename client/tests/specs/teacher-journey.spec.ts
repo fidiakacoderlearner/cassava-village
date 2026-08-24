@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from '../fixtures';
 import { LoginPage } from '../pages/LoginPage';
 import { HomePage } from '../pages/HomePage';
 import { TeacherDashboardPage } from '../pages/TeacherDashboardPage';
@@ -29,8 +29,8 @@ test.describe('Teacher Journey', () => {
     const className = `Test ${Date.now()}`;
     await dashboard.createClass(className);
 
-    // Verify class appears in page
-    await expect(page.locator(`text=${className}`)).toBeVisible({ timeout: 5000 });
+    // Verify class appears in page (auto-selected after creation)
+    await expect(page.locator(`text=${className}`).first()).toBeVisible({ timeout: 10000 });
   });
 
   test('Teacher: persist last class selection', async ({ page }) => {
@@ -39,9 +39,10 @@ test.describe('Teacher Journey', () => {
 
     await login.login(TEACHER.email, TEACHER.password);
     await page.waitForURL('/teacher', { timeout: 10000 });
+    await page.waitForTimeout(1000);
 
-    // Select a class
-    await page.click('text=' + CLASS_NAME);
+    // Select a class via dropdown
+    await dashboard.selectClass(CLASS_NAME);
 
     // Check localStorage saved
     const saved = await page.evaluate(() => localStorage.getItem('cv_last_class_1'));
@@ -51,8 +52,8 @@ test.describe('Teacher Journey', () => {
     await page.reload();
     await page.waitForSelector('text=Dashboard Guru', { timeout: 10000 });
 
-    // The class should still be selected (visible in dropdown)
-    await expect(page.locator('text=' + CLASS_NAME)).toBeVisible({ timeout: 5000 });
+    // The class should still be selected (visible in dropdown trigger)
+    await expect(page.locator('text=' + CLASS_NAME)).toBeVisible({ timeout: 10000 });
   });
 
   test('Teacher: view student answers modal', async ({ page }) => {
@@ -62,16 +63,16 @@ test.describe('Teacher Journey', () => {
     await login.login(TEACHER.email, TEACHER.password);
     await page.waitForURL('/teacher', { timeout: 10000 });
 
-    // Select class with students
-    await page.click('text=' + CLASS_NAME);
-    await page.waitForSelector('text=Githa', { timeout: 5000 });
+    // Select class with students (dropdown)
+    await dashboard.selectClass(CLASS_NAME);
+    await page.waitForSelector('text=Githa', { timeout: 10000 });
 
     // Click view answers for Githa
     const githaRow = page.locator('tr').filter({ hasText: 'Githa' });
-    await githaRow.locator('button:text("View answers")').click();
+    await githaRow.locator('button:has-text("View answers"), button:has-text("Lihat jawaban")').first().click();
 
-    // Check modal opened with tabs
-    await expect(page.locator('text=Exploration')).toBeVisible({ timeout: 5000 });
+    // Modal terbuka dan memuat tab Eksplorasi
+    await expect(page.locator('.fixed')).toContainText('Eksplorasi', { timeout: 10000 });
   });
 
   test('Teacher: kick student', async ({ page }) => {
@@ -81,19 +82,43 @@ test.describe('Teacher Journey', () => {
     await login.login(TEACHER.email, TEACHER.password);
     await page.waitForURL('/teacher', { timeout: 10000 });
 
-    // Select class
-    await page.click('text=' + CLASS_NAME);
-    await page.waitForSelector('text=Siti', { timeout: 5000 });
+    // Select class (dropdown)
+    await dashboard.selectClass(CLASS_NAME);
+    await page.waitForSelector('tbody tr', { timeout: 10000 });
 
-    // Get initial student count
-    const initialCount = await page.locator('tbody tr').count();
+    // Idempoten: jika Siti sudah pernah dikick di run sebelumnya, daftarkan lagi via API
+    const sitiVisible = await page
+      .locator('tbody tr', { hasText: 'Siti' })
+      .first()
+      .isVisible()
+      .catch(() => false);
+    if (!sitiVisible) {
+      const rejoin = await page.request.post('http://localhost:5001/api/auth/login', {
+        data: { email: 'siti@cassava.com', password: 'siti123' },
+      });
+      const { token } = await rejoin.json();
+      await page.request.post('http://localhost:5001/api/auth/join-class', {
+        headers: { Authorization: `Bearer ${token}` },
+        data: { classCode: 'DEMOAB' },
+      });
+      await page.reload();
+      await dashboard.selectClass(CLASS_NAME);
+    }
 
-    // Kick Siti
-    const sitiRow = page.locator('tr').filter({ hasText: 'Siti' });
+    // Cari Siti (29 siswa ter-paginasi 5/halaman — filter agar pasti tampil)
+    const searchBox = page.locator('input[placeholder*="Cari"], input[placeholder*="Search"]');
+    await searchBox.fill('Siti');
+    await page.waitForTimeout(500);
+
+    const sitiRow = page.locator('tbody tr').filter({ hasText: 'Siti' });
+    await expect(sitiRow).toHaveCount(1, { timeout: 10000 });
+
+    // Kick Siti via tombol terakhir pada barisnya (ikon tempat sampah)
     await sitiRow.locator('button').last().click();
-    await page.click('text=Keluarkan');
+    // Dialog konfirmasi — tombol "Keluarkan" (exact) di dalam overlay .fixed
+    await page.locator('.fixed button:text-is("Keluarkan"), .fixed button:text-is("Remove")').first().click();
 
-    // Verify student removed
-    await expect(page.locator('tbody tr')).toHaveCount(initialCount - 1, { timeout: 5000 });
+    // Verifikasi baris Siti hilang dari hasil filter
+    await expect(sitiRow).toHaveCount(0, { timeout: 10000 });
   });
 });

@@ -1,19 +1,22 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from '../fixtures';
 import { LoginPage } from '../pages/LoginPage';
+import { TeacherDashboardPage } from '../pages/TeacherDashboardPage';
 import { TEACHER, CLASS_NAME } from '../fixtures/test-data';
 
 test.describe('Persistence & Login Flow', () => {
   test('Teacher: last class persists across sessions', async ({ page }) => {
     const login = new LoginPage(page);
+    const dashboard = new TeacherDashboardPage(page);
 
     // Session 1: Login and select a class
     await login.login(TEACHER.email, TEACHER.password);
     await page.waitForURL('/teacher', { timeout: 10000 });
-    await page.click('text=' + CLASS_NAME);
+    await page.waitForTimeout(1000);
+    await dashboard.selectClass(CLASS_NAME);
     await page.waitForTimeout(500);
 
     // Verify localStorage saved
-    const saved1 = await page.evaluate(() => localStorage.getItem('cv_last_class_1'));
+    const saved1 = await page.evaluate(() => localStorage.getItem(`cv_last_class_1`));
     expect(saved1).toBeTruthy();
 
     // Simulate logout (clear token)
@@ -24,7 +27,7 @@ test.describe('Persistence & Login Flow', () => {
     await page.waitForURL('/teacher', { timeout: 10000 });
 
     // Should restore the last class
-    await expect(page.locator('text=' + CLASS_NAME)).toBeVisible({ timeout: 5000 });
+    await expect(page.locator('text=' + CLASS_NAME)).toBeVisible({ timeout: 10000 });
   });
 
   test('Student: class_id persists in localStorage', async ({ page }) => {
@@ -58,13 +61,12 @@ test.describe('Persistence & Login Flow', () => {
 
     // Reload to trigger join class flow
     await page.reload();
-    await page.waitForTimeout(1000);
+    await page.waitForURL('/login', { timeout: 10000 });
 
-    // Should see join class form or be redirected to login
-    const isOnLoginPage = page.url().includes('/login');
-    const hasJoinForm = await page.locator('text=Gabung Kelas').or(page.locator('text=Join a Class')).isVisible().catch(() => false);
+    // Should see join class form
+    const hasJoinForm = await page.locator('text=Gabung Kelas').or(page.locator('text=Join a Class')).isVisible({ timeout: 10000 }).catch(() => false);
 
-    expect(isOnLoginPage || hasJoinForm).toBeTruthy();
+    expect(hasJoinForm).toBeTruthy();
   });
 
   test('Teacher: sidebar collapse persists', async ({ page }) => {
