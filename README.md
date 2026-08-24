@@ -1,9 +1,8 @@
 # Cassava Village — LKPD Interaktif (Komposisi Fungsi)
 
 Website Lembar Kerja Peserta Didik (LKPD) interaktif bertema **Desa Singkong**
-untuk materi **komposisi fungsi** (Fase F). Dibangun mengikuti desain pada
-`work!.pdf` — alur cerita Pak Restu & Pak Rafif, kuis interaktif, dan
-penyimpanan jawaban siswa agar bisa dipantau guru.
+untuk materi **komposisi fungsi** (Fase F). Dibangun dengan alur cerita Pak Restu & Pak Rafif, 
+kuis interaktif, dan penyimpanan jawaban siswa agar bisa dipantau guru.
 
 ## Struktur
 
