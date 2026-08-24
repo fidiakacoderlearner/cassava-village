@@ -17,7 +17,7 @@ kuis interaktif, dan penyimpanan jawaban siswa agar bisa dipantau guru.
 - **PostgreSQL** (Neon cloud atau instalasi lokal)
 - **npm** (termasuk dalam Node.js)
 
-> ⚠️ **Penting**: Aplikasi ini **wajib** menggunakan PostgreSQL. SQLite sudah tidak dipakai lagi.
+> ⚠️ **Penting**: Aplikasi ini **wajib** menggunakan PostgreSQL
 
 ---
 
