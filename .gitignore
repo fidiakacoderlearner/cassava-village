@@ -26,6 +26,9 @@ scripts/
 # playwright test results & report
 client/test-results/
 client/playwright-report/
+# dokumen lomba lokal (tidak masuk repo)
+docs/
+Panduan-*.docx
 
 work!.pdf
 AGENTS.md
