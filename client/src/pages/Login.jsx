@@ -6,6 +6,7 @@ import { useAudio, playBubble } from '../context/AudioContext.jsx';
 import LetterTitle from '../components/LetterTitle.jsx';
 import { EyeIcon, EyeOffIcon } from '../components/icons.jsx';
 import { api } from '../context/api.js';
+import SponsorLogos from '../components/SponsorLogos.jsx';
 
 const loginBg = import.meta.glob('/src/assets/login-bg.{png,jpg,jpeg,svg,webp,gif}', { eager: true });
 const bgUrl = Object.values(loginBg)[0]?.default || null;
@@ -136,6 +137,8 @@ export default function Login() {
       >
         {lang === 'en' ? 'ID' : 'EN'}
       </button>
+
+      <SponsorLogos />
 
       <div className="relative z-10 flex min-h-screen flex-col items-center justify-center px-4 py-8 lg:flex-row lg:items-center lg:justify-end lg:pr-16">
         <div className="mb-8 w-full text-center lg:hidden">
