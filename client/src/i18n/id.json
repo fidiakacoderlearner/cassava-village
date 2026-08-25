@@ -26,13 +26,14 @@
     "showPassword": "Tampilkan kata sandi",
     "hidePassword": "Sembunyikan kata sandi"
   },
-  "joinClass": {
-    "title": "Gabung Kelas",
-    "desc": "Kamu belum terdaftar di kelas mana pun. Masukkan kode kelas dari gurumu untuk melanjutkan.",
-    "placeholder": "Kode kelas, mis. abcdef",
-    "join": "Gabung",
-    "error": "Kode kelas tidak valid. Silakan hubungi gurumu."
-  },
+"joinClass": {
+      "title": "Gabung Kelas",
+      "desc": "Masukkan kode kelas untuk bergabung",
+      "placeholder": "Masukkan kode kelas",
+      "join": "Gabung",
+      "back": "Kembali",
+      "error": "Kode kelas tidak valid atau sudah tidak berlaku"
+    },
   "home": {
     "greeting": "Hai, {name}",
     "intro": "Selamat datang di Desa Singkong! Hari ini kita akan menjelajahi komposisi fungsi lewat usaha keripik singkong milik Pak Restu.",

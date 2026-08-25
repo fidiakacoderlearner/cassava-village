@@ -22,7 +22,7 @@ function mapError(message) {
 }
 
 export default function Login() {
-  const { token, login, signup, updateUser } = useAuth();
+  const { token, login, signup, updateUser, api } = useAuth();
   const { t, lang, setLanguage } = useI18n();
   const { startMusic } = useAudio();
   const navigate = useNavigate();
@@ -36,6 +36,7 @@ export default function Login() {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
+  const [joinError, setJoinError] = useState('');
   const [loading, setLoading] = useState(false);
   const [needClass, setNeedClass] = useState(() => {
     try {
@@ -54,18 +55,27 @@ export default function Login() {
 
   async function handleJoinClass(e) {
     e.preventDefault();
-    if (!joinCode.trim() || loading) return;
+    const code = joinCode.trim().toUpperCase();
+    if (!code || loading) return;
+    
+    // Client-side validation: 6 alphanumeric characters
+    if (!/^[A-Z0-9]{6}$/i.test(joinCode.trim())) {
+      setJoinError(t('joinClass.error'));
+      return;
+    }
+    
     setLoading(true);
-    setError('');
+    setJoinError('');
     try {
       const data = await api('/api/auth/join-class', {
         method: 'POST',
-        body: { classCode: joinCode },
+        body: { classCode: joinCode.trim().toUpperCase() },
       });
       updateUser(data.user);
       navigate('/', { replace: true });
     } catch (err) {
-      setError(err?.message === 'Network error' ? t('errors.network') : t('joinClass.error'));
+      const msg = err?.message === 'Network error' ? t('errors.network') : t('joinClass.error');
+      setJoinError(msg);
     } finally {
       setLoading(false);
     }
@@ -86,7 +96,7 @@ export default function Login() {
       } else {
         user = await signup(name, email, password, classCode, role);
       }
-      if (user?.role !== 'teacher') startMusic();
+      
 
       if (user?.role === 'student' && !user?.class_id) {
         setNeedClass(true);
@@ -168,27 +178,48 @@ export default function Login() {
                     <input
                       type="text"
                       value={joinCode}
-                      onChange={(e) => setJoinCode(e.target.value.toUpperCase())}
+                      onChange={(e) => {
+                        const val = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
+                        setJoinCode(val);
+                        if (joinError) setJoinError('');
+                      }}
                       placeholder={t('joinClass.placeholder')}
-                      maxLength={8}
+                      maxLength={6}
                       autoFocus
                       className={`${inputClass} text-center font-display text-lg uppercase tracking-[0.2em]`}
                     />
                   </label>
 
-                  {error && (
-                    <p className="rounded-xl bg-red-50 px-4 py-2.5 text-sm font-medium text-red-600 ring-1 ring-red-200">
-                      {error}
-                    </p>
+                  {joinError && (
+                    <div className="rounded-xl bg-red-50 px-4 py-2.5 text-sm font-medium text-red-600 ring-1 ring-red-200 flex items-center justify-between">
+                      <span>{joinError}</span>
+                      <button
+                        type="button"
+                        onClick={() => setJoinError('')}
+                        className="text-red-600 hover:text-red-800 font-bold"
+                        aria-label={t('joinClass.dismissError') || 'Dismiss'}
+                      >
+                        ✕
+                      </button>
+                    </div>
                   )}
 
-                  <button
-                    type="submit"
-                    disabled={loading || !joinCode.trim()}
-                    className="w-full rounded-2xl bg-brown-800 py-3 font-display font-semibold text-cream shadow-lg transition-transform hover:scale-[1.02] active:scale-95 disabled:opacity-60"
-                  >
-                    {loading ? '...' : t('joinClass.join')}
-                  </button>
+                  <div className="mt-4 flex gap-3">
+                    <button
+                      type="button"
+                      onClick={() => setNeedClass(false)}
+                      className="w-full rounded-2xl bg-brown-100 py-3 font-display font-semibold text-brown-800 transition-colors hover:bg-brown-200"
+                    >
+                      {t('joinClass.back')}
+                    </button>
+                    <button
+                      type="submit"
+                      disabled={loading || !joinCode.trim() || !/^[A-Z0-9]{6}$/i.test(joinCode)}
+                      className="w-full rounded-2xl bg-brown-800 py-3 font-display font-semibold text-cream shadow-lg transition-transform hover:scale-[1.02] active:scale-95 disabled:opacity-60"
+                    >
+                      {loading ? '...' : t('joinClass.join')}
+                    </button>
+                  </div>
                 </form>
               </>
             ) : (

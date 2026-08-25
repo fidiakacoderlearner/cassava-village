@@ -166,7 +166,7 @@ export function AudioProvider({ children }) {
   const audioRef = useRef(null);
   const [musicOn, setMusicOn] = useState(() => {
     const stored = localStorage.getItem('cv_music');
-    return stored === null ? true : stored === '1';
+    return stored === '1';
   });
 
   const musicOnRef = useRef(musicOn);
@@ -181,24 +181,6 @@ export function AudioProvider({ children }) {
   useEffect(() => {
     localStorage.setItem('cv_music', musicOn ? '1' : '0');
   }, [musicOn]);
-
-  const tryStart = useCallback(() => {
-    const el = audioRef.current;
-    if (!el || !bgmUrl) return;
-    getCtx()?.resume();
-    if (musicOnRef.current && roleRef.current === 'student' && el.paused) {
-      el.play().catch(() => {});
-    }
-  }, []);
-
-  useEffect(() => {
-    document.addEventListener('pointerdown', tryStart);
-    document.addEventListener('keydown', tryStart);
-    return () => {
-      document.removeEventListener('pointerdown', tryStart);
-      document.removeEventListener('keydown', tryStart);
-    };
-  }, [tryStart]);
 
   const startMusic = useCallback(() => {
     const el = audioRef.current;

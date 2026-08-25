@@ -26,13 +26,14 @@
     "showPassword": "Show password",
     "hidePassword": "Hide password"
   },
-  "joinClass": {
-    "title": "Join a Class",
-    "desc": "You are not enrolled in any class yet. Enter a class code from your teacher to continue.",
-    "placeholder": "Class code, e.g. abcdef",
-    "join": "Join",
-    "error": "Invalid class code. Please check with your teacher."
-  },
+"joinClass": {
+      "title": "Join Class",
+      "desc": "Enter class code to join",
+      "placeholder": "Enter class code",
+      "join": "Join",
+      "back": "Back",
+      "error": "Invalid class code or expired"
+    },
   "home": {
     "greeting": "Hi, {name}",
     "intro": "Welcome to Cassava Village! Today we are going to explore function composition through Pak Restu's cassava chip business.",

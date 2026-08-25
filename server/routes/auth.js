@@ -56,12 +56,19 @@ router.post('/join-class', requireAuth, asyncHandler(async (req, res) => {
   if (!classCode || typeof classCode !== 'string') {
     return res.status(400).json({ error: 'Class code is required' });
   }
-  const cls = await db.prepare('SELECT id FROM classes WHERE code = ?').get(classCode.trim().toUpperCase());
+  const normalizedCode = classCode.trim().toUpperCase();
+  const cls = await db.prepare('SELECT id FROM classes WHERE code = ?').get(normalizedCode);
   if (!cls) {
+    console.log('[auth] join-class: class not found', { userId: req.user.id, classCode: normalizedCode });
     return res.status(400).json({ error: 'Invalid class code' });
   }
   await db.prepare('UPDATE users SET class_id = ? WHERE id = ? AND role = ?').run(cls.id, req.user.id, 'student');
   const user = await db.prepare('SELECT id, name, email, role, class_id FROM users WHERE id = ?').get(req.user.id);
+  if (!user || user.class_id !== cls.id) {
+    console.log('[auth] join-class: update failed (user not updated)', { userId: req.user.id, classCode: normalizedCode, classId: cls.id, actualClassId: user?.class_id });
+    return res.status(400).json({ error: 'Failed to join class. Please try again.' });
+  }
+  console.log('[auth] join-class: success', { userId: req.user.id, classCode: normalizedCode, classId: cls.id, newClassId: user.class_id });
   res.json({ user: publicUser(user) });
 }));
 
