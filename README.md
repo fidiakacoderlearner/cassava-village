@@ -262,6 +262,3 @@ Semua teks cerita/soal/penjelasan/opsi di `client/src/i18n/{en,id}.json` di bawa
 
 ---
 
-## Lisensi
-
-Internal / Competition Project (STEP 2026) — Universitas Riau.
