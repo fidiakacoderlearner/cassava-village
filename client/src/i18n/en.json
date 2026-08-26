@@ -297,34 +297,34 @@
   },
   "quiz": {
     "eval-1": {
-      "text": "Pak Restu runs a small cassava chip business. He has a Slicing Machine that reduces the cassava's weight by 8% (due to trimming), and a Drying Machine that removes an additional 0.6 kg of water weight after slicing. Let <i>x</i> represent the weight of cassava (in kg) before processing.\n\nWhich pair of functions correctly models the Slicing Machine <i>S(x)</i> and the Drying Machine <i>D(x)</i>?",
-      "explain": "A reduction of 8% means 92% remains, so <i>S(x)</i> = 0.92<i>x</i>. The Drying Machine removes 0.6 kg, so <i>D(x)</i> = <i>x</i> − 0.6.",
-      "options": ["<i>S(x)</i> = 0.92<i>x</i>, <i>D(x)</i> = <i>x</i> − 0.6", "<i>S(x)</i> = <i>x</i> − 0.08, <i>D(x)</i> = 0.6<i>x</i>", "<i>S(x)</i> = 0.08<i>x</i>, <i>D(x)</i> = <i>x</i> + 0.6", "<i>S(x)</i> = 1.08<i>x</i>, <i>D(x)</i> = <i>x</i> − 0.6", "<i>S(x)</i> = 0.92<i>x</i>, <i>D(x)</i> = <i>x</i> + 0.6"]
+      "text": "Pak Restu runs a small cassava chip business. He has a Slicing Machine that reduces the cassava's weight by 8% (due to trimming), and a Drying Machine that removes an additional 0,6 kg of water weight after slicing. Let <i>x</i> represent the weight of cassava (in kg) before processing.\n\nWhich pair of functions correctly models the Slicing Machine <i>S(x)</i> and the Drying Machine <i>D(x)</i>?",
+      "explain": "A reduction of 8% means 92% remains, so <i>S(x)</i> = 0,92<i>x</i>. The Drying Machine removes 0,6 kg, so <i>D(x)</i> = <i>x</i> − 0,6.",
+      "options": ["<i>S(x)</i> = 0,92<i>x</i>, <i>D(x)</i> = <i>x</i> − 0,6", "<i>S(x)</i> = <i>x</i> − 0,08, <i>D(x)</i> = 0,6<i>x</i>", "<i>S(x)</i> = 0,08<i>x</i>, <i>D(x)</i> = <i>x</i> + 0,6", "<i>S(x)</i> = 1,08<i>x</i>, <i>D(x)</i> = <i>x</i> − 0,6", "<i>S(x)</i> = 0,92<i>x</i>, <i>D(x)</i> = <i>x</i> + 0,6"]
     },
     "eval-2": {
-      "text": "Using <i>S(x)</i> = 0.92<i>x</i> and <i>D(x)</i> = <i>x</i> − 0.6 from Question 1, Pak Restu slices the cassava first, then dries it. Which expression correctly represents the composition function (<i>D ∘ S</i>)(<i>x</i>) in simplified form?",
-      "explain": "(<i>D ∘ S</i>)(<i>x</i>) = <i>D(S(x))</i> = <i>D(0.92x)</i> = 0.92<i>x</i> − 0.6.",
-      "options": ["(<i>D ∘ S</i>)(<i>x</i>) = 1.52<i>x</i>", "(<i>D ∘ S</i>)(<i>x</i>) = 0.92<i>x</i> − 0.6", "(<i>D ∘ S</i>)(<i>x</i>) = 0.92(<i>x</i> − 0.6)", "(<i>D ∘ S</i>)(<i>x</i>) = <i>x</i> − 0.6 − 0.08<i>x</i>", "(<i>D ∘ S</i>)(<i>x</i>) = 0.92<i>x</i> + 0.6"]
+      "text": "Using <i>S(x)</i> = 0,92<i>x</i> and <i>D(x)</i> = <i>x</i> − 0,6 from Question 1, Pak Restu slices the cassava first, then dries it. Which expression correctly represents the composition function <i>(D ∘ S)(x)</i> in simplified form?",
+      "explain": "<i>(D ∘ S)(x)</i> = <i>D(S(x))</i> = <i>D(0,92x)</i> = 0,92<i>x</i> − 0,6.",
+      "options": ["<i>(D ∘ S)(x)</i> = 1,52<i>x</i>", "<i>(D ∘ S)(x)</i> = 0,92<i>x</i> − 0,6", "<i>(D ∘ S)(x)</i> = 0,92(<i>x</i> − 0,6)", "<i>(D ∘ S)(x)</i> = <i>x</i> − 0,6 − 0,08<i>x</i>", "<i>(D ∘ S)(x)</i> = 0,92<i>x</i> + 0,6"]
     },
     "eval-3": {
-      "text": "In their group discussion, Pak Restu's team uses (<i>D ∘ S</i>)(<i>x</i>) = 0.92<i>x</i> − 0.6 to plan production. If they start with 25 kg of cassava, what is the final weight after slicing and drying?",
-      "explain": "(<i>D ∘ S</i>)(25) = 0.92 × 25 − 0.6 = 23 − 0.6 = 22.4 kg.",
-      "options": ["22.0 kg", "22.4 kg", "22.5 kg", "23.0 kg", "23.6 kg"]
+      "text": "In their group discussion, Pak Restu's team uses <i>(D ∘ S)(x)</i> = 0,92<i>x</i> − 0,6 to plan production. If they start with 25 kg of cassava, what is the final weight after slicing and drying?",
+      "explain": "<i>(D ∘ S)(25)</i> = 0,92 × 25 − 0,6 = 23 − 0,6 = 22,4 kg.",
+      "options": ["22,0 kg", "22,4 kg", "22,5 kg", "23,0 kg", "23,6 kg"]
     },
     "eval-4": {
-      "text": "The group now investigates what happens if Pak Restu dries first, then slices instead. This gives the composition (<i>S ∘ D</i>)(<i>x</i>).\n\n(<i>S ∘ D</i>)(<i>x</i>) = <i>S(D(x))</i> = <i>S(x − 0.6)</i> = 0.92(<i>x</i> − 0.6) = 0.92<i>x</i> − 0.552\n\nComparing (<i>D ∘ S</i>)(<i>x</i>) = 0.92<i>x</i> − 0.6 with (<i>S ∘ D</i>)(<i>x</i>) = 0.92<i>x</i> − 0.552 for x = 25 kg, which statement is correct?",
-      "explain": "(<i>D ∘ S</i>)(25) = 22.4 and (<i>S ∘ D</i>)(25) = 22.448. So (<i>D ∘ S</i>)(25) is smaller than (<i>S ∘ D</i>)(25) by 0.048 kg.",
-      "options": ["(<i>S ∘ D</i>)(25) is smaller than (<i>D ∘ S</i>)(25) by 0.6 kg", "(<i>D ∘ S</i>)(25) is larger than (<i>S ∘ D</i>)(25) by 0.6 kg", "(<i>D ∘ S</i>)(25) is smaller than (<i>S ∘ D</i>)(25) by 0.048 kg", "(<i>D ∘ S</i>)(25) is larger than (<i>S ∘ D</i>)(25) by 0.048 kg", "Both compositions give exactly the same result"]
+      "text": "The group now investigates what happens if Pak Restu dries first, then slices instead. This gives the composition <i>(S ∘ D)(x)</i>.\n\n<i>(S ∘ D)(x)</i> = <i>S(D(x))</i> = <i>S(x − 0,6)</i> = 0,92<i>(x</i> − 0,6<i>)</i> = 0,92<i>x</i> − 0,552\n\nComparing <i>(D ∘ S)(x)</i> = 0,92<i>x</i> − 0,6 with <i>(S ∘ D)(x)</i> = 0,92<i>x</i> − 0,552 for <i>x</i> = 25 kg, which statement is correct?",
+      "explain": "<i>(D ∘ S)(25)</i> = 22,4 and <i>(S ∘ D)(25)</i> = 22,448. So <i>(D ∘ S)(25)</i> is smaller than <i>(S ∘ D)(25)</i> by 0,048 kg.",
+      "options": ["<i>(S ∘ D)(25)</i> is smaller than <i>(D ∘ S)(25)</i> by 0,6 kg", "<i>(D ∘ S)(25)</i> is larger than <i>(S ∘ D)(25)</i> by 0,6 kg", "<i>(D ∘ S)(25)</i> is smaller than <i>(S ∘ D)(25)</i> by 0,048 kg", "<i>(D ∘ S)(25)</i> is larger than <i>(S ∘ D)(25)</i> by 0,048 kg", "Both compositions give exactly the same result"]
     },
     "eval-5": {
       "text": "Based on the exploration in Questions 2–4, which conclusion about function composition is most accurate?",
-      "explain": "(<i>D ∘ S</i>)(<i>x</i>) ≠ (<i>S ∘ D</i>)(<i>x</i>) in general. The order of operations matters — function composition is not commutative.",
+      "explain": "<i>(D ∘ S)(x)</i> ≠ <i>(S ∘ D)(x)</i> in general. The order of operations matters — function composition is not commutative.",
       "options": [
-        "(<i>D ∘ S</i>)(<i>x</i>) = (<i>S ∘ D</i>)(<i>x</i>) for all values of <i>x</i>, so the order of operations does not matter.",
-        "(<i>D ∘ S</i>)(<i>x</i>) ≠ (<i>S ∘ D</i>)(<i>x</i>) in general, meaning function composition is not commutative — the order of the machines affects the final result.",
-        "(<i>D ∘ S</i>)(<i>x</i>) is always greater than (<i>S ∘ D</i>)(<i>x</i>) regardless of the functions used.",
+        "<i>(D ∘ S)(x)</i> = <i>(S ∘ D)(x)</i> for all values of <i>x</i>, so the order of operations does not matter.",
+        "<i>(D ∘ S)(x)</i> ≠ <i>(S ∘ D)(x)</i> in general, meaning function composition is not commutative — the order of the machines affects the final result.",
+        "<i>(D ∘ S)(x)</i> is always greater than <i>(S ∘ D)(x)</i> regardless of the functions used.",
         "Function composition only works correctly when both functions are linear.",
-        "The difference between (<i>D ∘ S</i>)(<i>x</i>) and (<i>S ∘ D</i>)(<i>x</i>) is always constant for any two functions."
+        "The difference between <i>(D ∘ S)(x)</i> and <i>(S ∘ D)(x)</i> is always constant for any two functions."
       ]
     }
   },
