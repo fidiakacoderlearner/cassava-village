@@ -356,6 +356,10 @@ export default function Login() {
           )}
         </div>
       </div>
+
+      <p className="fixed bottom-4 left-1/2 z-30 -translate-x-1/2 whitespace-nowrap text-xs font-medium text-brown-800/50 select-none">
+        Made with ❤️ by Rockies
+      </p>
     </div>
   );
 }
