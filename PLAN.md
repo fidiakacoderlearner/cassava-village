@@ -81,7 +81,47 @@ Perbaikan rendering notasi komposisi fungsi di `client/src/i18n/en.json` dan
 - Kurung pada derivation line `(<i>x</i> − 0,6)` → `<i>(x</i> − 0,6<i>)</i>`
   (hanya kurung italic, angka tetap plain).
 
+## 18. Tindak lanjut pasca-audit keamanan & stabilitas — BELUM DIKERJAKAN (dicatat 2026-10-14)
+
+Konteks: setelah audit [1.23.0] + perbaikan lanjutan (constraint unik usang pada
+`answers`, `type: module` root, `sslmode=verify-full`, dokumentasi deploy Git).
+Item di bawah ini sengaja belum dikerjakan.
+
+### 18.1 Handler error: pelanggaran foreign key → 401/400, bukan 500
+- **Kondisi:** bila ada JWT yang masih valid untuk user yang sudah **dihapus**
+  dari DB, `POST /api/answers` gagal dengan pelanggaran FK
+  `answers_user_id_fkey` (Postgres code `23503`) dan kini dibalas **500**.
+- **Rencana:** di error handler `server/app.js`, deteksi `err.code === '23503'`
+  → balas `401 { error: 'Invalid or expired token' }` (atau `400`). Pertimbangkan
+  juga `23505` (unique violation) → `409`.
+- **Prioritas:** rendah (edge case, tidak terjadi untuk user aktif).
+
+### 18.2 Rate-limit di serverless: shared store
+- **Kondisi:** limiter (`express-rate-limit`) memakai store in-memory per-instance,
+  sedangkan Vercel menjalankan banyak instance yang bisa cold-start → counter
+  per-IP/email tidak dibagi dan bisa reset → proteksi brute-force *best-effort*.
+- **Rencana:** pakai shared store (mis. Upstash Redis + `rate-limit-redis`).
+  Butuh dependency + env baru (`UPSTASH_REDIS_REST_URL`/`TOKEN`). Perlu keputusan
+  pemilik karena menambah biaya/kompleksitas.
+- **Prioritas:** sedang (keamanan), menunggu keputusan.
+
+### 18.3 Unduh browser bawaan Playwright
+- **Kondisi:** `npx playwright install chromium` **gagal** (timeout) — baik dari
+  `cdn.playwright.dev` maupun mirror `cdn.npmmirror.com`. Jaringan mesin lokal ini
+  tampaknya memblokir unduhan besar. Belum dicoba dengan
+  `PLAYWRIGHT_DOWNLOAD_HOST` lain.
+- **Sementara (sudah jalan):** E2E lewat Chrome lokal —
+  PowerShell `$env:PLAYWRIGHT_CHANNEL='chrome'; npx playwright test` (22 passed).
+- **Rencana:** jalankan `cd client; npx playwright install chromium` di jaringan
+  lain / saat koneksi stabil agar `npx playwright test` default (tanpa env) dan CI
+  berfungsi.
+
+### 18.4 Referensi item lama
+- **Section 5** (swap driver `pg` → `@neondatabase/serverless`, CI/CD auto-init-db)
+  tetap **menunggu keputusan pemilik** — lihat di atas.
+
 ---
 
-**Status akhir: semua item aktif SELESAI. Yang tersisa hanya item ditangguhkan
-(Section 5: swap driver pg, CI/CD).**
+**Status akhir (2026-10-14): semua item aktif SELESAI. Tersisa: item ditangguhkan
+Section 5 (swap driver pg, CI/CD) dan tindak lanjut baru Section 18
+(FK error handler, shared rate-limit store, unduh browser Playwright).**
