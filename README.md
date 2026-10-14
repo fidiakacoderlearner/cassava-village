@@ -222,6 +222,11 @@ Kalau file belum ada → aplikasi memakai placeholder emoji/gradient otomatis (w
 
 Ganti dengan file asli Anda (nama file sama) → otomatis terpakai.
 
+**Favicon**: file ada di `client/public/` (`favicon.webp`, `favicon-32.png`,
+`apple-touch-icon.png`) dan di-link dari `client/index.html`. Vite menyalin folder
+`public/` ke `client/dist/` saat build. Untuk mengganti ikon, cukup ganti ketiga
+file itu (atau jalankan ulang konversi dari `client/src/assets/cassava.webp`).
+
 ---
 
 ## Data Materi

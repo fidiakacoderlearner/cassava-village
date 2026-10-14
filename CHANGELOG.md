@@ -3,6 +3,47 @@
 Semua perubahan penting pada proyek dicatat di sini. Format mengikuti
 [Keep a Changelog](https://keepachangelog.com/id-ID/1.1.0/).
 
+## [1.23.0] — 2026-10-14
+
+### Ditambahkan
+- **Pesan rate-limit yang informatif di halaman Login** (`Login.jsx`,
+  `context/api.js`, `server/middleware/rate-limit.js`, `i18n/*.json`): saat
+  login/signup/join-class kena limit (HTTP 429), server mengirim `retryAfter`
+  (detik, dihitung dari `resetTime`) + header `Retry-After`, dan UI menampilkan
+  pesan seperti "Terlalu banyak percobaan. Coba lagi dalam 14 menit 30 detik."
+  (sebelumnya hanya "Terjadi kesalahan, coba lagi").
+
+### Diubah
+- **Maintenance dependency**: `npm audit fix` (0 vulnerability) + upgrade minor
+  (express, react, react-dom, react-router, pg, playwright) dan sinkronisasi
+  lockfile (menghapus paket basi).
+
+### Diperbaiki
+- **Bug `saveAnswer` kuis eksplorasi** (`Exploration.jsx`): fungsi penyimpan
+  jawaban yang hilang dipulihkan sehingga menjawab kuis tidak lagi crash.
+
+### Keamanan
+- **Skoring di server**: `is_correct` soal kuis dihitung server dari
+  `answerIndex` (`QUIZ_CORRECT`/`EVAL_CORRECT` di `shared/constants.js`) →
+  nilai tidak bisa dipalsukan lewat client.
+- **Hardening**: `helmet` + CSP meta, rate-limit auth (login/signup/join-class,
+  konstanta di `server/middleware/rate-limit.js`), JWT fail-fast di produksi
+  (`JWT_SECRET` wajib), batas essay 2000 karakter (`MAX_ESSAY_LENGTH`), validasi
+  kombinasi drag di server (harus 1 retribusi + 1 diskon, slot berbeda),
+  allowlist `stepId`, dan sanitasi `MathText` diperketat (allowlist properti
+  `style`).
+
+Catatan E2E mesin lokal: `PLAYWRIGHT_CHANNEL=chrome npx playwright test`
+(pengaturan `channel` via env di `client/playwright.config.ts`).
+
+## [1.22.0] — 2026-08-26
+
+### Ditambahkan
+- **Watermark "Made with ❤️ by Rockies"** (`Login.jsx`): teks kecil di pojok bawah
+  tengah halaman login dengan positioning `fixed` (zoom-safe, selalu terlihat di
+  viewport tanpa terpengaruh zoom level). Warna subtle `text-brown-800/50`,
+  `select-none`.
+
 ## [1.21.0] — 2026-08-26
 
 ### Diperbaiki

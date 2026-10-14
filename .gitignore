@@ -26,6 +26,11 @@ scripts/
 # playwright test results & report
 client/test-results/
 client/playwright-report/
+test-results/
+playwright-report/
+
+# one-off local DB inspection scripts
+server/check*.mjs
 # dokumen lomba lokal (tidak masuk repo)
 docs/
 Panduan-*.docx
