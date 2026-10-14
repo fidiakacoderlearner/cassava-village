@@ -1,4 +1,4 @@
-import rateLimit from 'express-rate-limit';
+import rateLimit, { ipKeyGenerator } from 'express-rate-limit';
 
 const WINDOW_15M = 15 * 60 * 1000;
 const WINDOW_1H = 60 * 60 * 1000;
@@ -25,7 +25,7 @@ export const loginAccountLimiter = rateLimit({
   standardHeaders: true,
   legacyHeaders: false,
   handler: limitHandler(WINDOW_15M),
-  keyGenerator: (req) => `${req.ip}|${String(req.body?.email || '').trim().toLowerCase()}`,
+  keyGenerator: (req) => `${ipKeyGenerator(req.ip)}|${String(req.body?.email || '').trim().toLowerCase()}`,
 });
 
 export const loginIpLimiter = rateLimit({
