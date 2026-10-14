@@ -45,6 +45,23 @@ export const EVAL_STEP_IDS = [
 
 export const TOTAL_OPEN_STEPS = OPEN_STEP_IDS.length;
 
+export const MAX_ESSAY_LENGTH = 2000;
+
+export const EVAL_CORRECT = {
+  'eval-1': 0,
+  'eval-2': 1,
+  'eval-3': 1,
+  'eval-4': 2,
+  'eval-5': 1,
+};
+
+export const QUIZ_CORRECT = {
+  'quiz-peel': 2,
+  'quiz-wash': 0,
+  'quiz-discount': 1,
+  'quiz-retribution': 0,
+};
+
 export const DRAG_X = 1000000;
 export const DRAG_BEST = 912000;
 

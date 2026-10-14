@@ -22,6 +22,7 @@ export default function OpenStepInput({ step, value: initialValue, saved, onDraf
           onDraft(step.id, e.target.value);
         }}
         rows={3}
+        maxLength={2000}
         placeholder={t('exploration.writeAnswer')}
         className={`w-full resize-none rounded-2xl border px-3 py-2 text-xs text-brown-900 placeholder-brown-400 shadow-xs outline-none transition md:px-4 md:py-2.5 md:text-sm lg:px-3 lg:py-2 lg:text-xs xl:px-4 xl:py-3 xl:text-sm 2xl:px-5 2xl:py-3.5 2xl:text-base ${
           saved

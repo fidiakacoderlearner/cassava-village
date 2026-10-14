@@ -26,13 +26,13 @@ export default function QuizOptions({ step, done, question, answer, explain, onC
       setFresh(true);
       playCorrect();
       setModalOpen(true);
-      onCorrect(step.options[i]);
+      onCorrect(step.options[i], i);
     } else {
       setAttempts((a) => a + 1);
       setStatus('wrong');
       playWrong();
       setModalOpen(true);
-      onWrong(step.options[i]);
+      onWrong(step.options[i], i);
     }
   }
 

@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { db } from '../db.js';
 import { requireAuth, asyncHandler } from '../middleware/auth.js';
-import { OPEN_STEP_IDS, EVAL_STEP_IDS, EXPLORE_STEP_IDS, TOTAL_OPEN_STEPS, DRAG_FN, DRAG_X } from '../../shared/constants.js';
+import { OPEN_STEP_IDS, EVAL_STEP_IDS, EXPLORE_STEP_IDS, TOTAL_OPEN_STEPS, DRAG_FN, DRAG_X, DRAG_CARDS, EVAL_CORRECT, QUIZ_CORRECT, MAX_ESSAY_LENGTH } from '../../shared/constants.js';
 
 const router = Router();
 
@@ -13,12 +13,21 @@ async function getUserClassId(userId) {
 }
 
 router.post('/answers', asyncHandler(async (req, res) => {
-  const { stepId, answer, isCorrect } = req.body || {};
+  const { stepId, answer, answerIndex, isCorrect } = req.body || {};
   if (!stepId || answer == null) {
     return res.status(400).json({ error: 'stepId and answer are required' });
   }
-  if (OPEN_STEP_IDS.includes(String(stepId))) {
+  const id = String(stepId);
+  if (OPEN_STEP_IDS.includes(id)) {
     return res.status(400).json({ error: 'Essay answers must be submitted via /api/exploration/submit' });
+  }
+  if (!EXPLORE_STEP_IDS.includes(id)) {
+    return res.status(400).json({ error: 'Unknown step' });
+  }
+  let correctFlag = isCorrect == null ? null : (isCorrect ? 1 : 0);
+  if (QUIZ_CORRECT[id] != null) {
+    const idx = Number(answerIndex);
+    correctFlag = Number.isInteger(idx) ? (idx === QUIZ_CORRECT[id] ? 1 : 0) : 0;
   }
   const classId = await getUserClassId(req.user.id);
 
@@ -29,7 +38,7 @@ router.post('/answers', asyncHandler(async (req, res) => {
       answer = excluded.answer,
       is_correct = excluded.is_correct,
       updated_at = now()
-  `).run(req.user.id, String(stepId), String(answer), isCorrect == null ? null : (isCorrect ? 1 : 0), classId);
+  `).run(req.user.id, id, String(answer), correctFlag, classId);
 
   res.json({ ok: true });
 }));
@@ -46,6 +55,18 @@ router.post('/exploration/submit', asyncHandler(async (req, res) => {
 
   if (!drag || !drag.slot1 || !DRAG_FN[drag.slot1] || !drag.slot2 || !DRAG_FN[drag.slot2]) {
     return res.status(400).json({ error: 'Drag answer is required' });
+  }
+  if (drag.slot1 === drag.slot2) {
+    return res.status(400).json({ error: 'Drag slots must use different cards' });
+  }
+  const group1 = DRAG_CARDS.find((c) => c.id === drag.slot1)?.group;
+  const group2 = DRAG_CARDS.find((c) => c.id === drag.slot2)?.group;
+  if (!group1 || !group2 || group1 === group2) {
+    return res.status(400).json({ error: 'Drag answer must combine one retribution and one discount' });
+  }
+  const tooLong = OPEN_STEP_IDS.filter((id) => String(answers[id] || '').trim().length > MAX_ESSAY_LENGTH);
+  if (tooLong.length > 0) {
+    return res.status(400).json({ error: `Essay exceeds the ${MAX_ESSAY_LENGTH} character limit` });
   }
   const result = Math.round(DRAG_FN[drag.slot2](DRAG_FN[drag.slot1](DRAG_X)));
   const dragJson = JSON.stringify({ slot1: drag.slot1, slot2: drag.slot2, result });
@@ -74,7 +95,12 @@ router.post('/evaluation/submit', asyncHandler(async (req, res) => {
   const map = {};
   for (const a of answers) {
     if (a && EVAL_STEP_IDS.includes(String(a.stepId)) && a.answer != null) {
-      map[String(a.stepId)] = { answer: String(a.answer), answerIndex: a.answerIndex ?? null, isCorrect: a.isCorrect ? 1 : 0 };
+      const idx = Number(a.answerIndex);
+      map[String(a.stepId)] = {
+        answer: String(a.answer),
+        answerIndex: Number.isInteger(idx) ? idx : null,
+        isCorrect: Number.isInteger(idx) && idx === EVAL_CORRECT[String(a.stepId)] ? 1 : 0,
+      };
     }
   }
   const missing = EVAL_STEP_IDS.filter((id) => !map[id]);

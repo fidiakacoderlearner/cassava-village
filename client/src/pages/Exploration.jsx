@@ -181,6 +181,20 @@ export default function Exploration() {
     localStorage.setItem(dragKey, JSON.stringify(data));
   }
 
+  async function saveAnswer(stepId, answer, isCorrect, answerIndex) {
+    try {
+      await api('/api/answers', {
+        method: 'POST',
+        body: { stepId, answer, isCorrect, answerIndex },
+      });
+      if (isCorrect !== false) {
+        setSavedAnswers((prev) => ({ ...prev, [stepId]: { answer, is_correct: isCorrect } }));
+      }
+    } catch {
+      /* ignore */
+    }
+  }
+
   async function saveReview(values) {
     setSavingReview(true);
     setReviewError('');
@@ -418,8 +432,8 @@ export default function Exploration() {
                     question={stepText}
                     answer={step.options[step.correct]}
                     explain={stepExplain}
-                    onCorrect={(a) => saveAnswer(step.id, a, true)}
-                    onWrong={(a) => saveAnswer(step.id, a, false)}
+                    onCorrect={(a, i) => saveAnswer(step.id, a, true, i)}
+                    onWrong={(a, i) => saveAnswer(step.id, a, false, i)}
                     onContinue={advance}
                   />
                 )}

@@ -26,6 +26,7 @@ export default function ReviewPage({ items, initialValues, saving, error, onSave
               value={values[it.id] || ''}
               onChange={(e) => setValues((v) => ({ ...v, [it.id]: e.target.value }))}
               rows={3}
+              maxLength={2000}
               placeholder={t('exploration.writeAnswer')}
               className="mt-3 w-full resize-none rounded-2xl border border-brown-200 bg-cream px-4 py-3 text-sm text-brown-900 placeholder-brown-400 shadow-xs outline-none transition focus:border-amber-500 focus:ring-2 focus:ring-amber-200"
             />
