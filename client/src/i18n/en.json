@@ -335,7 +335,13 @@
     "invalidClassCode": "Invalid class code. Ask your teacher for the code.",
     "emailExists": "This email is already registered",
     "wrongCredentials": "Incorrect email or password",
-    "passwordShort": "Password must be at least 6 characters"
+    "passwordShort": "Password must be at least 6 characters",
+    "tooManyRequests": "Too many attempts. Please try again in {time}.",
+    "waitSecond": "1 second",
+    "waitSeconds": "{n} seconds",
+    "waitMinute": "1 minute",
+    "waitMinutes": "{min} minutes",
+    "waitMinSec": "{min} minutes {sec} seconds"
   },
   "exit": {
     "title": "Leave this page?",

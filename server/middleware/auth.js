@@ -1,6 +1,9 @@
 import jwt from 'jsonwebtoken';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'cassava-village-dev-secret';
+const isProduction = process.env.NODE_ENV === 'production';
+const JWT_SECRET = process.env.JWT_SECRET || (isProduction
+  ? (() => { throw new Error('JWT_SECRET is required in production'); })()
+  : 'cassava-village-dev-secret');
 
 export function signToken(user) {
   return jwt.sign(

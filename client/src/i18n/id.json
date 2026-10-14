@@ -336,7 +336,13 @@
     "invalidClassCode": "Kode kelas salah. Tanyakan kodenya ke gurumu.",
     "emailExists": "Email ini sudah terdaftar",
     "wrongCredentials": "Email atau kata sandi salah",
-    "passwordShort": "Kata sandi minimal 6 karakter"
+    "passwordShort": "Kata sandi minimal 6 karakter",
+    "tooManyRequests": "Terlalu banyak percobaan. Coba lagi dalam {time}.",
+    "waitSecond": "1 detik",
+    "waitSeconds": "{n} detik",
+    "waitMinute": "1 menit",
+    "waitMinutes": "{min} menit",
+    "waitMinSec": "{min} menit {sec} detik"
   },
   "exit": {
     "title": "Keluar dari halaman ini?",

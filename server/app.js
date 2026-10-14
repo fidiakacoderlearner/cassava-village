@@ -1,11 +1,16 @@
 import express from 'express';
 import cors from 'cors';
+import helmet from 'helmet';
 import authRoutes from './routes/auth.js';
 import answersRoutes from './routes/answers.js';
 import teacherRoutes from './routes/classes.js';
 
 export const app = express();
 
+app.set('trust proxy', 1);
+app.disable('x-powered-by');
+
+app.use(helmet());
 app.use(cors());
 app.use(express.json());
 

@@ -14,7 +14,10 @@ export async function api(path, { method = 'GET', body, token, on401 } = {}) {
   const data = await res.json().catch(() => ({}));
   if (!res.ok) {
     if (res.status === 401 && token) on401?.();
-    throw new Error(data.error || 'Request failed');
+    const err = new Error(data.error || 'Request failed');
+    err.status = res.status;
+    if (data.retryAfter != null) err.retryAfter = Number(data.retryAfter);
+    throw err;
   }
   return data;
 }

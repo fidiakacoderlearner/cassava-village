@@ -21,6 +21,21 @@ function mapError(message) {
   }[message];
 }
 
+function formatWait(t, seconds) {
+  const s = Math.max(1, Math.round(seconds || 0));
+  if (s < 60) return s === 1 ? t('errors.waitSecond') : t('errors.waitSeconds', { n: s });
+  const min = Math.floor(s / 60);
+  const sec = s % 60;
+  if (sec === 0) return min === 1 ? t('errors.waitMinute') : t('errors.waitMinutes', { min });
+  return t('errors.waitMinSec', { min, sec });
+}
+
+function errorMessage(t, err) {
+  if (err?.status === 429) return t('errors.tooManyRequests', { time: formatWait(t, err.retryAfter) });
+  const key = mapError(err?.message);
+  return key ? t(key) : t('errors.generic');
+}
+
 export default function Login() {
   const { token, login, signup, updateUser, api } = useAuth();
   const { t, lang, setLanguage } = useI18n();
@@ -74,7 +89,9 @@ export default function Login() {
       updateUser(data.user);
       navigate('/', { replace: true });
     } catch (err) {
-      const msg = err?.message === 'Network error' ? t('errors.network') : t('joinClass.error');
+      const msg = err?.status === 429
+        ? errorMessage(t, err)
+        : (err?.message === 'Network error' ? t('errors.network') : t('joinClass.error'));
       setJoinError(msg);
     } finally {
       setLoading(false);
@@ -116,8 +133,7 @@ export default function Login() {
       localStorage.removeItem('cv_resume');
       navigate(user?.role === 'teacher' ? '/teacher' : resumePath, { replace: true });
     } catch (err) {
-      const key = mapError(err.message);
-      setError(key ? t(key) : t('errors.generic'));
+      setError(errorMessage(t, err));
     } finally {
       setLoading(false);
     }

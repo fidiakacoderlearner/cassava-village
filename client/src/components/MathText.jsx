@@ -1,16 +1,29 @@
-const ALLOWED = new Set(['i', 'b', 'sup', 'sub', 'span']);
+const SIMPLE_TAGS = new Set(['i', 'b', 'sup', 'sub']);
+const SAFE_STYLE_PROPS = /^(?:display|flex-direction|align-items|justify-content|font-size|vertical-align|border-bottom|border-top|line-height|padding|margin|color|font-weight|font-style)\s*:\s*[-%,\.\w\s]+$/i;
+const FORBIDDEN_STYLE = /url\s*\(|expression\s*\(|javascript:|@import|content\s*:|position\s*:|background/i;
+
+function cleanTag(match, low) {
+  return `${match.startsWith('</') ? '</' : '<'}${low}>`;
+}
 
 function sanitize(html) {
-  return html.replace(/<\/?([a-zA-Z][a-zA-Z0-9]*)([^>]*)>/g, (match, tag, attrs) => {
+  return String(html).replace(/<\/?([a-zA-Z][a-zA-Z0-9]*)([^>]*)>/g, (match, tag, attrs) => {
     const low = tag.toLowerCase();
-    if (!ALLOWED.has(low)) return '';
     if (low === 'span') {
       if (match.startsWith('</')) return '</span>';
-      const styleMatch = attrs.match(/style="([^"]*)"/);
+      const styleMatch = attrs.match(/style\s*=\s*"([^"]*)"/i);
       if (!styleMatch) return '<span>';
-      return `<span style="${styleMatch[1]}">`;
+      const value = styleMatch[1];
+      if (FORBIDDEN_STYLE.test(value)) return '<span>';
+      const kept = value
+        .split(';')
+        .map((p) => p.trim())
+        .filter((p) => SAFE_STYLE_PROPS.test(p))
+        .join(';');
+      return kept ? `<span style="${kept}">` : '<span>';
     }
-    return match;
+    if (!SIMPLE_TAGS.has(low)) return '';
+    return cleanTag(match, low);
   });
 }
 
