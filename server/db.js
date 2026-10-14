@@ -361,6 +361,7 @@ async function migrateDb() {
   await db.exec('ALTER TABLE exploration_attempts ADD COLUMN IF NOT EXISTS class_id INTEGER REFERENCES classes(id) ON DELETE SET NULL');
   await db.exec('ALTER TABLE evaluation_attempts ADD COLUMN IF NOT EXISTS class_id INTEGER REFERENCES classes(id) ON DELETE SET NULL');
   try { await db.exec('ALTER TABLE answers DROP CONSTRAINT IF EXISTS answers_user_id_step_key'); } catch { /* ignore */ }
+  try { await db.exec('ALTER TABLE answers DROP CONSTRAINT IF EXISTS answers_user_id_step_id_key'); } catch { /* ignore */ }
   try { await db.exec('ALTER TABLE answers ADD CONSTRAINT answers_user_step_class UNIQUE (user_id, step_id, class_id)'); } catch { /* ignore */ }
   await db.exec('CREATE INDEX IF NOT EXISTS idx_answers_class ON answers(class_id)');
   await db.exec('CREATE INDEX IF NOT EXISTS idx_exploration_attempts_class ON exploration_attempts(class_id)');
