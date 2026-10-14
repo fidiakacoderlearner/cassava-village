@@ -21,6 +21,16 @@ Semua perubahan penting pada proyek dicatat di sini. Format mengikuti
 ### Diperbaiki
 - **Bug `saveAnswer` kuis eksplorasi** (`Exploration.jsx`): fungsi penyimpan
   jawaban yang hilang dipulihkan sehingga menjawab kuis tidak lagi crash.
+- **Body JSON tidak valid** (`server/app.js`): permintaan dengan body bukan JSON
+  kini dibalas **400** `{ error: 'Invalid JSON body' }`, bukan 500.
+- **Rate-limit IPv6** (`server/middleware/rate-limit.js`): `keyGenerator` memakai
+  helper `ipKeyGenerator()` dari express-rate-limit — peringatan
+  `ERR_ERL_KEY_GEN_IPV6` hilang dan IP IPv6 dinormalisasi ke subnet.
+
+### Catatan
+- Setelah upgrade Playwright (1.62 → 1.63), browser bawaan perlu diunduh ulang:
+  `cd client; npx playwright install chromium`. Bila unduhan gagal, jalankan
+  dengan Chrome lokal: PowerShell `$env:PLAYWRIGHT_CHANNEL='chrome'; npx playwright test`.
 
 ### Keamanan
 - **Skoring di server**: `is_correct` soal kuis dihitung server dari
