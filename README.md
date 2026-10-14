@@ -216,10 +216,9 @@ Taruh gambar di `client/src/assets/` — lihat
 
 Kalau file belum ada → aplikasi memakai placeholder emoji/gradient otomatis (web tetap jalan).
 
-**Logo Sponsor (Login Page)**: 3 file placeholder sudah ada di `client/src/assets/`:
+**Logo Sponsor (Login Page)**: 2 file placeholder sudah ada di `client/src/assets/`:
 - `logo-kemendiktisaintek.webp`
 - `logo-unri.webp`
-- `logo-step2026.webp`
 
 Ganti dengan file asli Anda (nama file sama) → otomatis terpakai.
 
