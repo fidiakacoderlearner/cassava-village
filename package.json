@@ -1,6 +1,7 @@
 {
   "name": "cassava-village",
   "private": true,
+  "type": "module",
   "version": "1.0.0",
   "description": "LKPD interactive website - Cassava Village (function composition)",
   "scripts": {
