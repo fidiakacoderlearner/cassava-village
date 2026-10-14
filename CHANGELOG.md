@@ -17,6 +17,12 @@ Semua perubahan penting pada proyek dicatat di sini. Format mengikuti
 - **Maintenance dependency**: `npm audit fix` (0 vulnerability) + upgrade minor
   (express, react, react-dom, react-router, pg, playwright) dan sinkronisasi
   lockfile (menghapus paket basi).
+- **Dokumentasi deploy (README)**: disesuaikan dengan alur **integrasi Git**
+  Vercel (auto-deploy tiap `git push` ke `main`, env lewat dashboard, redeploy
+  setelah mengubah env) — bukan lagi `npx vercel --prod`. Ditambah rekomendasi
+  `?sslmode=verify-full` pada `DATABASE_URL` (menghilangkan peringatan SSL
+  `pg` v8.23+) dan catatan bahwa rate-limit bersifat *best-effort* di serverless
+  (store in-memory per-instance).
 
 ### Diperbaiki
 - **Bug `saveAnswer` kuis eksplorasi** (`Exploration.jsx`): fungsi penyimpan
@@ -26,6 +32,15 @@ Semua perubahan penting pada proyek dicatat di sini. Format mengikuti
 - **Rate-limit IPv6** (`server/middleware/rate-limit.js`): `keyGenerator` memakai
   helper `ipKeyGenerator()` dari express-rate-limit — peringatan
   `ERR_ERL_KEY_GEN_IPV6` hilang dan IP IPv6 dinormalisasi ke subnet.
+- **Constraint unik usang pada `answers`** (`server/db.js`): `migrateDb()` hanya
+  menghapus `answers_user_id_step_key`, padahal di Postgres constraint lama
+  `UNIQUE (user_id, step_id)` bernama otomatis `answers_user_id_step_id_key`
+  sehingga masih tertinggal dan membuat upsert gagal (**HTTP 500**) ketika
+  `class_id` berbeda dari baris lama (mis. siswa menjawab ulang setelah
+  pindah/bergabung kelas). Constraint usang itu kini juga dihapus.
+- **Peringatan `MODULE_TYPELESS_PACKAGE_JSON`** (`package.json` root):
+  ditambahkan `"type": "module"` sehingga Node tidak lagi me-reparse
+  `shared/constants.js` sebagai ESM.
 
 ### Catatan
 - Setelah upgrade Playwright (1.62 → 1.63), browser bawaan perlu diunduh ulang:

@@ -62,8 +62,13 @@ JWT_SECRET=your-super-secret-key-min-32-chars
 
 **Contoh `DATABASE_URL` untuk Neon (serverless Postgres):**
 ```env
-DATABASE_URL=postgresql://username:password@ep-xxx-region.neon.tech/neondb?sslmode=require
+DATABASE_URL=postgresql://username:password@ep-xxx-region.neon.tech/neondb?sslmode=verify-full
 ```
+
+> Gunakan `sslmode=verify-full`. Mulai `pg` v8.23, mode `require`/`prefer`/`verify-ca`
+> diperlakukan sebagai alias `verify-full` dan memunculkan peringatan keamanan di
+> log; menuliskan `verify-full` secara eksplisit menghilangkan peringatan itu tanpa
+> mengubah perilaku koneksi.
 
 **Contoh untuk PostgreSQL lokal:**
 ```env
@@ -135,24 +140,32 @@ Buka browser ke: **`http://localhost:5173`**
 
 ## Deploy ke Vercel (Production)
 
-```bash
-# 1. Login Vercel (sekali saja)
-npx vercel login
+Production menggunakan **integrasi Git**: repo GitHub sudah tersambung ke
+project Vercel, sehingga setiap `git push` ke branch `main` otomatis
+di-build & di-deploy. **Tidak perlu** `npx vercel --prod`.
 
-# 2. Set environment variables di Vercel
-npx vercel env add DATABASE_URL production   # Paste Neon pooled URL
-npx vercel env add JWT_SECRET production     # Generate random string 32+ chars
+**Setup awal (sekali saja), lewat Vercel Dashboard:**
+1. Import repo GitHub `cassava-village` sebagai project Vercel.
+2. Tambahkan Environment Variables (Production **dan** Preview):
+   - `DATABASE_URL` — Neon pooled connection string
+   - `JWT_SECRET` — string acak 32+ karakter. **Wajib di production**: server
+     sengaja gagal start (`JWT_SECRET is required in production`) bila kosong,
+     sehingga seluruh endpoint `/api` ikut mati.
+3. Deploy.
 
-# 3. Deploy
-npx vercel --prod
-
-# 4. SETELAH DEPLOY: Jalankan init-db sekali (butuh DATABASE_URL Neon di .env lokal)
-npm run init-db
-```
+**Deploy berikutnya:**
+- Cukup `git push origin main`. Vercel menjalankan `npm run build` (output
+  `client/dist/`) dan menerbitkan produksi.
+- Setelah **mengubah Environment Variable**, lakukan **Redeploy**
+  (Deployments → ⋯ → Redeploy) agar nilai baru terpakai.
+- Bila perubahan menyentuh schema/index DB, jalankan `npm run init-db`
+  **sekali** secara lokal (dengan `DATABASE_URL` Neon di `.env`).
 
 **Catatan Vercel**:
 - `vercel.json` sudah dikonfigurasi: build output `client/dist/`, API rewrites ke `api/index.js`, region `sin1` (Singapura, dekat Neon ap-southeast-1)
 - Serverless function di Vercel **tidak** auto-jalankan `initDb()` (cold-start penalty) → wajib manual `npm run init-db` setelah deploy pertama
+- **Rate limit bersifat best-effort di serverless**: limiter (`express-rate-limit`) memakai store in-memory, sedangkan Vercel menjalankan banyak instance function yang bisa cold-start. Counter per-IP/email tidak dibagi antar-instance dan bisa reset saat instance baru dibuat, jadi proteksi brute-force tidak sekuat di server tunggal. Untuk jaminan penuh perlu shared store (mis. Redis/Upstash) — belum diimplementasikan.
+- Domain produksi default: `https://cassava-village.vercel.app` (domain custom bisa diatur di Vercel → Project → Domains).
 
 ---
 
