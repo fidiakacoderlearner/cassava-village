@@ -10,6 +10,11 @@ if (!process.env.DATABASE_URL) {
 }
 
 const isLocal = /localhost|127\.0\.0\.1/.test(process.env.DATABASE_URL);
+const sslMode = /[?&]sslmode=([^&]+)/.exec(process.env.DATABASE_URL)?.[1];
+
+if (!isLocal && (sslMode === 'no-verify' || sslMode === 'disable')) {
+  console.warn(`[db] TLS certificate verification is disabled by DATABASE_URL (sslmode=${sslMode})`);
+}
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
@@ -17,7 +22,7 @@ const pool = new Pool({
   idleTimeoutMillis: 30000,
   connectionTimeoutMillis: 15000,
   query_timeout: 30000,
-  ssl: isLocal ? false : { rejectUnauthorized: false },
+  ssl: isLocal ? false : { rejectUnauthorized: true },
 });
 
 function toPostgres(sql) {

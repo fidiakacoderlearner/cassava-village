@@ -69,6 +69,15 @@ DATABASE_URL=postgresql://username:password@ep-xxx-region.neon.tech/neondb?sslmo
 > diperlakukan sebagai alias `verify-full` dan memunculkan peringatan keamanan di
 > log; menuliskan `verify-full` secara eksplisit menghilangkan peringatan itu tanpa
 > mengubah perilaku koneksi.
+>
+> **Penting**: `sslmode` di `DATABASE_URL` **menimpa** opsi `ssl` di
+> `server/db.js` (pg menggabungkan `{ ...config, ...parse(connectionString) }`),
+> jadi verifikasi sertifikat hanya aktif bila URL memuat `sslmode=verify-full`
+> (atau aliasnya). `sslmode=no-verify`/`disable` mematikan verifikasi sertifikat
+> dan server mencetak peringatan `[db] TLS certificate verification is disabled ...`
+> saat start. Bila URL tidak memuat `sslmode` sama sekali, fallback di
+> `server/db.js` yang dipakai — dan fallback itu kini juga memverifikasi
+> sertifikat (`rejectUnauthorized: true`).
 
 **Contoh untuk PostgreSQL lokal:**
 ```env
